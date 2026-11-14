@@ -587,7 +587,7 @@ html[data-theme="tron"]:is([data-hidden],[data-typing]) .btn::before{animation-p
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.8.0</p>
+      <p class="muted" style="margin-top:12px">Version 2.9.0</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -1232,8 +1232,10 @@ var TAG_EXPLAIN = {
  "DETOUR":"A detour: a different word took the target's slot. It may be fine English — the count here is about the slot, not the word. The rep belongs to the target, so it scores as a miss.",
  "EMPTY":"Type the English form — production only."
 };
+function calState(){ if(!S.cal) S.cal={n:0, brier:0, lv:[{n:0,ok:0},{n:0,ok:0},{n:0,ok:0}]}; return S.cal; }
 function recordAttempt(item, ok, opts){
   opts = opts||{}; var st = itemState(item.id);
+  if(opts.conf!=null && opts.firstAttempt){ var CS=calState(), CP=[0.2,0.6,0.95][opts.conf]; CS.n++; CS.brier+=(CP-(ok?1:0))*(CP-(ok?1:0)); CS.lv[opts.conf].n++; if(ok) CS.lv[opts.conf].ok++; }
   if(opts.cueIdx!=null && st.seenCues.indexOf(opts.cueIdx)<0) st.seenCues.push(opts.cueIdx);
   if(opts.cueIdx!=null) st.lastCue=opts.cueIdx;
   var d = mastery(item.disc);
@@ -1797,14 +1799,14 @@ function pickCue(item, preferUnseen, excludeIdx){
 function startRunner(kind, queue, opts){
   opts=opts||{};
   R={kind:kind, queue:queue, idx:0, correct:0, criticalFail:[], hintRung:0, sense:null, answered:false,
-     mod:opts.mod||null, practice:!!opts.practice, perItemSec:opts.perItemSec||0, deadline:null, timerInt:null, results:[]};
+     mod:opts.mod||null, practice:!!opts.practice, perItemSec:opts.perItemSec||0, deadline:null, timerInt:null, conf:null, results:[]};
   S.sessions++; save(); renderRun(); show("run");
 }
 function renderRun(){
   var b=document.getElementById("runBody");
   if(R.idx>=R.queue.length){ renderRunEnd(); return; }
   var q=R.queue[R.idx], item=q.item, cue=item.cues[q.cueIdx];
-  R.hintRung=0; R.sense=null; R.answered=false;
+  R.hintRung=0; R.sense=null; R.answered=false; R.conf=null;
   var titles={train:"Train today", gate:"Module gate — "+R.mod, prove:"Prove it first — "+R.mod, confirm:"Gate confirmation — "+R.mod, daily:"Daily challenge"};
   var html="<div class='card'><div class='runhead'><h2>"+ticJS(IC.target)+titles[R.kind]+"</h2><button type='button' class='quitbtn' id='runQuit'>End session</button></div>"+
    "<p class='small muted'><span class='dnum'>Item "+(R.idx+1)+" of "+R.queue.length+"</span> · "+esc(DISCS[item.disc].name)+" · Triage <span class='trv trv-"+item.triage.toLowerCase()+"'>"+item.triage+"</span> — "+TRIAGE_TEXT[item.triage]+
@@ -1819,6 +1821,7 @@ function renderRun(){
   }
   html+="<div class='cuebox'><div class='cue-es'>"+esc(cue.es)+"</div><div class='frame'>"+frameHTML(cue.frame)+"</div></div>"+
    "<label class='sr' for='runIn'>Your production</label><input type='text' id='runIn' autocomplete='off' placeholder='Type the missing English form'>"+
+   ((R.kind==="train"||R.kind==="prove"||R.kind==="confirm") && !R.practice ? "<div class='seg' id='confSeg' style='margin-top:10px'><span class='small muted'>How sure?</span>"+["Guessing","Fairly sure","Certain"].map(function(s,i){ return "<button type='button' data-conf='"+i+"'>"+s+"</button>"; }).join("")+"</div>" : "")+
    "<div id='hintZone'></div><div class='feedback' id='runFb'></div>"+
    "<div class='btnrow'><button type='button' class='btn' id='runCheck'>Check</button>"+
    (R.kind==="train"||R.kind==="daily" ? "<button type='button' class='btn secondary' id='runHint'>Hint</button>" : "")+
@@ -1834,6 +1837,9 @@ function renderRun(){
   var seg=document.getElementById("senseSeg");
   if(seg) seg.querySelectorAll("[data-sense]").forEach(function(btn){ btn.addEventListener("click", function(){ R.sense=+btn.getAttribute("data-sense");
     seg.querySelectorAll("button").forEach(function(x){ x.classList.toggle("on", x===btn); }); }); });
+  var cseg=document.getElementById("confSeg");
+  if(cseg) cseg.querySelectorAll("[data-conf]").forEach(function(btn){ btn.addEventListener("click", function(){ R.conf=+btn.getAttribute("data-conf");
+    cseg.querySelectorAll("button").forEach(function(x){ x.classList.toggle("on", x===btn); }); }); });
   var hintBtn=document.getElementById("runHint");
   if(hintBtn) hintBtn.addEventListener("click", function(){
     if(R.hintRung>=3) return; R.hintRung++;
@@ -1874,7 +1880,7 @@ function submitRun(timedOut){
   var r = timedOut ? {ok:false, tag:"DETOUR", msg:"Time out — at speaking speed this counts as a miss. The form has to arrive inside the limit."} : checkAnswer(item, cue, raw);
   var ok = r.ok && senseOk;
   if(!senseOk && r.ok){ ok=false; r={ok:false, tag:"SENSE-SPLIT", msg:"The deciding feature was wrong — the sense decides the word before you produce it."}; }
-  if(!R.practice) recordAttempt(item, ok, {firstAttempt:true, cueIdx:q.cueIdx, hintRung:R.hintRung, timedOut:timedOut});
+  if(!R.practice) recordAttempt(item, ok, {firstAttempt:true, cueIdx:q.cueIdx, hintRung:R.hintRung, timedOut:timedOut, conf:R.conf});
   else setMastery(item.disc, mastery(item.disc) + (ok?3:-2)), save();
   if(ok) R.correct++;
   if(!ok && (R.kind==="gate"||R.kind==="confirm") && isCritical(R.mod, item, q.cueIdx)) R.criticalFail.push(item.id);
@@ -1888,6 +1894,7 @@ function submitRun(timedOut){
   }
   /* miss feedback by triage */
   var html="<span class='tag"+(fbVoice(r.tag)==="warn"?" warnt":"")+"'>"+r.tag+"</span> "+esc(r.msg||TAG_EXPLAIN[r.tag]||"");
+  if(R.conf===2) html+="<br><strong>You were certain.</strong> High-confidence errors, once corrected, stick hardest of all — this is the most valuable correction on the card. Write it like it matters.";
   if(item.triage==="C"){
     html+="<div class='contrast'><div><p class='small muted'>Your attempt</p><p class='big'>"+esc(raw||"(time out)")+"</p></div>"+
      "<div><p class='small muted'>The twin Spanish handed you</p><p class='big'>"+esc(item.twin||"")+"</p></div></div>"+
@@ -1984,6 +1991,11 @@ function startTrain(practice){
   var items=allItems().slice().sort(function(a,b2){ return mastery(a.disc)-mastery(b2.disc); });
   var queue=[], usedMolestarCue=null, usedCueById={};
   for(var i=0;i<items.length && queue.length<6;i++){ var it=items[i]; var ci=pickCue(it, true); queue.push({item:it, cueIdx:ci, intruder:false}); usedCueById[it.id]=ci; if(it.id==="molestar") usedMolestarCue=ci; }
+  /* mixture (deficit-weighted): the weakest discrimination earns a second slot when it has another item waiting */
+  var weakDisc = items.length ? items[0].disc : null;
+  if(weakDisc){ S.lastMix={disc:weakDisc, date:todayStr()};
+    var extra = items.filter(function(it){ return it.disc===weakDisc && it.id!=="molestar" && !queue.some(function(q){ return q.item.id===it.id; }); })[0];
+    if(extra){ var eci=pickCue(extra, true); queue.splice(Math.min(4, queue.length), 0, {item:extra, cueIdx:eci, intruder:false}); usedCueById[extra.id]=eci; } }
   /* molestar is always drilled, and always returns as an intruder in a DIFFERENT sentence */
   var mol=findItem("molestar");
   if(usedMolestarCue===null){ usedMolestarCue=pickCue(mol, true); queue.push({item:mol, cueIdx:usedMolestarCue, intruder:false}); usedCueById[mol.id]=usedMolestarCue; }
@@ -2024,7 +2036,7 @@ function renderTrainInfo(){
      "<div class='btnrow'><button type='button' class='btn secondary' id='practiceBtn'>Practice anyway</button></div>";
     var pb=document.getElementById("practiceBtn"); if(pb) pb.addEventListener("click", function(){ startTrain(true); });
   } else {
-    el.innerHTML="<p><strong>"+due.length+" item"+(due.length===1?"":"s")+" due</strong>"+(forced.length? ", plus returns from repeated misses":"")+". Weakest discriminations first.</p>";
+    el.innerHTML="<p><strong>"+due.length+" item"+(due.length===1?"":"s")+" due</strong>"+(forced.length? ", plus returns from repeated misses":"")+". Weakest discriminations first"+(S.lastMix? " — the mix leans hardest on <strong>"+esc(DISCS[S.lastMix.disc].name)+"</strong>":"")+".</p>";
   }
 }
 function renderReview(){
@@ -2157,6 +2169,16 @@ function renderStats(){
     var tbN = Object.keys(S.teachbacks).length;
     var lesN = Object.keys(S.lessonsDone).length;
     function stat(num, lab, sub, tone){ return "<div class='stat'><div class='num'"+(tone?" style='color:var(--"+tone+")'":"")+">"+num+"</div><div class='lab'>"+lab+"</div>"+(sub?"<div class='sub'>"+sub+"</div>":"")+"</div>"; }
+    var calS = calState();
+    var honest = "<h3 style='margin-top:14px'>Calibration — your certainty vs the truth</h3>";
+    if(calS.n>0){
+      var lvNames=["Guessing","Fairly sure","Certain"];
+      honest += calS.lv.map(function(L2,i){ return L2.n ? "<p class='small' style='margin:4px 0'><strong>"+lvNames[i]+"</strong> — "+L2.n+" rated, "+Math.round(L2.ok/L2.n*100)+"% right</p>" : ""; }).join("")+
+      "<p class='small muted'>Brier score "+(calS.brier/calS.n).toFixed(2)+" over "+calS.n+" rated cards — lower is better calibrated, 0 is perfect. Certain-and-wrong is not failure: corrected, those stick hardest.</p>";
+    } else {
+      honest += "<p class='small muted'>Rate your confidence before the verdict on training cards and this fills with your real calibration — accuracy per level, plus a Brier score.</p>";
+    }
+    honest += "<div class='stat' style='margin-top:12px'><div class='lab' style='margin-top:0'><strong>Proof audit.</strong></div><div class='sub'>Every one of the "+grad+" graduations above was earned on an unseen sentence, on two separate days. Scores on seen sentences never count as proof — 0 exceptions, by construction.</div></div>";
     var html = "<div class='statgrid'>"+
       stat(avg+"<span class='small muted'> / 100</span>", "Overall mastery — average across all "+ds.length+" discriminations")+
       stat(grad+"<span class='small muted'> / "+items.length+"</span>", "Items “Quite controllable now”")+
@@ -2170,7 +2192,7 @@ function renderStats(){
       "<h3 style='margin-top:14px'>Module gates</h3>"+
       "<p class='small' style='margin:6px 0'><strong>M1</strong> — "+esc(gateStateText("M1"))+"</p>"+
       "<p class='small' style='margin:6px 0'><strong>M3</strong> — "+esc(gateStateText("M3"))+"</p>"+
-      "<div class='stat' style='margin-top:12px'><div class='lab' style='margin-top:0'><strong>First-attempt accuracy — not shown.</strong></div><div class='sub'>Attempts are not recorded, so no percentage is invented. The figures above are the recorded measures.</div></div>";
+      "<div class='stat' style='margin-top:12px'><div class='lab' style='margin-top:0'><strong>First-attempt accuracy — not shown.</strong></div><div class='sub'>Attempts are not recorded, so no percentage is invented. The figures above are the recorded measures.</div></div>" + honest;
     if(!Object.keys(S.mastery).length && !inProg && !grad)
       html += emptyHTML("Your statistics will appear here", "Run a lesson or a session and your real figures fill this view.");
     body.innerHTML = html;
