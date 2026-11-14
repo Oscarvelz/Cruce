@@ -28,18 +28,117 @@
   --shadow-lg:0 4px 10px rgba(19,34,40,.10),0 18px 44px rgba(19,34,40,.18);
   --r-lg:20px; --r-md:14px; --r-sm:10px;
 }
+/* Night — rebuilt on Brizna's AMOLED discipline: pure black ground, neutral
+   surfaces (#141415 / #18191d), cards defined by a white ring instead of a
+   brown-tinted shadow, and every soft tint mixed from its own hue into the
+   surface. The warm brown-grey is gone; what remains is intentional. */
 html[data-theme="dark"]{
-  --bg:#1d1c1b; --bg-soft:#242322; --panel:#2b2a29; --panel2:#353433; --panel3:#403f3d;
-  --ink:#f3f1ee; --ink2:#bab5ae; --ink3:#918c85;
-  --line:#454341; --line-strong:#5a5754;
-  --accent:#3ec2ab; --accent-deep:#8fe0d0; --accent-ink:#06231d; --accent-soft:#143a33;
-  --gold:#e3ac3c; --gold-soft:#3a2f14; --gold-ink:#f2d492;
-  --danger:#ff9d94; --danger-soft:#3d1f1c; --warn:#eec27a; --warn-soft:#3a2f16;
-  --ok:#7fd6a4; --ok-soft:#173528;
-  --dock-bg:rgba(40,39,38,.88); --head-bg:rgba(29,28,27,.88);
-  --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.28);
-  --shadow-lg:0 4px 10px rgba(0,0,0,.4),0 18px 44px rgba(0,0,0,.5);
+  --bg:#000000; --bg-soft:#0b0b0c; --panel:#141415; --panel2:#18191d; --panel3:#1f2023;
+  --ink:#f5f5f5; --ink2:#cfcfcf; --ink3:#9e9e9e;
+  --line:#2c2c2f; --line-strong:#45454a;
+  --accent:#3ec2ab; --accent-deep:#8fe0d0; --accent-ink:#06231d; --accent-soft:color-mix(in oklab, #3ec2ab 20%, #141415);
+  --gold:#e3ac3c; --gold-soft:color-mix(in oklab, #e3ac3c 20%, #141415); --gold-ink:#f2d492;
+  --danger:#ff9d94; --danger-soft:color-mix(in oklab, #ff6b6b 20%, #141415); --warn:#eec27a; --warn-soft:color-mix(in oklab, #fbbf24 20%, #141415);
+  --ok:#7fd6a4; --ok-soft:color-mix(in oklab, #4ade80 20%, #141415);
+  --dock-bg:rgba(10,10,11,.88); --head-bg:rgba(0,0,0,.88);
+  --shadow:0 0 0 1px rgba(255,255,255,.075);
+  --shadow-lg:0 0 0 1px rgba(255,255,255,.16),0 18px 44px rgba(0,0,0,.5);
 }
+/* Tron — ported from Weekly's tron-14.css (itself ported from Cadence):
+   cyan light-lines with a white-hot core on deep blue-black, a circuit grid
+   behind everything, selected states as lit tints — never solid blocks. */
+html[data-theme="tron"]{
+  --bg:#02060c; --bg-soft:#04101e; --panel:#061220; --panel2:#0a1c2e; --panel3:#0e2438;
+  --ink:#e6faff; --ink2:#8fb6c8; --ink3:#5f87a0;
+  --line:rgba(0,229,255,.30); --line-strong:rgba(0,229,255,.48);
+  --accent:#00e5ff; --accent-deep:#8ff4ff; --accent-ink:#001319; --accent-soft:rgba(0,229,255,.13);
+  --gold:#ffb21e; --gold-soft:rgba(255,178,30,.14); --gold-ink:#fff1c4;
+  --danger:#ff2a2a; --danger-soft:rgba(255,42,42,.13); --warn:#ffb21e; --warn-soft:rgba(255,178,30,.13);
+  --ok:#00e5ff; --ok-soft:rgba(0,229,255,.13);
+  --dock-bg:rgba(3,13,24,.88); --head-bg:rgba(2,6,12,.88);
+  --shadow:0 0 0 1px rgba(0,229,255,.22),0 0 18px rgba(0,229,255,.06);
+  --shadow-lg:0 0 0 1px rgba(0,229,255,.35),0 0 32px rgba(0,229,255,.14);
+  scrollbar-color:rgba(0,229,255,.45) #02060c;
+}
+html[data-theme="tron"] body{
+  background-color:#02060c;
+  background-image:
+    radial-gradient(120% 40% at 50% 112%, rgba(0,200,255,.18), transparent 60%),
+    radial-gradient(70% 26% at 18% -4%, rgba(0,229,255,.14), transparent 62%),
+    linear-gradient(rgba(0,229,255,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,.07) 1px, transparent 1px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cg fill='none' stroke='%2300e5ff' stroke-opacity='0.16' stroke-width='1'%3E%3Cpath d='M12 48H78V96H140'/%3E%3Cpath d='M36 168H110V72'/%3E%3Cpath d='M150 28V84H196'/%3E%3Cpath d='M168 150H210'/%3E%3C/g%3E%3Ccircle cx='78' cy='48' r='2' fill='%2300e5ff' fill-opacity='0.45'/%3E%3Ccircle cx='140' cy='96' r='2' fill='%2300e5ff' fill-opacity='0.35'/%3E%3Ccircle cx='110' cy='72' r='2' fill='%2300e5ff' fill-opacity='0.35'/%3E%3C/svg%3E");
+  background-size:auto,auto,44px 44px,44px 44px,220px 220px;
+  background-attachment:fixed;
+}
+html[data-theme="tron"] .wordmark{
+  color:#dffbff;
+  text-shadow:0 0 2px #fff,0 0 8px #00e5ff,0 0 18px rgba(0,229,255,.75),0 0 36px rgba(0,229,255,.45);
+}
+html[data-theme="tron"] .card h2, html[data-theme="tron"] .card h3{ text-shadow:0 0 10px rgba(0,229,255,.45); }
+html[data-theme="tron"] header.top{ border-bottom-color:rgba(0,229,255,.28); }
+html[data-theme="tron"] header.top::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:1px; pointer-events:none;
+  background:linear-gradient(90deg, transparent, rgba(111,227,255,.75) 20%, rgba(111,227,255,.75) 80%, transparent);
+  box-shadow:0 0 8px rgba(0,229,255,.6);
+}
+html[data-theme="tron"] .btn{ box-shadow:0 0 14px rgba(0,229,255,.35); }
+html[data-theme="tron"] :is(.fchip[aria-selected="true"], .steps span.on, .seg button.on, .tpick[aria-pressed="true"], .dock button[aria-current="page"]){
+  background:linear-gradient(180deg, rgba(0,229,255,.20), rgba(0,229,255,.06));
+  color:#d8fdff; border-color:rgba(143,244,255,.85);
+  box-shadow:inset 0 0 0 1px rgba(143,244,255,.8), 0 0 12px rgba(0,229,255,.4);
+  text-shadow:0 0 8px rgba(0,229,255,.7);
+}
+html[data-theme="tron"] .fchip[aria-selected="true"] .cnt{ background:rgba(0,229,255,.18); border-color:transparent; color:inherit; }
+html[data-theme="tron"] .chipbtn.sel{ box-shadow:0 0 12px rgba(0,229,255,.35); }
+html[data-theme="tron"] .bar>i{ box-shadow:0 0 8px rgba(0,229,255,.55); }
+html[data-theme="tron"] input[type="text"]:focus, html[data-theme="tron"] textarea:focus{ box-shadow:0 0 0 3px rgba(0,229,255,.25), 0 0 14px rgba(0,229,255,.25); }
+.tron-ripple-clip{ position:fixed; overflow:hidden; pointer-events:none; z-index:90; display:none; }
+html[data-theme="tron"] .tron-ripple-clip{ display:block; }
+.tron-ripple{ position:absolute; border-radius:50%; background:color-mix(in srgb, #00e5ff 34%, transparent); transform:scale(.12); opacity:.85; animation:tron-ripple 580ms cubic-bezier(.16,.72,.24,1) forwards; }
+@keyframes tron-ripple{ 55%{ opacity:.45; } to{ transform:scale(1); opacity:0; } }
+@media (prefers-reduced-motion: reduce){ .tron-ripple{ animation:none; } }
+/* Cyberpunk — merged from Faro's cyberpunk.css (the 2077 rule: yellow is the
+   primary accent, cyan is data, magenta is danger) and Cadence's chamfer
+   system: warm black, flat signal yellow with black text, cut corners,
+   hazard stripes, Rajdhani condensed caps, the RGB split on the brand only.
+   No glows — flat print, not light. */
+@font-face{ font-family:"Rajdhani"; font-style:normal; font-display:swap; font-weight:500; src:url("fonts/rajdhani-latin-500.woff2") format("woff2"); }
+@font-face{ font-family:"Rajdhani"; font-style:normal; font-display:swap; font-weight:600; src:url("fonts/rajdhani-latin-600.woff2") format("woff2"); }
+@font-face{ font-family:"Rajdhani"; font-style:normal; font-display:swap; font-weight:700; src:url("fonts/rajdhani-latin-700.woff2") format("woff2"); }
+html[data-theme="cyberpunk"]{
+  --bg:#0b0a08; --bg-soft:#100d0a; --panel:#161310; --panel2:#201b16; --panel3:#2a231b;
+  --ink:#f2eee3; --ink2:#aca294; --ink3:#968b78;
+  --line:#3a332a; --line-strong:#57503f;
+  --accent:#fcee0a; --accent-deep:#fcee0a; --accent-ink:#0b0a08; --accent-soft:color-mix(in oklab, #fcee0a 16%, #161310);
+  --gold:#ff2a6d; --gold-soft:rgba(255,42,109,.13); --gold-ink:#ff8fb8;
+  --danger:#ff003c; --danger-soft:rgba(255,0,60,.13); --warn:#ff7a00; --warn-soft:rgba(255,122,0,.14);
+  --ok:#00e67a; --ok-soft:rgba(0,230,122,.12);
+  --dock-bg:rgba(16,13,10,.92); --head-bg:rgba(11,10,8,.92);
+  --shadow:none; --shadow-lg:0 18px 44px rgba(0,0,0,.5);
+  --cp-cut:polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  --cp-cut-sm:polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  scrollbar-color:#57503f #0b0a08;
+}
+html[data-theme="cyberpunk"] h1, html[data-theme="cyberpunk"] h2, html[data-theme="cyberpunk"] h3, html[data-theme="cyberpunk"] .wordmark{
+  font-family:"Rajdhani","Arial Narrow",system-ui,sans-serif; text-transform:uppercase; letter-spacing:.09em; font-weight:600;
+}
+html[data-theme="cyberpunk"] .wordmark{ text-shadow:-2px 0 rgba(255,42,109,.55), 2px 0 rgba(0,240,255,.55); }
+html[data-theme="cyberpunk"] .card{ clip-path:var(--cp-cut); border-radius:0; }
+html[data-theme="cyberpunk"] :is(.btn,.spellopt,.chipbtn,.fchip,.tpick,.cuebox,.feedback,.uprow,.stat,details,.lockbox,.empty,input[type="text"],textarea,select){ clip-path:var(--cp-cut-sm); border-radius:0; }
+html[data-theme="cyberpunk"] .dock{ clip-path:var(--cp-cut); border-radius:0; }
+html[data-theme="cyberpunk"] .dock button{ border-radius:0; }
+html[data-theme="cyberpunk"] header.top::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:6px; pointer-events:none;
+  background:repeating-linear-gradient(-45deg, #fcee0a 0 7px, #0b0a08 7px 14px);
+}
+html[data-theme="cyberpunk"] ::selection{ background:#fcee0a; color:#0b0a08; }
+html[data-theme="cyberpunk"] .diff{ background:rgba(0,240,255,.14); border-color:#00f0ff; color:#aef7ff; }
+/* ---------- theme picker ---------- */
+.themepick{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.tpick{display:flex;align-items:center;gap:10px;background:var(--panel);border:1.5px solid var(--line-strong);color:var(--ink);border-radius:var(--r-md);padding:11px 13px;font-weight:600;cursor:pointer;min-height:48px;text-align:left}
+.tpick .sw{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--swbg) 0 55%,var(--swac) 55% 100%);border:1px solid var(--line-strong);flex:0 0 auto}
+.tpick[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scrollbar-color:var(--line-strong) transparent}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
@@ -80,7 +179,7 @@ main{padding-top:14px}
 .runhead h2{margin-right:auto;margin-bottom:0}
 .quitbtn{flex:0 0 auto;display:inline-flex;align-items:center;min-height:40px;background:none;border:none;color:var(--ink2);font-size:13.5px;font-weight:600;letter-spacing:.01em;padding:2px 6px;cursor:pointer;white-space:nowrap}
 .sesspanel .chiprow{padding-bottom:2px;margin-bottom:0}
-.spellopt{display:block;width:100%;text-align:left;padding:14px 16px;margin:0 0 10px;border:1px solid var(--line2);border-radius:14px;background:var(--panel2);color:var(--ink);font-size:19px;font-weight:600;cursor:pointer}
+.spellopt{display:block;width:100%;text-align:left;padding:14px 16px;margin:0 0 10px;border:1px solid var(--line-strong);border-radius:14px;background:var(--panel2);color:var(--ink);font-size:19px;font-weight:600;cursor:pointer}
 .spellopt.right{border-color:var(--ok);background:var(--ok-soft)}
 .spellopt.wrong{border-color:var(--danger);background:var(--danger-soft);text-decoration:line-through;opacity:.8}
 .spellopt:disabled{cursor:default}
@@ -302,12 +401,18 @@ summary{cursor:pointer;font-weight:650;padding:6px 0}
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.3.0</p>
+      <p class="muted" style="margin-top:12px">Version 2.4.0</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
       <h3>Appearance</h3>
       <div class="themerow"><button type="button" class="themechip" id="themeBtn2" aria-label="Switch between day and night mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 13.6A8.4 8.4 0 1 1 10.4 3.8a7 7 0 0 0 9.8 9.8Z"/></svg><span>Appearance</span></button></div>
+      <div class="themepick" role="group" aria-label="Themes">
+        <button type="button" class="tpick" data-themepick="light" aria-pressed="false"><span class="sw" style="--swbg:#edf2ef;--swac:#0b6e5d"></span>Day</button>
+        <button type="button" class="tpick" data-themepick="dark" aria-pressed="false"><span class="sw" style="--swbg:#000000;--swac:#3ec2ab"></span>Night</button>
+        <button type="button" class="tpick" data-themepick="tron" aria-pressed="false"><span class="sw" style="--swbg:#02060c;--swac:#00e5ff"></span>Tron</button>
+        <button type="button" class="tpick" data-themepick="cyberpunk" aria-pressed="false"><span class="sw" style="--swbg:#0b0a08;--swac:#fcee0a"></span>Cyberpunk</button>
+      </div>
     </div>
     <div class="card">
       <h3><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2 5 5.8v5.4c0 4.4 2.9 7.7 7 9.6 4.1-1.9 7-5.2 7-9.6V5.8Z"/><path d="M9.2 11.8l2 2 3.6-3.8"/></svg></span>Your data on this device</h3>
@@ -670,15 +775,85 @@ function setMastery(disc, v){ S.mastery[disc]=Math.max(0,Math.min(100,Math.round
 
 /* Theme */
 var ICON_MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 13.6A8.4 8.4 0 1 1 10.4 3.8a7 7 0 0 0 9.8 9.8Z"/></svg>', ICON_SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5 5l1.7 1.7M17.3 17.3 19 19M19 5l-1.7 1.7M6.7 17.3 5 19"/></svg>';
-function applyTheme(t){ document.documentElement.setAttribute("data-theme", t);
-  var ic = t==="dark" ? ICON_SUN : ICON_MOON;
+/* Theme system — the Day/Night swap is Weekly's mechanism: the toggle
+   remembers the last day theme and the last night theme separately and
+   swaps between them; the Appearance picker chooses among all four. */
+var LS_DAY = "cruce.v2.dayTheme", LS_NIGHT = "cruce.v2.nightTheme";
+var THEMES = { light:{name:"Day",dark:false}, dark:{name:"Night",dark:true}, tron:{name:"Tron",dark:true}, cyberpunk:{name:"Cyberpunk",dark:true} };
+function applyTheme(t){
+  if(!THEMES[t]) t = "light";
+  theme = t;
+  document.documentElement.setAttribute("data-theme", t);
+  try{
+    localStorage.setItem(LS_THEME, t);
+    localStorage.setItem(THEMES[t].dark ? LS_NIGHT : LS_DAY, t);
+  }catch(e){}
+  var ic = THEMES[t].dark ? ICON_SUN : ICON_MOON;
   var hb = document.getElementById("themeBtn"); if(hb) hb.innerHTML = ic;
-  var sb = document.getElementById("themeBtn2"); if(sb) sb.innerHTML = ic + "<span>Appearance</span><span class='tc-state'>" + (t==="dark" ? "Night" : "Day") + "</span>"; }
+  var sb = document.getElementById("themeBtn2"); if(sb) sb.innerHTML = ic + "<span>Appearance</span><span class='tc-state'>" + THEMES[t].name + "</span>";
+  var picks = document.querySelectorAll("[data-themepick]");
+  for(var i=0;i<picks.length;i++) picks[i].setAttribute("aria-pressed", picks[i].getAttribute("data-themepick")===t ? "true" : "false");
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if(meta){ var bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim(); if(bg) meta.setAttribute("content", bg); }
+}
 var theme = localStorage.getItem(LS_THEME) || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark":"light");
 applyTheme(theme);
-function toggleTheme(){ theme = theme==="dark" ? "light":"dark"; localStorage.setItem(LS_THEME, theme); applyTheme(theme); }
+function toggleTheme(){
+  var target = THEMES[theme].dark ? (localStorage.getItem(LS_DAY) || "light") : (localStorage.getItem(LS_NIGHT) || "dark");
+  applyTheme(target);
+}
 document.getElementById("themeBtn").addEventListener("click", toggleTheme);
 document.getElementById("themeBtn2").addEventListener("click", toggleTheme);
+var pickBtns = document.querySelectorAll("[data-themepick]");
+for(var pi=0; pi<pickBtns.length; pi++) pickBtns[pi].addEventListener("click", function(){ applyTheme(this.getAttribute("data-themepick")); });
+
+/* Tron press light — ported from Weekly's tron-fx.ts (itself from Cadence):
+   a ripple in the theme's own tone at a 34% mix, painted in a fixed overlay
+   clipped to the pressed element so nothing in the page moves; it follows
+   its element frame by frame and dies on scroll-cancel. Tron only, and
+   never under reduced motion. */
+(function(){
+  var PRESSABLE = "button, [role='button'], [role='option'], [role='tab'], summary, a[href]";
+  var reduce = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : {matches:true};
+  var live = null;
+  function putOut(){ if(!live) return; cancelAnimationFrame(live.frame); clearTimeout(live.timer); live.clip.remove(); live = null; }
+  document.addEventListener("pointerdown", function(ev){
+    if(document.documentElement.getAttribute("data-theme") !== "tron" || reduce.matches || ev.button > 0) return;
+    var target = ev.target; if(!target || !target.closest) return;
+    var host = target.closest(PRESSABLE);
+    if(!host || host.disabled) return;
+    var rect = host.getBoundingClientRect();
+    if(!rect.width || !rect.height || rect.width > 900) return;
+    putOut();
+    var clip = document.createElement("span");
+    clip.className = "tron-ripple-clip"; clip.setAttribute("aria-hidden", "true");
+    var place = function(r){ clip.style.left = r.left + "px"; clip.style.top = r.top + "px"; clip.style.width = r.width + "px"; clip.style.height = r.height + "px"; };
+    place(rect);
+    clip.style.borderRadius = getComputedStyle(host).borderRadius || "0px";
+    var size = Math.hypot(rect.width, rect.height) * 2;
+    var ink = document.createElement("span");
+    ink.className = "tron-ripple";
+    ink.style.width = size + "px"; ink.style.height = size + "px";
+    ink.style.left = (ev.clientX - rect.left - size/2) + "px";
+    ink.style.top = (ev.clientY - rect.top - size/2) + "px";
+    ink.style.background = "color-mix(in srgb, #00e5ff 34%, transparent)";
+    clip.appendChild(ink);
+    document.body.appendChild(clip);
+    var state = { clip:clip, frame:0, timer:0 };
+    var follow = function(){
+      if(live !== state) return;
+      if(!host.isConnected){ putOut(); return; }
+      var now = host.getBoundingClientRect();
+      if(!now.width || !now.height){ putOut(); return; }
+      place(now);
+      state.frame = requestAnimationFrame(follow);
+    };
+    state.frame = requestAnimationFrame(follow);
+    state.timer = setTimeout(function(){ if(live === state) putOut(); else clip.remove(); }, 640);
+    live = state;
+  }, { passive:true, capture:true });
+  document.addEventListener("pointercancel", putOut, { passive:true, capture:true });
+})();
 
 /* ============================== CHECKER ============================== */
 function norm(s){ return (s||"").toLowerCase().replace(/[’‘]/g,"'").replace(/[^a-z0-9' ]/g," ").replace(/\s+/g," ").trim(); }
@@ -1552,7 +1727,7 @@ document.getElementById("resetBtn").addEventListener("click", function(){
    "<div class='btnrow'><button type='button' class='btn danger' id='resetYes'>Yes — erase everything</button><button type='button' class='btn secondary' id='resetNo'>Keep my progress</button></div>";
   document.getElementById("resetNo").addEventListener("click", function(){ location.reload(); });
   document.getElementById("resetYes").addEventListener("click", function(){
-    localStorage.removeItem(LS_KEY); localStorage.removeItem(LS_THEME); S=defaultState(); save();
+    localStorage.removeItem(LS_KEY); localStorage.removeItem(LS_THEME); localStorage.removeItem(LS_DAY); localStorage.removeItem(LS_NIGHT); S=defaultState(); save();
     document.getElementById("resetZone").innerHTML="<p><span class='chip proven'>Done</span> All Cruce data cleared from this device.</p>";
     renderHome(); renderTrainInfo(); renderLearn(); renderReview(); renderStats();
   });
