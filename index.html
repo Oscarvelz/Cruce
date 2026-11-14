@@ -502,7 +502,7 @@ summary{cursor:pointer;font-weight:650;padding:6px 0}
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.4.1</p>
+      <p class="muted" style="margin-top:12px">Version 2.4.2</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -959,6 +959,26 @@ for(var pi=0; pi<pickBtns.length; pi++) pickBtns[pi].addEventListener("click", f
 /* ============================== CHECKER ============================== */
 function norm(s){ return (s||"").toLowerCase().replace(/[’‘]/g,"'").replace(/[^a-z0-9' ]/g," ").replace(/\s+/g," ").trim(); }
 var FORMAL_DETOURS = {"postpone":"put off","postponed":"put off","cancel":"call off","mention":"bring up","mentioned":"bring up","determine":"figure out","continue":"keep up","lift":"pick up","care for":"look after","discover":"find out","review":"go over","delay":"hold up","assist":"asistir","support":"soportar","exit":"exito","parents":"parientes","library":"libreria","carpet":"carpeta","compromise":"compromiso"};
+/* Detour honesty (Oscar, 2026-11-14): a substitute is a miss HERE, but the
+   learner must never leave believing a good word is bad English. For the
+   put-off family each known substitute carries its verdict: fits = it is
+   real English in this sentence (say so, plainly); fits = 0 = it changes
+   the meaning (say that instead). Unlisted words get the neutral rule. */
+var DETOUR_FIT = {
+ "push":{fits:1, note:"«Push» is real English here — a meeting can be pushed to Friday. The word is not wrong."},
+ "pushed":{fits:1, note:"«Pushed» is real English here — a meeting can be pushed to Friday. The word is not wrong."},
+ "push back":{fits:1, note:"«Push back» is real English here — it says the same thing. The word is not wrong."},
+ "pushed back":{fits:1, note:"«Pushed back» is real English here — it says the same thing. The word is not wrong."},
+ "move":{fits:1, note:"«Move» fits this sentence too — you can move a meeting to Friday. The word is not wrong."},
+ "moved":{fits:1, note:"«Moved» fits this sentence too — you can move a meeting to Friday. The word is not wrong."},
+ "delay":{fits:1, note:"«Delay» fits here — real English, the formal cousin of the phrasal verb. The word is not wrong."},
+ "delayed":{fits:1, note:"«Delayed» fits here — real English, the formal cousin of the phrasal verb. The word is not wrong."},
+ "reschedule":{fits:1, note:"«Reschedule» fits here — real English, the formal cousin of the phrasal verb. The word is not wrong."},
+ "rescheduled":{fits:1, note:"«Rescheduled» fits here — real English, the formal cousin of the phrasal verb. The word is not wrong."},
+ "cancel":{fits:0, note:"«Cancel» does not fit this sentence — that ends the meeting instead of moving it to Friday."},
+ "cancelled":{fits:0, note:"«Cancelled» does not fit this sentence — that ends the meeting instead of moving it to Friday."},
+ "canceled":{fits:0, note:"«Canceled» does not fit this sentence — that ends the meeting instead of moving it to Friday."}
+};
 function checkAnswer(item, cue, raw){
   var n = norm(raw); if(!n) return {ok:false, tag:"EMPTY", msg:"Nothing typed yet — production means producing."};
   for(var i=0;i<cue.ans.length;i++) if(n===norm(cue.ans[i])) return {ok:true};
@@ -979,16 +999,20 @@ function checkAnswer(item, cue, raw){
   if(sameSet) return {ok:false, tag:"PRONOUN-PLACE"};
   if(n.indexOf("off it")>=0 || n.indexOf("on it")>=0 && item.disc==="sep-pronoun") return {ok:false, tag:"PRONOUN-PLACE"};
   if(n.indexOf("him after")>=0 || n.indexOf("them after")>=0 || n.indexOf("children after")>=0) return {ok:false, tag:"PRONOUN-PLACE"};
-  if(item.disc==="formal-switch") return {ok:false, tag:"DETOUR", msg:"That avoids the phrasal verb. A safer substitute is a detour miss — the target has to occupy its slot."};
+  if(item.disc==="formal-switch"){
+    var df = (item.id==="put-off") ? DETOUR_FIT[n] : null;
+    var head = df ? df.note+" " : ("That word took the slot instead of the phrasal verb. ");
+    return {ok:false, tag:"DETOUR", msg:head+"But this slot belongs to «"+(item.verb||item.target)+"» — the phrasal verb being trained. In this drill any other word, even a good one, is a detour: it counts as a miss so the target gets its rep."};
+  }
   return {ok:false, tag: item.mod==="M3"||item.twin ? "FALSE-TWIN" : "DETOUR"};
 }
 var TAG_EXPLAIN = {
  "PARTICLE-DROP":"The particle fell off — exactly what Spanish hides. The particle is half the verb.",
  "PRONOUN-PLACE":"Right words, wrong order. With a pronoun, a separable verb splits: the pronoun goes inside.",
- "FORMAL-DEFAULT":"That is the formal twin — it belongs on paper. In speech the phrasal verb has to win the slot.",
+ "FORMAL-DEFAULT":"That is the formal twin — real English, but it lives on paper. In speech the phrasal verb has to win the slot.",
  "FALSE-TWIN":"That is the false twin — the word Spanish handed you, with a different meaning in English.",
  "SENSE-SPLIT":"Wrong sense. Compromiso splits three ways; the situation decides which English word owns the slot.",
- "DETOUR":"A safer substitute that avoids the target. Detours are misses here — the required form must occupy its slot.",
+ "DETOUR":"A detour: a different word took the target's slot. It may be fine English — the count here is about the slot, not the word. The rep belongs to the target, so it scores as a miss.",
  "EMPTY":"Type the English form — production only."
 };
 function recordAttempt(item, ok, opts){

@@ -8,4 +8,4 @@ Advanced everyday English for a native Spanish speaker: production-first trainin
 
 - Single self-contained `index.html` (plus the self-hosted Rajdhani fonts the Cyberpunk theme speaks in) — all progress lives in the browser (localStorage).
 - Four themes: Day, Night (AMOLED discipline, ported from Brizna), Tron (ported from Weekly) and Cyberpunk (merged from Cadence + Faro). The Day/Night toggle remembers your last theme on each side.
-- Version 2.4.1.
+- Version 2.4.2.
