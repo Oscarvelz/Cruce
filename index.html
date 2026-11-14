@@ -80,6 +80,11 @@ main{padding-top:14px}
 .runhead h2{margin-right:auto;margin-bottom:0}
 .quitbtn{flex:0 0 auto;display:inline-flex;align-items:center;min-height:40px;background:none;border:none;color:var(--ink2);font-size:13.5px;font-weight:600;letter-spacing:.01em;padding:2px 6px;cursor:pointer;white-space:nowrap}
 .sesspanel .chiprow{padding-bottom:2px;margin-bottom:0}
+.spellopt{display:block;width:100%;text-align:left;padding:14px 16px;margin:0 0 10px;border:1px solid var(--line2);border-radius:14px;background:var(--panel2);color:var(--ink);font-size:19px;font-weight:600;cursor:pointer}
+.spellopt.right{border-color:var(--ok);background:var(--ok-soft)}
+.spellopt.wrong{border-color:var(--danger);background:var(--danger-soft);text-decoration:line-through;opacity:.8}
+.spellopt:disabled{cursor:default}
+.spellframe{font-size:26px;font-weight:700;letter-spacing:.04em;text-align:center;margin:10px 0 4px}
 @media(min-width:700px){#runBody{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}#runBody>.card{margin-bottom:0}}
 .quitbtn:active{color:var(--ink)}
 input[type="text"],textarea,select{width:100%;background:var(--panel);color:var(--ink);border:1.5px solid var(--line-strong);border-radius:var(--r-md);padding:12px 14px;transition:border-color .12s ease,box-shadow .12s ease}
@@ -297,7 +302,7 @@ summary{cursor:pointer;font-weight:650;padding:6px 0}
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.2.2</p>
+      <p class="muted" style="margin-top:12px">Version 2.3.0</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -328,6 +333,11 @@ summary{cursor:pointer;font-weight:650;padding:6px 0}
   <!-- SESSION RUNNER (train / gate / prove / daily) -->
   <section class="view" id="view-run">
     <div id="runBody"></div>
+  </section>
+
+  <!-- SPELL LAB (M9) -->
+  <section class="view" id="view-spell">
+    <div id="spellBody"></div>
   </section>
 
 </main>
@@ -560,6 +570,44 @@ var DISCS = {
 };
 M3.forEach(function(it){ DISCS[it.disc] = {name:"False friend: "+it.es, mod:"M3"}; });
 
+/* M9 — SPELLING. Three interference families, built from Oscar's own written
+   errors (decission, ocurrance, invertion, daubt). Each word: the correct
+   shape, three foils drawn from his error patterns, and the trap chunk that
+   Complete-the-word blanks out (pre + chunk + post = the word). */
+var SPELL = [
+ {disc:"spell-ssion", name:"Double-s family — -ssion",
+  rule:"So: roots ending in -mit or -ss take -ssion — two s's, always. Ad-mit → admission, dis-cuss → discussion.",
+  words:[
+   {id:"sp-admission", w:"admission", es:"admisión", foils:["admision","addmission","admition"], pre:"admi", chunk:"ss", post:"ion"},
+   {id:"sp-permission", w:"permission", es:"permiso", foils:["permision","permittion","permisssion"], pre:"permi", chunk:"ss", post:"ion"},
+   {id:"sp-discussion", w:"discussion", es:"discusión", foils:["discusion","discution","discusssion"], pre:"discu", chunk:"ss", post:"ion"},
+   {id:"sp-passion", w:"passion", es:"pasión", foils:["pasion","passsion","pation"], pre:"pa", chunk:"ss", post:"ion"},
+   {id:"sp-commission", w:"commission", es:"comisión", foils:["comision","commision","comition"], pre:"commi", chunk:"ss", post:"ion"}
+  ]},
+ {disc:"spell-sion", name:"Single-s family — -sion",
+  rule:"So: after -de and -vert roots, -sion keeps ONE s — decision, version, inversion. Your hand wants to double it because the -ssion family is louder. It doesn't.",
+  words:[
+   {id:"sp-decision", w:"decision", es:"decisión", foils:["decission","desicion","decition"], pre:"deci", chunk:"s", post:"ion"},
+   {id:"sp-version", w:"version", es:"versión", foils:["vertion","verssion","vercion"], pre:"ver", chunk:"s", post:"ion"},
+   {id:"sp-inversion", w:"inversion", es:"inversión", foils:["invertion","inverssion","invirsion"], pre:"inver", chunk:"s", post:"ion"},
+   {id:"sp-conclusion", w:"conclusion", es:"conclusión", foils:["conclussion","conclution","conclucion"], pre:"conclu", chunk:"s", post:"ion"},
+   {id:"sp-confusion", w:"confusion", es:"confusión", foils:["confussion","confution","confucion"], pre:"confu", chunk:"s", post:"ion"}
+  ]},
+ {disc:"spell-doubles", name:"Doubles & silent letters",
+  rule:"So: English doubles letters Spanish never doubles — and keeps letters it never says (the b in doubt, the gh in weight). The shape is the word. Learn the shape.",
+  words:[
+   {id:"sp-occurrence", w:"occurrence", es:"ocurrencia · suceso", foils:["ocurrance","ocurrence","occurance"], pre:"o", chunk:"cc", post:"urrence"},
+   {id:"sp-necessary", w:"necessary", es:"necesario", foils:["necesary","neccessary","nesessary"], pre:"nece", chunk:"ss", post:"ary"},
+   {id:"sp-embarrassed", w:"embarrassed", es:"avergonzado", foils:["embarassed","embarrased","embarased"], pre:"emba", chunk:"rr", post:"assed"},
+   {id:"sp-doubt", w:"doubt", es:"duda", foils:["daubt","dout","dubbt"], pre:"dou", chunk:"b", post:"t"},
+   {id:"sp-weight", w:"weight", es:"peso", foils:["waight","wieght","weigt"], pre:"wei", chunk:"gh", post:"t"},
+   {id:"sp-tomorrow", w:"tomorrow", es:"mañana", foils:["tomorow","tomarrow","tommorow"], pre:"tomo", chunk:"rr", post:"ow"},
+   {id:"sp-beginning", w:"beginning", es:"principio · comienzo", foils:["begining","beggining","begininng"], pre:"begi", chunk:"nn", post:"ing"},
+   {id:"sp-success", w:"success", es:"éxito", foils:["sucess","succes","sucsess"], pre:"su", chunk:"cc", post:"ess"}
+  ]}
+];
+SPELL.forEach(function(g){ DISCS[g.disc] = {name:"Spelling: "+g.name, mod:"M9"}; g.words.forEach(function(w){ w.disc = g.disc; }); });
+
 var PARTICLES = [["up","completion / rising — finish it, lift it"],["out","exhaustion / truth coming out"],["off","separation / cancellation"],["over","across / above, eyes travelling"]];
 
 var PATH = [
@@ -571,7 +619,7 @@ var PATH = [
  {id:"M8", name:"At / on / in", sub:"Time, place and verb partnerships", open:false},
  {id:"M5", name:"Everyday naming bank", sub:"Kitchen, body, house and yard — the ground-floor words", open:false},
  {id:"M7", name:"Comparisons", sub:"Bigger, smoother, the most — without the Spanish detour", open:false},
- {id:"M9", name:"Spelling", sub:"The interference families, written at speed", open:false},
+ {id:"M9", name:"Spelling", sub:"18 words in 3 interference families — spot the right spelling, then write it from memory", open:true},
  {id:"M10", name:"Participles & twins", sub:"Irregular participles and confusable pairs", open:false},
  {id:"M12", name:"Countability, ’s & tags", sub:"News, advice, people — and the little endings", open:false},
  {id:"M11", name:"The 12 vowels", sub:"Hearing and making the vowel system", open:false}
@@ -608,7 +656,7 @@ var INTERVALS = [1,3,7,30];
 function todayStr(d){ d = d||new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 function addDays(str, n){ var d = new Date(str+"T12:00:00"); d.setDate(d.getDate()+n); return todayStr(d); }
 function defaultState(){ return { mastery:{}, items:{}, commits:{}, teachbacks:{}, cMiss:{}, strikes:{},
-  gates:{}, proven:{}, lessonsDone:{}, daily:{lastDone:null, streak:0, paused:false, doneDate:null}, hintLog:[], sessions:0 }; }
+  gates:{}, proven:{}, lessonsDone:{}, daily:{lastDone:null, streak:0, paused:false, doneDate:null}, hintLog:[], sessions:0, spell:{} }; }
 var S;
 try { S = JSON.parse(localStorage.getItem(LS_KEY)) || defaultState(); } catch(e){ S = defaultState(); }
 Object.keys(defaultState()).forEach(function(k){ if(!(k in S)) S[k]=defaultState()[k]; });
@@ -616,7 +664,7 @@ function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e)
 function itemState(id){ if(!S.items[id]) S.items[id]={step:0, due:null, daysCorrect:[], graduated:false, seenCues:[]}; return S.items[id]; }
 function allItems(){ return M1.concat(M3); }
 function findItem(id){ var a=allItems(); for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; return null; }
-function modItems(mod){ return mod==="M1"? M1 : M3; }
+function modItems(mod){ if(mod==="M9") return []; return mod==="M1"? M1 : M3; }
 function mastery(disc){ return S.mastery[disc]||0; }
 function setMastery(disc, v){ S.mastery[disc]=Math.max(0,Math.min(100,Math.round(v))); }
 
@@ -702,8 +750,8 @@ function hintFor(item, cue, rung){
 }
 
 /* ============================== NAV ============================== */
-var views = ["home","learn","module","lesson","run","review","stats","more"];
-var DOCK_FOR = {home:"home", learn:"learn", module:"learn", lesson:"learn", run:"home", review:"review", stats:"stats", more:"more"};
+var views = ["home","learn","module","lesson","run","spell","review","stats","more"];
+var DOCK_FOR = {home:"home", learn:"learn", module:"learn", lesson:"learn", run:"home", spell:"learn", review:"review", stats:"stats", more:"more"};
 var currentView = "home", POPNAV = false, dockStack = ["home"];
 function show(name){
   if(name==="train") name="home";
@@ -735,6 +783,7 @@ window.addEventListener("popstate", function(){
   try{
     if(currentView==="lesson"){ openModule(L ? L.les.mod : "M1"); }
     else if(currentView==="module"){ goDock("learn", true); }
+    else if(currentView==="spell"){ openModule("M9"); }
     else if(currentView==="run"){ goDock("home", true); }
     else if(currentView!=="home"){
       if(dockStack.length>1){ dockStack.pop(); goDock(dockStack[dockStack.length-1], true); }
@@ -755,13 +804,18 @@ var TRIAGE_TEXT = {A:"You don’t have this yet", B:"You have it — you can’t
 
 /* ============================== HOME ============================== */
 function weakestDisc(){
-  var keys = Object.keys(DISCS), worst=null, wv=101;
+  var keys = Object.keys(DISCS).filter(function(k){ return allItems().some(function(it){ return it.disc===k; }); }), worst=null, wv=101;
   keys.forEach(function(k){ var v=mastery(k); if(v<wv){wv=v; worst=k;} });
   return worst;
 }
 function moduleState(m){
   if(!m.open) return {label:"Coming next", cls:""};
   if(S.proven[m.id]) return {label:"Proven", cls:"proven"};
+  if(m.id==="M9"){
+    var sw = allSpellWords();
+    if(sw.every(function(w){ var st=spellSt(w.id); return st && st.graduated; })) return {label:"Complete", cls:"proven"};
+    if(sw.some(function(w){ return !!spellSt(w.id); })) return {label:"In progress", cls:"prog"};
+  }
   var started = modItems(m.id).some(function(it){ return mastery(it.disc)>0 || (S.items[it.id] && S.items[it.id].seenCues.length); }) || Object.keys(S.lessonsDone).some(function(l){ return LESSONS.filter(function(x){return x.id===l;})[0] && LESSONS.filter(function(x){return x.id===l;})[0].mod===m.id; });
   if(started) return {label:"In progress", cls:"prog"};
   var firstOpen = PATH.filter(function(x){return x.open && !S.proven[x.id];})[0];
@@ -829,7 +883,7 @@ function renderUpNext(){
       return "<button type='button' class='uprow' data-upmod='"+DISCS[it.disc].mod+"'><span class='grow'><strong>"+esc(it.verb||it.es)+"</strong> <span class='small muted'>"+esc(DISCS[it.disc].name)+"</span></span>"+lab+"<span class='arr'>→</span></button>";
     }).join("");
   } else if(Object.keys(S.mastery).length){
-    var ds = Object.keys(DISCS).sort(function(a,b){ return mastery(a)-mastery(b); }).slice(0,3);
+    var ds = Object.keys(DISCS).filter(function(k){ return allItems().some(function(it){ return it.disc===k; }); }).sort(function(a,b){ return mastery(a)-mastery(b); }).slice(0,3);
     el.innerHTML = "<p class='muted small' style='margin-bottom:10px'>Nothing scheduled yet — weakest so far:</p>"+
       ds.map(function(d){ return "<button type='button' class='uprow' data-upmod='"+DISCS[d].mod+"'><span class='grow'><strong>"+esc(DISCS[d].name)+"</strong></span><span class='chip'>Mastery "+mastery(d)+" / 100</span><span class='arr'>→</span></button>"; }).join("");
   } else {
@@ -890,12 +944,21 @@ function renderLearn(){
     if(m.open){
       var lessons = LESSONS.filter(function(l){ return l.mod===m.id; });
       var doneN = lessons.filter(function(l){ return S.lessonsDone[l.id]; }).length;
+      if(m.id==="M9"){
+        var sAvg = Math.round(SPELL.reduce(function(a,g){ return a+mastery(g.disc); },0)/SPELL.length);
+        var sGrad = allSpellWords().filter(function(w){ var st=spellSt(w.id); return st && st.graduated; }).length;
+        html += "<div class='modmeta'><div class='bar' style='max-width:340px'><i style='width:"+sAvg+"%'></i></div>"+
+          "<span class='small muted'>Mastery "+sAvg+" / 100 · "+sGrad+" of "+allSpellWords().length+" words quite controllable now · "+spellDueWords().length+" due</span></div>"+
+          "<div class='modlessons'>"+SPELL.map(function(g){ return "<span><strong>"+esc(g.name)+"</strong></span>"; }).join("")+"</div>"+
+          "<div class='btnrow'><button type='button' class='btn secondary' data-open-mod='"+m.id+"'>Open module</button></div>";
+      } else {
       html += "<div class='modmeta'><div class='bar' style='max-width:340px'><i style='width:"+modAvg(m.id)+"%'></i></div>"+
         "<span class='small muted'>Mastery "+modAvg(m.id)+" / 100 · "+modGradCount(m.id)+" of "+modItems(m.id).length+" items quite controllable now · "+doneN+" of "+lessons.length+" lessons done</span></div>"+
         "<div class='modlessons'>"+lessons.map(function(l){
           return "<span><strong>"+esc(l.title.replace(/^Lesson \d+ — /,"").replace(/^Lesson — /,""))+"</strong> "+(S.lessonsDone[l.id] ? "<span class='chip proven'>Done</span>" : "<span class='chip'>Not started</span>")+"</span>";
         }).join("")+"</div>"+
         "<div class='btnrow'><button type='button' class='btn secondary' data-open-mod='"+m.id+"'>Open module</button></div>";
+      }
     }
     html += "</div></li>";
   });
@@ -905,6 +968,7 @@ function renderLearn(){
 
 /* ============================== MODULE PAGE ============================== */
 function openModule(mod){
+  if(mod==="M9"){ renderSpellModule(); return; }
   var items = modItems(mod), lessons = LESSONS.filter(function(l){return l.mod===mod;});
   var discs = []; items.forEach(function(it){ if(discs.indexOf(it.disc)<0) discs.push(it.disc); });
   var g = S.gates[mod]||{}; currentMod = mod;
@@ -1611,6 +1675,164 @@ function renderStats(){
 }
 
 renderHome(); renderTrainInfo(); renderLearn(); renderReview(); renderStats();
+</script>
+<script>
+"use strict";
+/* ============================== SPELL LAB (M9) ==============================
+   Spot it trains the eye (pick the one right shape out of four); Type it is
+   production — the whole word from memory, or the missing trap chunk — and
+   only Type it graduates a word: correct typed production on two different
+   days, the same law as every item in this app. */
+var SP = null;
+function allSpellWords(){ var out=[]; SPELL.forEach(function(g){ g.words.forEach(function(w){ out.push(w); }); }); return out; }
+function spellGroupOf(w){ return SPELL.filter(function(g){ return g.disc===w.disc; })[0]; }
+function spellSt(id){ return (S.spell && S.spell[id]) || null; }
+function spellStW(id){ if(!S.spell) S.spell={}; if(!S.spell[id]) S.spell[id]={step:0, due:null, daysCorrect:[], graduated:false, strikes:0, seen:false}; return S.spell[id]; }
+function spellStateOf(w){ var st=spellSt(w.id); if(!st || !st.seen) return {label:"New", cls:""};
+  if(st.graduated) return {label:"Quite controllable now", cls:"proven"};
+  var t=todayStr(); if(st.due && st.due<=t) return {label:"Due", cls:"prog"};
+  return {label:"Learning", cls:"upnext"}; }
+function spellDueWords(){ var t=todayStr(); return allSpellWords().filter(function(w){ var st=spellSt(w.id); return st && st.seen && st.due && st.due<=t && !st.graduated; }); }
+function recordSpell(w, mode, ok){
+  var st=spellStW(w.id); st.seen=true; var t=todayStr();
+  if(ok){
+    setMastery(w.disc, mastery(w.disc) + (mode==="type" ? 7 : 4));
+    if(mode==="type"){
+      if(st.daysCorrect.indexOf(t)<0) st.daysCorrect.push(t);
+      st.step=Math.min(st.step+1, INTERVALS.length-1);
+      st.due=addDays(t, INTERVALS[st.step]);
+      if(st.daysCorrect.length>=2) st.graduated=true;
+      st.strikes=0;
+    } else if(!st.due){ st.due=addDays(t,1); }
+  } else {
+    setMastery(w.disc, mastery(w.disc)-6);
+    st.step=0; st.due=addDays(t,1);
+    if(st.graduated){ st.strikes++; if(st.strikes>=2){ st.graduated=false; st.daysCorrect=[]; st.strikes=0; } }
+  }
+  save();
+}
+function renderSpellModule(){
+  currentMod="M9";
+  var dueN = spellDueWords().length;
+  var gradN = allSpellWords().filter(function(w){ var st=spellSt(w.id); return st && st.graduated; }).length;
+  var html = "<div class='card'><h2>"+ticJS(IC.book)+"M9 — Spelling</h2>"+
+    "<p>Spanish spells almost exactly what it hears. English doesn't — it doubles letters Spanish never doubles, and keeps silent ones it never says. These 18 words are built from your own written errors: <em>decission, ocurrance, invertion, daubt</em>.</p>"+
+    "<p class='small muted'>"+gradN+" of "+allSpellWords().length+" words quite controllable now"+(dueN? " · <strong>"+dueN+" due today</strong>":"")+"</p>"+
+    "<div class='btnrow'><button type='button' class='btn secondary' id='spellBack'>← Learn</button></div></div>";
+  html += "<div class='card'><h3>Spot it — pick the right spelling</h3>"+
+    "<p class='small muted'>Four spellings of the same word. Only one is right. Your eye decides — this is how the shape gets in.</p>"+
+    "<div class='btnrow'><button type='button' class='btn' id='btnSpot'>Start spotting — 10 words</button></div></div>";
+  html += "<div class='card'><h3>Type it — write it from memory</h3>"+
+    "<p class='small muted'>No options to recognise. Write the whole word, or complete the missing chunk. Only typed production graduates a word — correct on two different days, like everything else here.</p>"+
+    "<div class='btnrow'><button type='button' class='btn' id='btnType'>Start typing — 10 words</button></div></div>";
+  SPELL.forEach(function(g){
+    html += "<div class='card'><h3>"+esc(g.name)+"</h3>"+
+      "<div class='mrow'><span>Mastery</span><strong>"+mastery(g.disc)+" / 100</strong><div class='bar'><i style='width:"+mastery(g.disc)+"%'></i></div></div>"+
+      "<p class='small muted'>"+esc(g.rule)+"</p>";
+    g.words.forEach(function(w){ var so=spellStateOf(w);
+      html += "<p class='itemrow'><strong>"+esc(w.w)+"</strong> — "+esc(w.es)+" <span class='chip "+so.cls+"'>"+so.label+"</span></p>"; });
+    html += "</div>";
+  });
+  document.getElementById("moduleBody").innerHTML = html;
+  show("module");
+  document.getElementById("spellBack").addEventListener("click", function(){ renderLearn(); show("learn"); });
+  document.getElementById("btnSpot").addEventListener("click", function(){ startSpell("spot"); });
+  document.getElementById("btnType").addEventListener("click", function(){ startSpell("type"); });
+}
+function spellShuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var x=a[i]; a[i]=a[j]; a[j]=x; } return a; }
+function spellQueue(){
+  var t=todayStr(), due=[], learning=[], fresh=[];
+  allSpellWords().forEach(function(w){ var st=spellSt(w.id);
+    if(st && st.graduated) return;
+    if(st && st.seen && st.due && st.due<=t) due.push(w);
+    else if(st && st.seen) learning.push(w);
+    else fresh.push(w); });
+  return spellShuffle(due).concat(spellShuffle(learning), spellShuffle(fresh)).slice(0,10);
+}
+function startSpell(mode){
+  var q=spellQueue(); if(!q.length) q=allSpellWords().slice(0,10);
+  SP={mode:mode, queue:q, idx:0, correct:0, missed:[], answered:false};
+  S.sessions++; save();
+  renderSpellRound(); show("spell");
+}
+function spellPanelHTML(){
+  return "<div class='card sesspanel'><h3>This session</h3>"+
+   "<div class='bar'><i style='width:"+Math.round(SP.idx/SP.queue.length*100)+"%'></i></div>"+
+   "<p class='small muted' style='margin-top:8px'>"+SP.idx+" of "+SP.queue.length+" answered · "+SP.correct+" right first try</p></div>";
+}
+function renderSpellRound(){
+  var b=document.getElementById("spellBody"); var w=SP.queue[SP.idx]; var g=spellGroupOf(w); SP.answered=false;
+  var html="<div class='card'><div class='runhead'><h2>"+ticJS(IC.target)+(SP.mode==="spot" ? "Spot it" : "Type it")+"</h2><button type='button' class='quitbtn' id='spellQuit'>End session</button></div>"+
+   "<p class='small muted'>Word "+(SP.idx+1)+" of "+SP.queue.length+" · "+esc(g.name)+"</p>";
+  if(SP.mode==="spot"){
+    SP.opts = spellShuffle([w.w].concat(w.foils));
+    html += "<div class='cuebox'><p class='small muted' style='margin-bottom:6px'>Which one is spelled right?</p><div class='cue-es'>"+esc(w.es)+"</div></div>"+
+      SP.opts.map(function(o){ return "<button type='button' class='spellopt' data-opt='"+esc(o)+"'>"+esc(o)+"</button>"; }).join("")+
+      "<div class='feedback' id='spellFb'></div>"+
+      "<div class='btnrow'><button type='button' class='btn' id='spellNext' style='display:none'>Next →</button></div>";
+  } else {
+    SP.kind = (SP.idx % 2 === 0) ? "full" : "complete";
+    if(SP.kind==="full"){
+      html += "<div class='cuebox'><p class='small muted' style='margin-bottom:6px'>Write the English word for:</p><div class='cue-es'>"+esc(w.es)+"</div></div>";
+    } else {
+      html += "<p class='small muted'>Complete the word — type only the missing letters:</p><p class='spellframe'>"+esc(w.pre)+"<span class='blank'>&nbsp;</span>"+esc(w.post)+"</p><p class='small muted' style='text-align:center'>"+esc(w.es)+"</p>";
+    }
+    html += "<label class='sr' for='spellIn'>Your spelling</label><input type='text' id='spellIn' autocomplete='off' autocapitalize='none' placeholder='"+(SP.kind==="full" ? "Type the whole word" : "Type the missing letters")+"'>"+
+      "<div class='feedback' id='spellFb'></div>"+
+      "<div class='btnrow'><button type='button' class='btn' id='spellCheck'>Check</button><button type='button' class='btn secondary' id='spellNext' style='display:none'>Next →</button></div>";
+  }
+  html += "</div>" + spellPanelHTML();
+  b.innerHTML=html;
+  document.getElementById("spellQuit").addEventListener("click", function(){ SP=null; openModule("M9"); });
+  var nx=document.getElementById("spellNext"); if(nx) nx.addEventListener("click", spellAdvance);
+  if(SP.mode==="spot"){
+    b.querySelectorAll("[data-opt]").forEach(function(btn){ btn.addEventListener("click", function(){ spellSpotAnswer(w, btn); }); });
+  } else {
+    document.getElementById("spellCheck").addEventListener("click", function(){ spellTypeAnswer(w); });
+    var inp=document.getElementById("spellIn"); if(inp) inp.focus();
+  }
+}
+function spellSpotAnswer(w, btn){
+  if(SP.answered) return; SP.answered=true;
+  var pick=btn.getAttribute("data-opt"); var ok = pick===w.w;
+  document.querySelectorAll("[data-opt]").forEach(function(x){ x.disabled=true; if(x.getAttribute("data-opt")===w.w) x.classList.add("right"); });
+  if(!ok) btn.classList.add("wrong");
+  if(ok) SP.correct++; else SP.missed.push(w);
+  recordSpell(w, "spot", ok);
+  var fb=document.getElementById("spellFb"); fb.className="feedback show "+(ok?"good":"bad");
+  fb.innerHTML = ok ? "<strong>That's the shape.</strong> "+esc(w.w)+" — locked in by eye." :
+    "<strong>Not that one.</strong> The word is <span class='big'>"+hiDiff(w.w, w.chunk)+"</span><br><span class='small'>"+esc(spellGroupOf(w).rule)+"</span>";
+  document.getElementById("spellNext").style.display="inline-block";
+}
+function spellTypeAnswer(w){
+  if(SP.answered) return;
+  var raw=document.getElementById("spellIn").value.trim().toLowerCase();
+  var target = SP.kind==="full" ? w.w : w.chunk;
+  var ok = raw===target;
+  SP.answered=true;
+  if(ok) SP.correct++; else SP.missed.push(w);
+  recordSpell(w, "type", ok);
+  var fb=document.getElementById("spellFb"); fb.className="feedback show "+(ok?"good":"bad");
+  fb.innerHTML = ok ? "<strong>From memory.</strong> "+esc(w.w)+" — that's production, not recognition." :
+    "<strong>Not quite.</strong> The word is <span class='big'>"+hiDiff(w.w, w.chunk)+"</span> — the trap is the part in gold.<br><span class='small'>"+esc(spellGroupOf(w).rule)+"</span>";
+  document.getElementById("spellCheck").disabled=true;
+  document.getElementById("spellNext").style.display="inline-block";
+}
+function spellAdvance(){ SP.idx++; if(SP.idx>=SP.queue.length) renderSpellEnd(); else renderSpellRound(); }
+function renderSpellEnd(){
+  var b=document.getElementById("spellBody");
+  var html="<div class='card'><h2>"+ticJS(IC.target)+"Session done</h2>"+
+   "<p class='big'>"+SP.correct+" of "+SP.queue.length+" right on the first try.</p>"+
+   (SP.missed.length ? "<p class='small muted'>These shapes didn't hold — they come back tomorrow:</p>"+SP.missed.map(function(w){ return "<p class='itemrow'><strong>"+hiDiff(w.w, w.chunk)+"</strong> — "+esc(w.es)+"</p>"; }).join("") : "<p>Clean set. Nothing missed.</p>")+
+   "<div class='btnrow'><button type='button' class='btn' id='spellAgain'>"+(SP.mode==="spot"?"Spot more":"Type more")+"</button>"+
+   "<button type='button' class='btn secondary' id='spellOther'>"+(SP.mode==="spot"?"Now type them":"Now spot them")+"</button>"+
+   "<button type='button' class='btn secondary' id='spellDone'>← Module</button></div></div>";
+  b.innerHTML=html;
+  var mode=SP.mode;
+  document.getElementById("spellAgain").addEventListener("click", function(){ startSpell(mode); });
+  document.getElementById("spellOther").addEventListener("click", function(){ startSpell(mode==="spot"?"type":"spot"); });
+  document.getElementById("spellDone").addEventListener("click", function(){ SP=null; openModule("M9"); });
+}
 </script>
 </body>
 </html>

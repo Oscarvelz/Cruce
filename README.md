@@ -7,4 +7,4 @@ Advanced everyday English for a native Spanish speaker: production-first trainin
 **Live:** https://oscarvelz.github.io/Cruce/
 
 - Single self-contained `index.html` — all progress lives in the browser (localStorage).
-- Version 2.2.2.
+- Version 2.3.0.
