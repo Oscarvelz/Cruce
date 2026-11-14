@@ -502,7 +502,7 @@ summary{cursor:pointer;font-weight:650;padding:6px 0}
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.4.2</p>
+      <p class="muted" style="margin-top:12px">Version 2.4.3</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -1669,14 +1669,40 @@ function submitRun(timedOut){
       "<p class='small muted'>Stored on this device and shown back to you next time this item appears. It never blocks or graduates anything by itself.</p></div>";
     }
   } else if(item.triage==="B"){
-    html+="<br><strong>No lecture — re-race.</strong> You have this; it lost a timed race. A new sentence with the competitor present is already queued.";
-    if(R.kind==="train"){ var nc = (q.cueIdx+1)%item.cues.length; R.queue.splice(R.idx+1, 0, {item:item, cueIdx:nc, intruder:false, rerace:true}); }
+    html+="<br><strong>No lecture.</strong> You have this — it lost the race, not the knowledge.";
   } else {
     html+="<br><strong>Brief teach:</strong> "+esc(item.rule||"")+"<br><span class='small'>The fade ladder in the lesson rebuilds this from a full model.</span>";
+  }
+  /* Write it before it goes (Oscar, 2026-11-14): a miss is never just
+     dismissed and never re-asked at once — recency would answer for him.
+     He writes the target once, here, from the same cue; only then does
+     the card leave, into later study (due tomorrow, ladder reset). */
+  if(R.kind==="train"){
+    html+="<div class='writeit'><p style='margin-top:12px'><strong>Write it before it goes.</strong> Same cue — produce the target once, in writing:</p>"+
+     "<div class='cuebox'><div class='cue-es'>"+esc(cue.es)+"</div><div class='frame'>"+frameHTML(cue.frame)+"</div></div>"+
+     "<label class='sr' for='writeIn'>Write the target</label><input type='text' id='writeIn' autocomplete='off' placeholder='Type the missing English form'>"+
+     "<div class='btnrow'><button type='button' class='btn secondary' id='writeBtn'>Write it in</button></div>"+
+     "<p class='small' id='writeMsg' style='margin-top:8px'></p></div>";
   }
   fb.className="feedback show bad"; fb.innerHTML=html;
   var tbBtn=document.getElementById("tbSave");
   if(tbBtn) tbBtn.addEventListener("click", function(){ var v=document.getElementById("tbIn").value.trim(); if(v){ S.teachbacks[item.disc]=v; save(); tbBtn.textContent="Stored ✓"; tbBtn.disabled=true; } });
+  var wBtn=document.getElementById("writeBtn");
+  if(wBtn){
+    document.getElementById("runNext").style.display="none";
+    wBtn.addEventListener("click", function(){
+      var wv=norm(document.getElementById("writeIn").value), wmsg=document.getElementById("writeMsg"), wok=false;
+      for(var i=0;i<cue.ans.length;i++) if(wv===norm(cue.ans[i])) wok=true;
+      if(wok){
+        if(!R.practice){ var st=itemState(item.id); st.step=0; st.due=addDays(todayStr(),1); save(); }
+        wmsg.innerHTML="<strong>Written in.</strong> This card goes to later study — you will not be asked again soon. A rep only counts when recency can't answer for you.";
+        wBtn.disabled=true; document.getElementById("writeIn").disabled=true;
+        document.getElementById("runNext").style.display="inline-block";
+      } else {
+        wmsg.innerHTML="Not the target yet. Here it is: <strong>"+esc(cue.full)+"</strong> — now write it yourself.";
+      }
+    });
+  }
 }
 function renderRunEnd(){
   var b=document.getElementById("runBody"), total=R.queue.length;
