@@ -587,7 +587,7 @@ html[data-theme="tron"]:is([data-hidden],[data-typing]) .btn::before{animation-p
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.5.0</p>
+      <p class="muted" style="margin-top:12px">Version 2.6.0</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -1116,6 +1116,7 @@ var TAG_EXPLAIN = {
 function recordAttempt(item, ok, opts){
   opts = opts||{}; var st = itemState(item.id);
   if(opts.cueIdx!=null && st.seenCues.indexOf(opts.cueIdx)<0) st.seenCues.push(opts.cueIdx);
+  if(opts.cueIdx!=null) st.lastCue=opts.cueIdx;
   var d = mastery(item.disc);
   if(ok && opts.firstAttempt){
     setMastery(item.disc, d + (opts.hintRung>=3 ? 4 : 12));
@@ -1658,10 +1659,21 @@ function renderLesson(){
 "use strict";
 /* ============================== SESSION RUNNER ============================== */
 var R=null, currentMod="M1";
-function pickCue(item, preferUnseen){
+/* Varied-context rule (2.6.0, evidence-backed — see
+   ~/workspace/english-app/RESEARCH-VARIED-CONTEXT.md): anchor in order
+   first (unseen sentences dealt 0,1,2… while the form is new); once
+   every sentence has been seen, NEVER serve the sentence from last
+   time, and never one already dealt in the queue being built. The
+   pattern must not become the cue — a correct answer the sentence
+   scaffolds is false knowing, not knowledge. */
+function pickCue(item, preferUnseen, excludeIdx){
   var st=itemState(item.id);
-  for(var i=0;i<item.cues.length;i++) if(st.seenCues.indexOf(i)<0) return i;
-  return Math.floor(Math.random()*item.cues.length);
+  for(var i=0;i<item.cues.length;i++) if(st.seenCues.indexOf(i)<0 && i!==excludeIdx) return i;
+  var last=(st.lastCue==null ? -1 : st.lastCue), pool=[];
+  for(var j=0;j<item.cues.length;j++) if(j!==last && j!==excludeIdx) pool.push(j);
+  if(!pool.length) for(var k=0;k<item.cues.length;k++) if(k!==excludeIdx) pool.push(k);
+  if(!pool.length) pool=[0];
+  return pool[Math.floor(Math.random()*pool.length)];
 }
 function startRunner(kind, queue, opts){
   opts=opts||{};
@@ -1851,15 +1863,15 @@ function renderRunEnd(){
 /* ============================== SESSION BUILDERS ============================== */
 function startTrain(practice){
   var items=allItems().slice().sort(function(a,b2){ return mastery(a.disc)-mastery(b2.disc); });
-  var queue=[], usedMolestarCue=null;
-  for(var i=0;i<items.length && queue.length<6;i++){ var it=items[i]; var ci=pickCue(it, true); queue.push({item:it, cueIdx:ci, intruder:false}); if(it.id==="molestar") usedMolestarCue=ci; }
+  var queue=[], usedMolestarCue=null, usedCueById={};
+  for(var i=0;i<items.length && queue.length<6;i++){ var it=items[i]; var ci=pickCue(it, true); queue.push({item:it, cueIdx:ci, intruder:false}); usedCueById[it.id]=ci; if(it.id==="molestar") usedMolestarCue=ci; }
   /* molestar is always drilled, and always returns as an intruder in a DIFFERENT sentence */
   var mol=findItem("molestar");
-  if(usedMolestarCue===null){ usedMolestarCue=0; queue.push({item:mol, cueIdx:0, intruder:false}); }
-  var mIdx = mol.cues.map(function(_,i){return i;}).filter(function(i){ return i!==usedMolestarCue; })[0];
+  if(usedMolestarCue===null){ usedMolestarCue=pickCue(mol, true); queue.push({item:mol, cueIdx:usedMolestarCue, intruder:false}); usedCueById[mol.id]=usedMolestarCue; }
+  var mIdx = pickCue(mol, true, usedMolestarCue);
   queue.splice(Math.min(3, queue.length), 0, {item:mol, cueIdx:mIdx, intruder:true});
   var second = items.filter(function(it){ return it.id!=="molestar"; })[1];
-  if(second) queue.push({item:second, cueIdx:pickCue(second,true), intruder:true});
+  if(second) queue.push({item:second, cueIdx:pickCue(second, true, usedCueById[second.id]), intruder:true});
   startRunner("train", queue, {practice:practice});
 }
 var reviewFilter = "due";
@@ -1949,11 +1961,11 @@ function gateQueue(mod){
   var items=modItems(mod).slice();
   /* weakest-first rotation so the set is mixed and previously unseen cues are preferred */
   items.sort(function(a,b2){ return mastery(a.disc)-mastery(b2.disc); });
-  var queue=[], i=0;
-  while(queue.length<12){ var it=items[i%items.length]; queue.push({item:it, cueIdx:pickCue(it,true), intruder:false}); i++; }
+  var queue=[], i=0, usedCueById={};
+  while(queue.length<12){ var it=items[i%items.length]; var ci=pickCue(it, true, usedCueById[it.id]); queue.push({item:it, cueIdx:ci, intruder:false}); usedCueById[it.id]=ci; i++; }
   /* ensure criticals */
   if(mod==="M1"){ if(!queue.some(function(q){return q.item.id==="run-out-of";})) queue[0]={item:findItem("run-out-of"), cueIdx:pickCue(findItem("run-out-of"),true), intruder:false};
-    if(!queue.some(function(q){return q.item.disc==="sep-pronoun";})) queue[1]={item:findItem("turn-off"), cueIdx:1, intruder:false}; }
+    if(!queue.some(function(q){return q.item.disc==="sep-pronoun";})) queue[1]={item:findItem("turn-off"), cueIdx:pickCue(findItem("turn-off"),true), intruder:false}; }
   if(mod==="M3"){ if(!queue.some(function(q){return q.item.id==="molestar";})) queue[0]={item:findItem("molestar"), cueIdx:pickCue(findItem("molestar"),true), intruder:false}; }
   return queue;
 }
