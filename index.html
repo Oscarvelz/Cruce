@@ -21,8 +21,8 @@
   --line:#cfddd6; --line-strong:#b9cdc4;
   --accent:#0b6e5d; --accent-deep:#084f43; --accent-ink:#ffffff; --accent-soft:#d3eae2;
   --gold:#b97f14; --gold-soft:#f6ead0; --gold-ink:#5c3f05;
-  --danger:#b3261c; --danger-soft:#fae9e7; --warn:#8f5f07; --warn-soft:#f7ecd2;
-  --ok:#146c43; --ok-soft:#e0f0e6;
+  --danger:#b3261c; --danger-soft:#fae9e7; --warn:#a35b06; --warn-soft:#f7ecd2;
+  --ok:#146c43; --ok-soft:#e0f0e6; --data:#1e4d8c; --streak:#b97f14;
   --dock-bg:rgba(255,255,255,.86); --head-bg:rgba(237,242,239,.88);
   --shadow:0 1px 2px rgba(19,34,40,.06),0 8px 24px rgba(19,34,40,.07);
   --shadow-lg:0 4px 10px rgba(19,34,40,.10),0 18px 44px rgba(19,34,40,.18);
@@ -39,7 +39,7 @@ html[data-theme="dark"]{
   --accent:#3ec2ab; --accent-deep:#8fe0d0; --accent-ink:#06231d; --accent-soft:color-mix(in oklab, #3ec2ab 20%, #141415);
   --gold:#e3ac3c; --gold-soft:color-mix(in oklab, #e3ac3c 20%, #141415); --gold-ink:#f2d492;
   --danger:#ff9d94; --danger-soft:color-mix(in oklab, #ff6b6b 20%, #141415); --warn:#eec27a; --warn-soft:color-mix(in oklab, #fbbf24 20%, #141415);
-  --ok:#7fd6a4; --ok-soft:color-mix(in oklab, #4ade80 20%, #141415);
+  --ok:#7fd6a4; --ok-soft:color-mix(in oklab, #4ade80 20%, #141415); --data:#38d4f0; --streak:#e3ac3c;
   --dock-bg:rgba(10,10,11,.88); --head-bg:rgba(0,0,0,.88);
   --shadow:0 0 0 1px rgba(255,255,255,.075);
   --shadow-lg:0 0 0 1px rgba(255,255,255,.16),0 18px 44px rgba(0,0,0,.5);
@@ -54,7 +54,7 @@ html[data-theme="tron"]{
   --accent:#00e5ff; --accent-deep:#8ff4ff; --accent-ink:#001319; --accent-soft:rgba(0,229,255,.13);
   --gold:#ffb21e; --gold-soft:rgba(255,178,30,.14); --gold-ink:#fff1c4;
   --danger:#ff2a2a; --danger-soft:rgba(255,42,42,.13); --warn:#ffb21e; --warn-soft:rgba(255,178,30,.13);
-  --ok:#00e5ff; --ok-soft:rgba(0,229,255,.13);
+  --ok:#00e5ff; --ok-soft:rgba(0,229,255,.13); --data:#00e5ff; --streak:#ffb21e;
   --dock-bg:rgba(3,13,24,.88); --head-bg:rgba(2,6,12,.88);
   --shadow:0 0 0 1px rgba(0,229,255,.22),0 0 18px rgba(0,229,255,.06);
   --shadow-lg:0 0 0 1px rgba(0,229,255,.35),0 0 32px rgba(0,229,255,.14);
@@ -122,7 +122,7 @@ html[data-theme="cyberpunk"]{
   --ok:#00e67a; --ok-soft:rgba(0,230,122,.12);
   --dock-bg:rgba(16,13,10,.92); --head-bg:rgba(11,10,8,.92);
   --shadow:none; --shadow-lg:0 18px 44px rgba(0,0,0,.5);
-  --cp-magenta:#ff2a6d; --cp-cyan:#00f0ff;
+  --cp-magenta:#ff2a6d; --cp-cyan:#00f0ff; --data:#00f0ff; --streak:#ff7a00; --violet:#8b5cff;
   --cp-cut:polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
   --cp-cut-sm:polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
   scrollbar-color:#57503f #0b0a08;
@@ -420,6 +420,91 @@ summary{cursor:pointer;font-weight:650;padding:6px 0}
 @media(max-width:560px){.brandimg{width:38px;height:38px}.iconbtn{width:42px;height:42px}}
 .iconbtn{white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* ============ Theme enrichment wave (2.5.0) ============
+   Composed from the three research briefs (colour / motion / web).
+   Colour = information: slot errors speak in the warn voice, meaning
+   errors stay red; figures carry their state; each theme's companion
+   colours move into rest positions. Motion = one-shot ceremonies on
+   events (selection, entrance, verdict); idle light only on identity
+   surfaces; transform/opacity only; figures and the word being typed
+   never animate. */
+.feedback.warn{background:var(--warn-soft);border:1px solid var(--warn)}
+.tag.warnt{background:var(--warn-soft);color:var(--warn);border-color:var(--warn)}
+.streakn{color:var(--streak)}
+.dnum{color:var(--data);font-weight:700}
+.fchip .cnt{color:var(--data)}
+.weekcol .wv{color:var(--data)}
+.weekcol.today .weekbar{background:var(--gold)}
+.weekcol.today .wl{color:var(--gold-ink);font-weight:700}
+.trv{font-weight:800}
+.trv-a{color:var(--ok)} .trv-b{color:var(--warn)} .trv-c{color:var(--danger)}
+.tpick .sw{background:radial-gradient(circle, var(--swbg) 0 52%, rgba(0,0,0,0) 54%), conic-gradient(var(--swac) 0 50%, var(--swac2, var(--swac)) 50% 100%)}
+/* Tron — the second program at rest (Weekly): amber under quiet buttons,
+   an amber bottom light-line on cards, warmth at the dock's right end,
+   a cyan→amber scrollbar, done = amber in the lesson steps. */
+html[data-theme="tron"] .btn.secondary{box-shadow:0 0 0 1px rgba(0,229,255,.18), inset 0 -1px 0 rgba(255,178,30,.55)}
+html[data-theme="tron"] .card{box-shadow:var(--shadow), inset 0 -1px 0 rgba(255,178,30,.22)}
+html[data-theme="tron"] .dock{box-shadow:var(--shadow-lg), 10px 0 16px -8px rgba(255,138,0,.45)}
+html[data-theme="tron"] ::-webkit-scrollbar{width:10px;height:10px}
+html[data-theme="tron"] ::-webkit-scrollbar-thumb{background:linear-gradient(180deg, rgba(0,229,255,.5), rgba(255,178,30,.55));border-radius:6px}
+html[data-theme="tron"] .steps span.done{background:var(--gold-soft);color:var(--gold-ink);border-color:var(--gold)}
+/* Tron header: the gradient line moves onto the header's own background
+   so ::after can carry the cyan beam — cyan out, amber back (::before). */
+html[data-theme="tron"] header.top{background-image:linear-gradient(90deg, rgba(0,229,255,.18), rgba(255,194,58,.75));background-size:100% 1px;background-position:0 100%;background-repeat:no-repeat}
+html[data-theme="tron"] header.top::after{width:16%;height:2px;background:linear-gradient(90deg, transparent, #00e5ff, transparent);filter:drop-shadow(0 0 6px rgba(0,229,255,.8))}
+/* Cyberpunk — cards at rest carry the Cadence rails (magenta left, cyan
+   bottom hairline); the dock gets its yellow top line; violet belongs
+   to the spelling families alone. */
+html[data-theme="cyberpunk"] .card{box-shadow:inset 2px 0 0 rgba(255,42,109,.5), inset 0 -1px 0 rgba(0,240,255,.28)}
+html[data-theme="cyberpunk"] .dock{box-shadow:inset 0 2px 0 rgba(252,238,10,.8), var(--shadow-lg)}
+html[data-theme="cyberpunk"] .spfam{color:var(--violet)}
+@media (prefers-reduced-motion: no-preference){
+  @keyframes cruce-take{from{transform:scale(.93);opacity:.55}to{transform:none;opacity:1}}
+  @keyframes tron-power{0%{opacity:.35}18%{opacity:1}30%{opacity:.55}46%,100%{opacity:1}}
+  @keyframes cruce-cp-take{0%{clip-path:inset(0 0 0 0)}20%{clip-path:inset(12% 5% 58% 0)}40%{clip-path:inset(52% 0 8% 7%)}62%{clip-path:inset(22% 9% 30% 0)}100%{clip-path:inset(0 0 0 0)}}
+  @keyframes cruce-card-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @keyframes cruce-rez{0%{opacity:0;clip-path:inset(0 0 100% 0);filter:brightness(1.8)}55%{opacity:1;clip-path:inset(0 0 0 0);filter:brightness(1.3)}100%{opacity:1;clip-path:inset(0 0 0 0);filter:none}}
+  @keyframes cruce-cp-head{0%{opacity:0;transform:translateX(-7px)}55%{opacity:1;transform:translateX(2px)}100%{opacity:1;transform:none}}
+  @keyframes cruce-bloom{0%{transform:scale(.985);filter:brightness(1.14)}100%{transform:none;filter:none}}
+  @keyframes tron-beam{0%{transform:translateX(-110%);opacity:0}2%{opacity:1}13%{opacity:1}15%,100%{transform:translateX(560%);opacity:0}}
+  @keyframes tron-cycle{0%{transform:translateX(-100%)}100%{transform:translateX(270%)}}
+  @keyframes cruce-cp-march{to{background-position:19.8px 0}}
+  @keyframes cruce-cp-power{from{filter:brightness(1.7)}to{filter:none}}
+  @keyframes cruce-cp-scan{from{background-position:50% 0}to{background-position:50% 100%}}
+  /* selection ceremonies — the surface that TAKES state performs once */
+  .dock button[aria-current="page"]{animation:cruce-take .22s cubic-bezier(.2,.9,.3,1.15)}
+  :is(.fchip[aria-selected="true"], .tpick[aria-pressed="true"], .seg button.on, .chipbtn.sel){animation:cruce-take .22s cubic-bezier(.2,.9,.3,1.15)}
+  html[data-theme="tron"] :is(.dock button[aria-current="page"], .fchip[aria-selected="true"], .tpick[aria-pressed="true"], .seg button.on, .chipbtn.sel){animation:tron-power .42s steps(1) both}
+  html[data-theme="cyberpunk"] :is(.dock button[aria-current="page"], .fchip[aria-selected="true"], .tpick[aria-pressed="true"], .seg button.on, .chipbtn.sel){animation:cruce-cp-take .42s steps(1) both}
+  /* entrances — each view's cards arrive in their theme's voice */
+  .view.active .card{animation:cruce-card-in .28s cubic-bezier(.22,1,.36,1) backwards}
+  .view.active .card:nth-child(2){animation-delay:.04s}
+  .view.active .card:nth-child(3){animation-delay:.08s}
+  .view.active .card:nth-child(4){animation-delay:.12s}
+  .view.active .card:nth-child(5){animation-delay:.16s}
+  html[data-theme="tron"] .view.active .card{animation-name:cruce-rez;animation-duration:.3s}
+  html[data-theme="cyberpunk"] .view.active :is(h2,h3){animation:cruce-cp-head .3s steps(2) backwards}
+  /* verdict arrival — a correct answer blooms once; under Cyberpunk the
+     tag pill alone takes the stepped press */
+  .feedback.good{animation:cruce-bloom .28s ease-out}
+  html[data-theme="cyberpunk"] .feedback .tag{animation:cruce-cp-press .3s steps(1)}
+  /* Tron idle light — the cycle rides the primary action and the dock */
+  html[data-theme="tron"] .btn:not(.secondary):not(.danger){position:relative;overflow:hidden}
+  html[data-theme="tron"] .btn:not(.secondary):not(.danger)::before{content:"";position:absolute;top:0;bottom:0;left:0;width:38%;background:linear-gradient(90deg, transparent, rgba(0,229,255,.32), transparent);animation:tron-cycle 3.6s linear infinite;pointer-events:none}
+  html[data-theme="tron"] .dock{overflow:hidden}
+  html[data-theme="tron"] .dock::before{content:"";position:absolute;top:0;left:0;width:30%;height:2px;background:linear-gradient(90deg, transparent, #00e5ff, transparent);filter:drop-shadow(0 0 5px rgba(0,229,255,.8));animation:tron-cycle 3.6s linear infinite;pointer-events:none}
+  html[data-theme="tron"] header.top::after{animation:tron-beam 8.5s linear infinite}
+  /* Cyberpunk idle + data — the hazard tape marches, bars power on, a
+     focused field gets one data scan */
+  html[data-theme="cyberpunk"] header.top::after{animation:cruce-cp-march 16s linear infinite}
+  html[data-theme="cyberpunk"] .view.active :is(.bar>i, .fbar>i){animation:cruce-cp-power .45s ease-out backwards}
+  html[data-theme="cyberpunk"] input[type="text"]:focus{background-image:linear-gradient(180deg, rgba(0,240,255,.15), rgba(0,240,255,0) 55%);background-size:100% 230%;background-repeat:no-repeat;animation:cruce-cp-scan .55s ease-out}
+}
+/* Pause states — hidden tab or typing: the idle light holds still.
+   One-shot ceremonies are events, not ambience, and are not paused. */
+html:is([data-hidden],[data-typing]) :is(.wordmark, header.top, .dock)::before,
+html:is([data-hidden],[data-typing]) :is(.wordmark, header.top)::after{animation-play-state:paused}
+html[data-theme="tron"]:is([data-hidden],[data-typing]) .btn::before{animation-play-state:paused}
 </style>
 </head>
 <body>
@@ -502,17 +587,17 @@ summary{cursor:pointer;font-weight:650;padding:6px 0}
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.4.3</p>
+      <p class="muted" style="margin-top:12px">Version 2.5.0</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
       <h3>Appearance</h3>
       <div class="themerow"><button type="button" class="themechip" id="themeBtn2" aria-label="Switch between day and night mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 13.6A8.4 8.4 0 1 1 10.4 3.8a7 7 0 0 0 9.8 9.8Z"/></svg><span>Appearance</span></button></div>
       <div class="themepick" role="group" aria-label="Themes">
-        <button type="button" class="tpick" data-themepick="light" aria-pressed="false"><span class="sw" style="--swbg:#edf2ef;--swac:#0b6e5d"></span>Day</button>
-        <button type="button" class="tpick" data-themepick="dark" aria-pressed="false"><span class="sw" style="--swbg:#000000;--swac:#3ec2ab"></span>Night</button>
-        <button type="button" class="tpick" data-themepick="tron" aria-pressed="false"><span class="sw" style="--swbg:#02060c;--swac:#00e5ff"></span>Tron</button>
-        <button type="button" class="tpick" data-themepick="cyberpunk" aria-pressed="false"><span class="sw" style="--swbg:#0b0a08;--swac:#fcee0a"></span>Cyberpunk</button>
+        <button type="button" class="tpick" data-themepick="light" aria-pressed="false"><span class="sw" style="--swbg:#edf2ef;--swac:#0b6e5d;--swac2:#b97f14"></span>Day</button>
+        <button type="button" class="tpick" data-themepick="dark" aria-pressed="false"><span class="sw" style="--swbg:#000000;--swac:#3ec2ab;--swac2:#e3ac3c"></span>Night</button>
+        <button type="button" class="tpick" data-themepick="tron" aria-pressed="false"><span class="sw" style="--swbg:#02060c;--swac:#00e5ff;--swac2:#ffb21e"></span>Tron</button>
+        <button type="button" class="tpick" data-themepick="cyberpunk" aria-pressed="false"><span class="sw" style="--swbg:#0b0a08;--swac:#fcee0a;--swac2:#ff2a6d"></span>Cyberpunk</button>
       </div>
     </div>
     <div class="card">
@@ -913,6 +998,16 @@ for(var pi=0; pi<pickBtns.length; pi++) pickBtns[pi].addEventListener("click", f
    clipped to the pressed element so nothing in the page moves; it follows
    its element frame by frame and dies on scroll-cancel. Tron only, and
    never under reduced motion. */
+/* Pause states (2.5.0): the idle light holds still in a hidden tab and
+   while Oscar is typing — production first, ambience waits. */
+document.addEventListener("visibilitychange", function(){ document.documentElement.toggleAttribute("data-hidden", document.hidden); });
+var cruceTypeT = null;
+document.addEventListener("input", function(e){
+  if(!e.target || (e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA")) return;
+  document.documentElement.setAttribute("data-typing", "");
+  if(cruceTypeT) clearTimeout(cruceTypeT);
+  cruceTypeT = setTimeout(function(){ document.documentElement.removeAttribute("data-typing"); }, 1500);
+});
 (function(){
   var PRESSABLE = "button, [role='button'], [role='option'], [role='tab'], summary, a[href]";
   var reduce = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : {matches:true};
@@ -979,6 +1074,9 @@ var DETOUR_FIT = {
  "cancelled":{fits:0, note:"«Cancelled» does not fit this sentence — that ends the meeting instead of moving it to Friday."},
  "canceled":{fits:0, note:"«Canceled» does not fit this sentence — that ends the meeting instead of moving it to Friday."}
 };
+/* Miss-kind voice (2.5.0): slot errors — the word may be fine English,
+   the slot was missed — speak in the warn voice; meaning errors stay red. */
+function fbVoice(tag){ return (tag==="DETOUR"||tag==="FORMAL-DEFAULT") ? "warn" : "bad"; }
 function checkAnswer(item, cue, raw){
   var n = norm(raw); if(!n) return {ok:false, tag:"EMPTY", msg:"Nothing typed yet — production means producing."};
   for(var i=0;i<cue.ans.length;i++) if(n===norm(cue.ans[i])) return {ok:true};
@@ -1147,7 +1245,7 @@ function renderHome(){
   /* daily challenge */
   var dc = document.getElementById("dailyCard");
   var doneToday = S.daily.doneDate===todayStr();
-  var streakTxt = S.daily.streak>0 ? ("Streak: "+S.daily.streak+" day"+(S.daily.streak===1?"":"s")) : "No streak yet";
+  var streakTxt = S.daily.streak>0 ? ("Streak: <span class='streakn'>"+S.daily.streak+"</span> day"+(S.daily.streak===1?"":"s")) : "No streak yet";
   if(S.daily.paused) streakTxt += " · streak paused";
   var hasData = Object.keys(S.mastery).length>0 || allItems().some(function(it){ return itemState(it.id).seenCues.length>0; });
   dc.innerHTML = "<h2>"+ticJS(IC.cal)+"Daily challenge</h2>"+
@@ -1163,10 +1261,11 @@ function renderHome(){
     var avgM = dsk.length ? Math.round(dsk.reduce(function(a,d){ return a+mastery(d); },0)/dsk.length) : 0;
     var gradN = allItems().filter(function(it){ return itemState(it.id).graduated; }).length;
     var dueN2 = allItems().filter(function(it){ var d=itemState(it.id).due; return d && d<=todayStr(); }).length;
+    var overN2 = allItems().filter(function(it){ var d=itemState(it.id).due; return d && d<todayStr(); }).length;
     hp.innerHTML = "<div class='bar' style='margin-top:12px'><i style='width:"+avgM+"%'></i></div>"+
       "<div class='herofigs'><div class='herofig'><div class='num'>"+avgM+"<span class='small muted'> / 100</span></div><div class='lab'>Mastery</div></div>"+
       "<div class='herofig'><div class='num'>"+gradN+"<span class='small muted'> / "+allItems().length+"</span></div><div class='lab'>Quite controllable now</div></div>"+
-      "<div class='herofig'><div class='num'>"+dueN2+"</div><div class='lab'>Due today</div></div></div>";
+      "<div class='herofig'><div class='num'"+(dueN2>0?" style='color:var(--"+(overN2>0?"danger":"warn")+")'":"")+">"+dueN2+"</div><div class='lab'>Due today</div></div></div>";
   }
   renderUpNext();
 }
@@ -1538,7 +1637,7 @@ function renderLesson(){
           var n2=document.getElementById("fadeNext"); n2.style.display="inline-block";
           n2.onclick=function(){ if(L.fadeRung>=5){ L.step=6; } else { L.fadeRung++; L.fadeFirst=true; } renderLesson(); };
         } else { recordAttempt(fc.item, false, {cueIdx:fc.cueIdx}); L.fadeFirst=false;
-          fb.className="feedback show bad"; fb.innerHTML="<span class='tag'>"+r.tag+"</span> "+esc(r.msg||TAG_EXPLAIN[r.tag]||"")+"<br><span class='small'>A miss drops you a rung — the ladder rebuilds the support.</span>";
+          fb.className="feedback show "+fbVoice(r.tag); fb.innerHTML="<span class='tag"+(fbVoice(r.tag)==="warn"?" warnt":"")+"'>"+r.tag+"</span> "+esc(r.msg||TAG_EXPLAIN[r.tag]||"")+"<br><span class='small'>A miss drops you a rung — the ladder rebuilds the support.</span>";
           if(L.fadeRung>2){ L.fadeRung--; setTimeout(renderLesson, 1600); } }
       });
     }
@@ -1548,7 +1647,7 @@ function renderLesson(){
       var ti=findItem(les.transferItem), tc=ti.cues[2], raw=document.getElementById("trIn").value, r=checkAnswer(ti, tc, raw);
       var fb=document.getElementById("trFb");
       if(r.ok){ recordAttempt(ti, true, {firstAttempt:L.transferFirst, cueIdx:2}); fb.className="feedback show good"; fb.innerHTML="<strong>Transferred.</strong> "+esc(tc.full); document.getElementById("trNext").style.display="inline-block"; }
-      else { recordAttempt(ti, false, {cueIdx:2}); L.transferFirst=false; fb.className="feedback show bad"; fb.innerHTML="<span class='tag'>"+r.tag+"</span> "+esc(r.msg||TAG_EXPLAIN[r.tag]||"")+" "+esc(ti.rule||""); }
+      else { recordAttempt(ti, false, {cueIdx:2}); L.transferFirst=false; fb.className="feedback show "+fbVoice(r.tag); fb.innerHTML="<span class='tag"+(fbVoice(r.tag)==="warn"?" warnt":"")+"'>"+r.tag+"</span> "+esc(r.msg||TAG_EXPLAIN[r.tag]||"")+" "+esc(ti.rule||""); }
     });
     document.getElementById("trNext").addEventListener("click", function(){ L.step=7; renderLesson(); });
   }
@@ -1577,8 +1676,8 @@ function renderRun(){
   R.hintRung=0; R.sense=null; R.answered=false;
   var titles={train:"Train today", gate:"Module gate — "+R.mod, prove:"Prove it first — "+R.mod, confirm:"Gate confirmation — "+R.mod, daily:"Daily challenge"};
   var html="<div class='card'><div class='runhead'><h2>"+ticJS(IC.target)+titles[R.kind]+"</h2><button type='button' class='quitbtn' id='runQuit'>End session</button></div>"+
-   "<p class='small muted'>Item "+(R.idx+1)+" of "+R.queue.length+" · "+esc(DISCS[item.disc].name)+" · Triage "+item.triage+" — "+TRIAGE_TEXT[item.triage]+
-   (q.intruder?" · <span class='chip danger'>Intruder — older ground, new sentence</span>":"")+
+   "<p class='small muted'><span class='dnum'>Item "+(R.idx+1)+" of "+R.queue.length+"</span> · "+esc(DISCS[item.disc].name)+" · Triage <span class='trv trv-"+item.triage.toLowerCase()+"'>"+item.triage+"</span> — "+TRIAGE_TEXT[item.triage]+
+   (q.intruder?" · <span class='chip prog'>Intruder — older ground, new sentence</span>":"")+
    (R.practice?" · <span class='chip'>Practice — schedules untouched</span>":"")+"</p>";
   var tb = S.teachbacks[item.disc];
   if(tb) html+="<div class='lockbox'><strong>Your teach-back, in your words:</strong><br>“"+esc(tb)+"”</div>";
@@ -1598,7 +1697,7 @@ function renderRun(){
   html+="<div class='card sesspanel'><h3>This session</h3>"+
    "<div class='bar'><i style='width:"+Math.round(R.results.length/R.queue.length*100)+"%'></i></div>"+
    "<p class='small muted' style='margin-top:8px'>"+R.results.length+" of "+R.queue.length+" answered · "+R.correct+" locked in · "+(R.queue.length-R.results.length)+" to go</p>"+
-   (upNext.length? "<p class='small' style='margin-bottom:6px'><strong>Coming up</strong></p><div class='chiprow'>"+upNext.map(function(nq){ return "<span class='chip"+(nq.intruder?" danger":"")+"'>"+esc(DISCS[nq.item.disc].name)+(nq.intruder?" · intruder":"")+"</span>"; }).join("")+"</div>" : "")+
+   (upNext.length? "<p class='small' style='margin-bottom:6px'><strong>Coming up</strong></p><div class='chiprow'>"+upNext.map(function(nq){ return "<span class='chip"+(nq.intruder?" prog":"")+"'>"+esc(DISCS[nq.item.disc].name)+(nq.intruder?" · intruder":"")+"</span>"; }).join("")+"</div>" : "")+
    "</div>";
   b.innerHTML=html;
   var seg=document.getElementById("senseSeg");
@@ -1657,7 +1756,7 @@ function submitRun(timedOut){
     return;
   }
   /* miss feedback by triage */
-  var html="<span class='tag'>"+r.tag+"</span> "+esc(r.msg||TAG_EXPLAIN[r.tag]||"");
+  var html="<span class='tag"+(fbVoice(r.tag)==="warn"?" warnt":"")+"'>"+r.tag+"</span> "+esc(r.msg||TAG_EXPLAIN[r.tag]||"");
   if(item.triage==="C"){
     html+="<div class='contrast'><div><p class='small muted'>Your attempt</p><p class='big'>"+esc(raw||"(time out)")+"</p></div>"+
      "<div><p class='small muted'>The twin Spanish handed you</p><p class='big'>"+esc(item.twin||"")+"</p></div></div>"+
@@ -1684,7 +1783,7 @@ function submitRun(timedOut){
      "<div class='btnrow'><button type='button' class='btn secondary' id='writeBtn'>Write it in</button></div>"+
      "<p class='small' id='writeMsg' style='margin-top:8px'></p></div>";
   }
-  fb.className="feedback show bad"; fb.innerHTML=html;
+  fb.className="feedback show "+fbVoice(r.tag); fb.innerHTML=html;
   var tbBtn=document.getElementById("tbSave");
   if(tbBtn) tbBtn.addEventListener("click", function(){ var v=document.getElementById("tbIn").value.trim(); if(v){ S.teachbacks[item.disc]=v; save(); tbBtn.textContent="Stored ✓"; tbBtn.disabled=true; } });
   var wBtn=document.getElementById("writeBtn");
@@ -1736,7 +1835,7 @@ function renderRunEnd(){
       S.daily.lastDone=t;
     }
     S.daily.doneDate=t; save();
-    html+="<p class='streak'>Streak: "+S.daily.streak+" day"+(S.daily.streak===1?"":"s")+(S.daily.paused?" · streak paused — it resumes, nothing is lost, there is no punishment":"")+"</p>";
+    html+="<p class='streak'>Streak: <span class='streakn'>"+S.daily.streak+"</span> day"+(S.daily.streak===1?"":"s")+(S.daily.paused?" · streak paused — it resumes, nothing is lost, there is no punishment":"")+"</p>";
   }
   if(R.kind==="train"){
     var dueNext = allItems().map(function(it){ return itemState(it.id).due; }).filter(Boolean).sort()[0];
@@ -1926,13 +2025,13 @@ function renderStats(){
     var avg = ds.length ? Math.round(ds.reduce(function(a,d){ return a+mastery(d); },0)/ds.length) : 0;
     var tbN = Object.keys(S.teachbacks).length;
     var lesN = Object.keys(S.lessonsDone).length;
-    function stat(num, lab, sub){ return "<div class='stat'><div class='num'>"+num+"</div><div class='lab'>"+lab+"</div>"+(sub?"<div class='sub'>"+sub+"</div>":"")+"</div>"; }
+    function stat(num, lab, sub, tone){ return "<div class='stat'><div class='num'"+(tone?" style='color:var(--"+tone+")'":"")+">"+num+"</div><div class='lab'>"+lab+"</div>"+(sub?"<div class='sub'>"+sub+"</div>":"")+"</div>"; }
     var html = "<div class='statgrid'>"+
       stat(avg+"<span class='small muted'> / 100</span>", "Overall mastery — average across all "+ds.length+" discriminations")+
       stat(grad+"<span class='small muted'> / "+items.length+"</span>", "Items “Quite controllable now”")+
       stat(inProg, "Items in progress")+
-      stat(dueToday, "Due today"+(overdue? " — including "+overdue+" overdue" : ""))+
-      stat(S.daily.streak, "Daily-challenge streak (days)"+(S.daily.paused ? " — paused" : ""))+
+      stat(dueToday, "Due today"+(overdue? " — including "+overdue+" overdue" : ""), null, dueToday>0 ? (overdue ? "danger" : "warn") : null)+
+      stat(S.daily.streak, "Daily-challenge streak (days)"+(S.daily.paused ? " — paused" : ""), null, S.daily.streak>0 ? "streak" : null)+
       stat(tbN, "Teach-backs written, in your own words")+
       stat(lesN, "Lessons completed")+
       stat(S.sessions||0, "Sessions started")+
@@ -1978,7 +2077,7 @@ function renderStats(){
     var maxN = Math.max.apply(null, days.map(function(d){ return d.n; }).concat([1]));
     var totalW = days.reduce(function(a,d){ return a+d.n; },0);
     var chart = "<div class='weekchart'>"+days.map(function(d){
-      return "<div class='weekcol'><span class='wv'>"+d.n+"</span><div class='weekbar' style='height:"+Math.max(6, d.n/maxN*72)+"px'></div><span class='wl'>"+(d.date===t?"Today":d.wd)+"</span></div>";
+      return "<div class='weekcol"+(d.date===t?" today":"")+"'><span class='wv'>"+d.n+"</span><div class='weekbar' style='height:"+Math.max(6, d.n/maxN*72)+"px'></div><span class='wl'>"+(d.date===t?"Today":d.wd)+"</span></div>";
     }).join("")+"</div>";
     var rows = days.slice().reverse().map(function(d){
       return "<div class='frow'><span class='grow'><strong>"+(d.date===t?"Today":d.wd+" "+d.date.slice(5))+"</strong></span><span class='small muted'>"+d.n+" item"+(d.n===1?"":"s")+" with a correct first attempt recorded"+(d.lessons? " · "+d.lessons+" lesson"+(d.lessons===1?"":"s")+" completed":"")+"</span></div>";
@@ -2052,7 +2151,7 @@ function renderSpellModule(){
     "<p class='small muted'>No options to recognise. Write the whole word, or complete the missing chunk. Only typed production graduates a word — correct on two different days, like everything else here.</p>"+
     "<div class='btnrow'><button type='button' class='btn' id='btnType'>Start typing — 10 words</button></div></div>";
   SPELL.forEach(function(g){
-    html += "<div class='card'><h3>"+esc(g.name)+"</h3>"+
+    html += "<div class='card'><h3 class='spfam'>"+esc(g.name)+"</h3>"+
       "<div class='mrow'><span>Mastery</span><strong>"+mastery(g.disc)+" / 100</strong><div class='bar'><i style='width:"+mastery(g.disc)+"%'></i></div></div>"+
       "<p class='small muted'>"+esc(g.rule)+"</p>";
     g.words.forEach(function(w){ var so=spellStateOf(w);
