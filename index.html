@@ -76,9 +76,11 @@ main{padding-top:14px}
 .btn.danger{background:var(--danger);border-color:var(--danger);color:#fff;box-shadow:none}
 .btn[disabled]{opacity:.45;cursor:not-allowed}
 .btnrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
-.runhead{display:flex;align-items:flex-start;gap:10px}
-.runhead h2{margin-right:auto}
-.quitbtn{flex:0 0 auto;background:none;border:none;color:var(--ink2);font-size:13.5px;font-weight:600;letter-spacing:.01em;padding:2px 6px;cursor:pointer;white-space:nowrap}
+.runhead{display:flex;align-items:center;gap:10px}
+.runhead h2{margin-right:auto;margin-bottom:0}
+.quitbtn{flex:0 0 auto;display:inline-flex;align-items:center;min-height:40px;background:none;border:none;color:var(--ink2);font-size:13.5px;font-weight:600;letter-spacing:.01em;padding:2px 6px;cursor:pointer;white-space:nowrap}
+.sesspanel .chiprow{padding-bottom:2px;margin-bottom:0}
+@media(min-width:700px){#runBody{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}#runBody>.card{margin-bottom:0}}
 .quitbtn:active{color:var(--ink)}
 input[type="text"],textarea,select{width:100%;background:var(--panel);color:var(--ink);border:1.5px solid var(--line-strong);border-radius:var(--r-md);padding:12px 14px;transition:border-color .12s ease,box-shadow .12s ease}
 input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
@@ -295,7 +297,7 @@ summary{cursor:pointer;font-weight:650;padding:6px 0}
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.2.1</p>
+      <p class="muted" style="margin-top:12px">Version 2.2.2</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -1227,6 +1229,12 @@ function renderRun(){
    "<div class='btnrow'><button type='button' class='btn' id='runCheck'>Check</button>"+
    (R.kind==="train"||R.kind==="daily" ? "<button type='button' class='btn secondary' id='runHint'>Hint</button>" : "")+
    "<button type='button' class='btn secondary' id='runNext' style='display:none'>Next →</button></div>"+
+   "</div>";
+  var upNext=R.queue.slice(R.idx+1, R.idx+4);
+  html+="<div class='card sesspanel'><h3>This session</h3>"+
+   "<div class='bar'><i style='width:"+Math.round(R.results.length/R.queue.length*100)+"%'></i></div>"+
+   "<p class='small muted' style='margin-top:8px'>"+R.results.length+" of "+R.queue.length+" answered · "+R.correct+" locked in · "+(R.queue.length-R.results.length)+" to go</p>"+
+   (upNext.length? "<p class='small' style='margin-bottom:6px'><strong>Coming up</strong></p><div class='chiprow'>"+upNext.map(function(nq){ return "<span class='chip"+(nq.intruder?" danger":"")+"'>"+esc(DISCS[nq.item.disc].name)+(nq.intruder?" · intruder":"")+"</span>"; }).join("")+"</div>" : "")+
    "</div>";
   b.innerHTML=html;
   var seg=document.getElementById("senseSeg");
