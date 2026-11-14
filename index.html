@@ -76,6 +76,10 @@ main{padding-top:14px}
 .btn.danger{background:var(--danger);border-color:var(--danger);color:#fff;box-shadow:none}
 .btn[disabled]{opacity:.45;cursor:not-allowed}
 .btnrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.runhead{display:flex;align-items:flex-start;gap:10px}
+.runhead h2{margin-right:auto}
+.quitbtn{flex:0 0 auto;background:none;border:none;color:var(--ink2);font-size:13.5px;font-weight:600;letter-spacing:.01em;padding:2px 6px;cursor:pointer;white-space:nowrap}
+.quitbtn:active{color:var(--ink)}
 input[type="text"],textarea,select{width:100%;background:var(--panel);color:var(--ink);border:1.5px solid var(--line-strong);border-radius:var(--r-md);padding:12px 14px;transition:border-color .12s ease,box-shadow .12s ease}
 input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.92em;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
@@ -291,7 +295,7 @@ summary{cursor:pointer;font-weight:650;padding:6px 0}
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.2.0</p>
+      <p class="muted" style="margin-top:12px">Version 2.2.1</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -1206,7 +1210,7 @@ function renderRun(){
   var q=R.queue[R.idx], item=q.item, cue=item.cues[q.cueIdx];
   R.hintRung=0; R.sense=null; R.answered=false;
   var titles={train:"Train today", gate:"Module gate — "+R.mod, prove:"Prove it first — "+R.mod, confirm:"Gate confirmation — "+R.mod, daily:"Daily challenge"};
-  var html="<div class='card'><h2>"+ticJS(IC.target)+titles[R.kind]+"</h2>"+
+  var html="<div class='card'><div class='runhead'><h2>"+ticJS(IC.target)+titles[R.kind]+"</h2><button type='button' class='quitbtn' id='runQuit'>End session</button></div>"+
    "<p class='small muted'>Item "+(R.idx+1)+" of "+R.queue.length+" · "+esc(DISCS[item.disc].name)+" · Triage "+item.triage+" — "+TRIAGE_TEXT[item.triage]+
    (q.intruder?" · <span class='chip danger'>Intruder — older ground, new sentence</span>":"")+
    (R.practice?" · <span class='chip'>Practice — schedules untouched</span>":"")+"</p>";
@@ -1223,7 +1227,7 @@ function renderRun(){
    "<div class='btnrow'><button type='button' class='btn' id='runCheck'>Check</button>"+
    (R.kind==="train"||R.kind==="daily" ? "<button type='button' class='btn secondary' id='runHint'>Hint</button>" : "")+
    "<button type='button' class='btn secondary' id='runNext' style='display:none'>Next →</button></div>"+
-   "<div class='btnrow'><button type='button' class='btn secondary' id='runQuit'>End session</button></div></div>";
+   "</div>";
   b.innerHTML=html;
   var seg=document.getElementById("senseSeg");
   if(seg) seg.querySelectorAll("[data-sense]").forEach(function(btn){ btn.addEventListener("click", function(){ R.sense=+btn.getAttribute("data-sense");
