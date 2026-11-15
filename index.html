@@ -587,7 +587,7 @@ html[data-theme="tron"]:is([data-hidden],[data-typing]) .btn::before{animation-p
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.9.0</p>
+      <p class="muted" style="margin-top:12px">Version 2.9.1</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -1195,17 +1195,28 @@ var DETOUR_FIT = {
 };
 /* Miss-kind voice (2.5.0): slot errors — the word may be fine English,
    the slot was missed — speak in the warn voice; meaning errors stay red. */
-function fbVoice(tag){ return (tag==="DETOUR"||tag==="FORMAL-DEFAULT") ? "warn" : "bad"; }
+function fbVoice(tag){ return (tag==="DETOUR"||tag==="FORMAL-DEFAULT"||tag==="FORM-SLIP") ? "warn" : "bad"; }
 function checkAnswer(item, cue, raw){
   var n = norm(raw); if(!n) return {ok:false, tag:"EMPTY", msg:"Nothing typed yet — production means producing."};
   for(var i=0;i<cue.ans.length;i++) if(n===norm(cue.ans[i])) return {ok:true};
+  var stemW=function(w){
+    if(w.length>4 && w.slice(-3)==="ing") w=w.slice(0,-3);
+    else if(w.length>3 && w.slice(-2)==="ed") w=w.slice(0,-2);
+    else if(w.length>3 && w.slice(-2)==="es") w=w.slice(0,-2);
+    else if(w.length>3 && w.slice(-1)==="s" && !/(ss|us|is)$/.test(w)) w=w.slice(0,-1);
+    if(w.length>3 && w.slice(-1)==="e") w=w.slice(0,-1);
+    return w;
+  };
+  var stemAll=function(s){ return norm(s).split(" ").map(stemW).join(" "); };
   /* false twin */
   if(item.twin && (n===norm(item.twin) || n.indexOf(norm(item.twin).split(" ")[0])===0 && norm(item.twin).indexOf("(")<0 && n.split(" ")[0]===norm(item.twin).split(" ")[0] && item.id!=="actually" && item.id!=="discutir")) return {ok:false, tag:"FALSE-TWIN"};
   if(item.id==="molestar" && (n.indexOf("molest")===0)) return {ok:false, tag:"FALSE-TWIN"};
-  if(item.id==="compromiso") return {ok:false, tag:"SENSE-SPLIT"};
+  if(item.id==="compromiso"){ for(var k=0;k<cue.ans.length;k++) if(stemAll(n)===stemAll(cue.ans[k])) return {ok:false, tag:"FORM-SLIP", msg:"Right sense, wrong form. This cue needs «"+cue.ans[0]+"»."}; return {ok:false, tag:"SENSE-SPLIT"}; }
   if(FORMAL_DETOURS[n] && findItem(FORMAL_DETOURS[n]===item.id?item.id:"")!==item && (item.formal && norm(item.formal)===n) ) return {ok:false, tag:"FORMAL-DEFAULT"};
   if(item.formal && norm(item.formal)===n) return {ok:false, tag:"FORMAL-DEFAULT"};
   if(["postpone","postponed","delay it","delay"].indexOf(n)>=0 && item.id==="put-off") return {ok:false, tag:"FORMAL-DEFAULT"};
+  /* form slip: the right word in the wrong shape (tense / number) — never a twin, never a detour */
+  for(var j=0;j<cue.ans.length;j++) if(stemAll(n)===stemAll(cue.ans[j])) return {ok:false, tag:"FORM-SLIP", msg:"Right word — wrong form. This cue needs «"+cue.ans[0]+"»."};
   /* particle drop: typed just the base verb */
   var base = norm(item.verb||item.target||"").split(" ")[0];
   if(item.verb && n===base) return {ok:false, tag:"PARTICLE-DROP"};
@@ -1221,7 +1232,11 @@ function checkAnswer(item, cue, raw){
     var head = df ? df.note+" " : ("That word took the slot instead of the phrasal verb. ");
     return {ok:false, tag:"DETOUR", msg:head+"But this slot belongs to «"+(item.verb||item.target)+"» — the phrasal verb being trained. In this drill any other word, even a good one, is a detour: it counts as a miss so the target gets its rep."};
   }
-  return {ok:false, tag: item.mod==="M3"||item.twin ? "FALSE-TWIN" : "DETOUR"};
+  /* a form of the twin is still the twin (assisted, molesting, pretending) */
+  if(item.twin && norm(item.twin).indexOf("(")<0 && item.id!=="actually" && item.id!=="discutir" && stemAll(n)===stemAll(item.twin)) return {ok:false, tag:"FALSE-TWIN"};
+  /* an unrelated word on a false-friend item is a plain miss — never let the
+     fallback accuse him of a twin he never reached for (Oscar, 2026-11-14) */
+  return {ok:false, tag: item.mod==="M3"||item.twin ? "MISS" : "DETOUR"};
 }
 var TAG_EXPLAIN = {
  "PARTICLE-DROP":"The particle fell off — exactly what Spanish hides. The particle is half the verb.",
@@ -1230,7 +1245,9 @@ var TAG_EXPLAIN = {
  "FALSE-TWIN":"That is the false twin — the word Spanish handed you, with a different meaning in English.",
  "SENSE-SPLIT":"Wrong sense. Compromiso splits three ways; the situation decides which English word owns the slot.",
  "DETOUR":"A detour: a different word took the target's slot. It may be fine English — the count here is about the slot, not the word. The rep belongs to the target, so it scores as a miss.",
- "EMPTY":"Type the English form — production only."
+ "EMPTY":"Type the English form — production only.",
+ "FORM-SLIP":"Right word — wrong form. The word was yours; its shape wasn't. Tense and number are part of the production.",
+ "MISS":"Not the target — and not the twin either. The slot belongs to the word this discrimination trains; the rep goes to it, so it counts as a miss."
 };
 function calState(){ if(!S.cal) S.cal={n:0, brier:0, lv:[{n:0,ok:0},{n:0,ok:0},{n:0,ok:0}]}; return S.cal; }
 function recordAttempt(item, ok, opts){
@@ -1895,7 +1912,7 @@ function submitRun(timedOut){
   /* miss feedback by triage */
   var html="<span class='tag"+(fbVoice(r.tag)==="warn"?" warnt":"")+"'>"+r.tag+"</span> "+esc(r.msg||TAG_EXPLAIN[r.tag]||"");
   if(R.conf===2) html+="<br><strong>You were certain.</strong> High-confidence errors, once corrected, stick hardest of all — this is the most valuable correction on the card. Write it like it matters.";
-  if(item.triage==="C"){
+  if(item.triage==="C" && r.tag==="FALSE-TWIN"){
     html+="<div class='contrast'><div><p class='small muted'>Your attempt</p><p class='big'>"+esc(raw||"(time out)")+"</p></div>"+
      "<div><p class='small muted'>The twin Spanish handed you</p><p class='big'>"+esc(item.twin||"")+"</p></div></div>"+
      (item.why?"<p style='margin-top:10px'><strong>Consequence:</strong> "+esc(item.why)+"</p>":"")+
@@ -1905,6 +1922,10 @@ function submitRun(timedOut){
       "<input type='text' id='tbIn' autocomplete='off' placeholder='One line, your words'><div class='btnrow'><button type='button' class='btn secondary' id='tbSave'>Store my teach-back</button></div>"+
       "<p class='small muted'>Stored on this device and shown back to you next time this item appears. It never blocks or graduates anything by itself.</p></div>";
     }
+  } else if(item.triage==="C"){
+    html+="<div class='contrast'><div><p class='small muted'>Your attempt</p><p class='big'>"+esc(raw||"(time out)")+"</p></div>"+
+     "<div><p class='small muted'>The form this cue needs</p><p class='big'>"+esc(cue.ans[0])+"</p></div></div>"+
+     "<p style='margin-top:6px'><strong>The target:</strong> "+esc(cue.full)+"</p>";
   } else if(item.triage==="B"){
     html+="<br><strong>No lecture.</strong> You have this — it lost the race, not the knowledge.";
   } else {
