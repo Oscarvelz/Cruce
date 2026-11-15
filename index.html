@@ -587,7 +587,7 @@ html[data-theme="tron"]:is([data-hidden],[data-typing]) .btn::before{animation-p
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.9.1</p>
+      <p class="muted" style="margin-top:12px">Version 2.10.0</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -842,7 +842,22 @@ var M1 = [
   rule:"So: enroll is the catalogue word — sign up is your name going on the list.",
   cues:[C("Me inscribí en el curso de psicología.","I ___ for the psychology course.",["signed up"],"I signed up for the psychology course."),
         C("Inscríbete antes del lunes.","___ before Monday.",["sign up"],"Sign up before Monday."),
-        C("Ellos se anotaron en el programa.","They ___ for the program.",["signed up"],"They signed up for the program.")]}
+        C("Ellos se anotaron en el programa.","They ___ for the program.",["signed up"],"They signed up for the program.")]},
+ {id:"circle-back", verb:"circle back", es:"volver sobre un tema / retomarlo después", formal:"revisit", type:"intransitive", disc:"formal-switch", triage:"B",
+  rule:"So: revisit is the memo word — in a real conversation, English circles back. You heard it, you understood it; now it has to be yours to say.",
+  cues:[C("Volvamos a ese tema después del almuerzo.","Let's ___ to that topic after lunch.",["circle back"],"Let's circle back to that topic after lunch."),
+        C("Retomemos el plan de salida la próxima semana.","We will ___ to the discharge plan next week.",["circle back"],"We will circle back to the discharge plan next week."),
+        C("Nunca volvimos sobre la pregunta de la pronunciación.","We never ___ to the pronunciation question.",["circled back"],"We never circled back to the pronunciation question.")]},
+ {id:"steer-around", verb:"steer around", es:"esquivar / dar un rodeo para evitar", formal:"avoid", type:"transitive", disc:"formal-switch", triage:"B",
+  rule:"So: avoid is the flat word — steer around is what you actually do with a word, a topic, a pothole: you drive around it and keep going.",
+  cues:[C("Cuando una palabra no me sale, la esquivo y sigo hablando.","When a word won't come, I ___ it and keep talking.",["steer around"],"When a word won't come, I steer around it and keep talking."),
+        C("Esquivó el tema de su recaída en toda la sesión.","He ___ the topic of his relapse the whole session.",["steered around"],"He steered around the topic of his relapse the whole session."),
+        C("El carro esquivó el bache.","The car ___ the pothole.",["steered around"],"The car steered around the pothole.")]},
+ {id:"tell-apart", verb:"tell apart", es:"distinguir / diferenciar", formal:"distinguish", type:"separable", disc:"sep-pronoun", triage:"B",
+  rule:"So: distinguish is the paper word — in speech you tell them apart, and the pronoun goes inside: tell them apart, never tell apart them.",
+  cues:[C("Al hablar no logro distinguir bear de beard.","In speech I can't ___ bear and beard.",["tell apart"],"In speech I can't tell bear and beard apart."),
+        C("¿Puedes diferenciar a los gemelos?","Can you ___ the twins?",["tell apart"],"Can you tell the twins apart?"),
+        C("Son casi idénticos; cuesta distinguirlos.","They are almost identical; it is hard to ___ them apart.",["tell"],"They are almost identical; it is hard to tell them apart.")]}
 ];
 
 var M3 = [
@@ -959,7 +974,14 @@ var M3 = [
         C("La carpeta está sobre el escritorio.","The ___ is on the desk.",["folder"],"The folder is on the desk."),
         C("Crea una carpeta nueva.","Create a new ___.",["folder"],"Create a new folder."),
         C("Guarda las notas en la carpeta del caso.","Save the notes in the case ___.",["folder"],"Save the notes in the case folder."),
-        C("La carpeta de fotos está en la computadora.","The photo ___ is on the computer.",["folder"],"The photo folder is on the computer.")]}
+        C("La carpeta de fotos está en la computadora.","The photo ___ is on the computer.",["folder"],"The photo folder is on the computer.")]},
+ {id:"heat", es:"el calor / caliente", target:"heat / hot", twin:"hot", triage:"C", disc:"heat",
+  why:"Heat is the thing itself — a noun, like el calor. Hot is only the description — caliente. “Today is heat” puts a thing where the description belongs, and the sentence breaks.",
+  rule:"So: the thing is heat; the description is hot. Spanish splits calor/caliente — English splits them too, in the same place.",
+  cues:[C("El calor de Miami en agosto es difícil de aguantar.","The ___ in Miami in August is hard to take.",["heat"],"The heat in Miami in August is hard to take."),
+        C("Cuidado — la sartén todavía está caliente.","Careful — the pan is still ___.",["hot"],"Careful — the pan is still hot."),
+        C("No aguantó el calor y se metió a la casa.","He couldn't stand the ___ and went inside.",["heat"],"He couldn't stand the heat and went inside."),
+        C("En la finca el calor del mediodía es extremo.","At the ranch, the midday ___ is extreme.",["heat"],"At the ranch, the midday heat is extreme.")]}
 ];
 
 var DISCS = {
@@ -1014,6 +1036,18 @@ var SPELL = [
    {id:"sp-conscience", w:"conscience", es:"conciencia", foils:["concience","consciense","consience"], pre:"con", chunk:"sci", post:"ence"},
    {id:"sp-convenient", w:"convenient", es:"conveniente / práctico", foils:["convienent","conveniant","convinient"], pre:"con", chunk:"ven", post:"ient"},
    {id:"sp-environment", w:"environment", es:"ambiente / entorno", foils:["enviroment","enviornment","environement"], pre:"en", chunk:"vi", post:"ronment"}
+  ]},
+ {disc:"spell-collisions", name:"Collisions — English against English",
+  rule:"So: these words collide with each other, not with Spanish. Bear, beard, bird, beer — say the meaning first, then the shape, and tell them apart.",
+  words:[
+   {id:"sp-bear", w:"bear", es:"el oso", foils:["beard","bird","beer"], pre:"b", chunk:"ear", post:""},
+   {id:"sp-beard", w:"beard", es:"la barba", foils:["bear","bird","beer"], pre:"b", chunk:"eard", post:""},
+   {id:"sp-bird", w:"bird", es:"el pájaro", foils:["beard","bear","beer"], pre:"b", chunk:"ird", post:""},
+   {id:"sp-beer", w:"beer", es:"la cerveza", foils:["bear","beard","bird"], pre:"b", chunk:"eer", post:""},
+   {id:"sp-wear", w:"wear", es:"llevar puesto", foils:["were","where","wore"], pre:"w", chunk:"ear", post:""},
+   {id:"sp-wore", w:"wore", es:"llevé puesto (ayer)", foils:["wear","were","where"], pre:"w", chunk:"ore", post:""},
+   {id:"sp-through", w:"through", es:"a través de", foils:["throughout","thorough","though"], pre:"thr", chunk:"ough", post:""},
+   {id:"sp-throughout", w:"throughout", es:"durante todo / en todas partes", foils:["through","thorough","though"], pre:"through", chunk:"out", post:""}
   ]}
 ];
 SPELL.forEach(function(g){ DISCS[g.disc] = {name:"Spelling: "+g.name, mod:"M9"}; g.words.forEach(function(w){ w.disc = g.disc; }); });
@@ -1021,15 +1055,15 @@ SPELL.forEach(function(g){ DISCS[g.disc] = {name:"Spelling: "+g.name, mod:"M9"};
 var PARTICLES = [["up","completion / rising — finish it, lift it"],["out","exhaustion / truth coming out"],["off","separation / cancellation"],["over","across / above, eyes travelling"]];
 
 var PATH = [
- {id:"M1", name:"Phrasal verbs as a system", sub:"28 verbs, 3 groups — separability and particle families", open:true},
- {id:"M3", name:"False friends that flip meaning", sub:"14 traps — molestar pinned first, compromiso in three senses", open:true},
+ {id:"M1", name:"Phrasal verbs as a system", sub:"31 verbs, 3 groups — separability and particle families", open:true},
+ {id:"M3", name:"False friends that flip meaning", sub:"15 traps — molestar pinned first, compromiso in three senses", open:true},
  {id:"M4", name:"Narrative time-travel", sub:"Telling a story across past, present and future", open:false},
  {id:"M2", name:"Reporting minds", sub:"Reported speech, expectations and protected negation", open:false},
  {id:"M6", name:"One-word splits", sub:"hacer, quedar, llevar — one Spanish word, several English", open:false},
  {id:"M8", name:"At / on / in", sub:"Time, place and verb partnerships", open:false},
  {id:"M5", name:"Everyday naming bank", sub:"Kitchen, body, house and yard — the ground-floor words", open:false},
  {id:"M7", name:"Comparisons", sub:"Bigger, smoother, the most — without the Spanish detour", open:false},
- {id:"M9", name:"Spelling", sub:"18 words in 3 interference families — spot the right spelling, then write it from memory", open:true},
+ {id:"M9", name:"Spelling", sub:"32 words in 5 families — the fifth is English colliding with English", open:true},
  {id:"M10", name:"Participles & twins", sub:"Irregular participles and confusable pairs", open:false},
  {id:"M12", name:"Countability, ’s & tags", sub:"News, advice, people — and the little endings", open:false},
  {id:"M11", name:"The 12 vowels", sub:"Hearing and making the vowel system", open:false}
