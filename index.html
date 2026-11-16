@@ -587,7 +587,7 @@ html[data-theme="tron"]:is([data-hidden],[data-typing]) .btn::before{animation-p
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.12.0</p>
+      <p class="muted" style="margin-top:12px">Version 2.13.0</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -1006,7 +1006,15 @@ var DISCS = {
  "reves-split":{name:"al revés — three pictures", mod:"M6"},
  "compare-forms":{name:"Comparisons — which form", mod:"M7"},
  "compare-meaning":{name:"Comparisons — which meaning", mod:"M7"},
- "degree":{name:"Degree — as, so, too, enough", mod:"M7"}
+ "degree":{name:"Degree — as, so, too, enough", mod:"M7"},
+ "on-islands":{name:"The ON islands", mod:"M8"},
+ "on-time-pair":{name:"on time / in time", mod:"M8"},
+ "time-size":{name:"Time by size — in, on, at", mod:"M8"},
+ "transport":{name:"Vehicles — by, on, in", mod:"M8"},
+ "at-points":{name:"at — the point", mod:"M8"},
+ "in-chunks":{name:"The in chunks", mod:"M8"},
+ "end-pair":{name:"in the end / at the end", mod:"M8"},
+ "partners":{name:"Verb partnerships", mod:"M8"}
 };
 M3.forEach(function(it){ DISCS[it.disc] = {name:"False friend: "+it.es, mod:"M3"}; });
 
@@ -1247,6 +1255,85 @@ var M7 = [
         C("El café está demasiado caliente para tomarlo.","The coffee is ___ to drink.",["too hot"],"The coffee is too hot to drink.")]}
 ];
 
+/* M8 — AT / ON / IN (Wave C, 2026-11-16). Built from his own ranking of
+   2026-11-11: IN is easy (his en=in default happens to be right there), AT is
+   second, ON is where the default betrays him — so the module's centre of
+   gravity is the ON islands. The 8 probe sentences he was offered on
+   2026-11-11 and never answered are this module's Prove-it-first set
+   (PROVE_M8 below): each probe sentence is the Spanish cue of its item, with
+   the diagnostic slot blanked. Probe 1 (the all-in sentence) stays as
+   in-chunks cue 0 in training instead — any single-slot frame of it leaks its
+   own answer, and the in family is his strongest. */
+var M8 = [
+ {id:"on-regimen", mod:"M8", grp:"on", verb:"on + regimen", es:"estar en (medicamentos, probatoria, dieta)", disc:"on-islands", triage:"C",
+  rule:"So: regimens and statuses that hold a person ride on: on medication, on probation, on a diet, on duty. Spanish says en for all of them and your default answers in — English put this whole family on the other word. Your professional world lives here: clients are on probation and on supervision.",
+  cues:[C("Está en recuperación y está en tratamiento, pero no está tomando medicamentos ahora.","He is in recovery and in treatment, but he is not ___ medication now.",["on"],"He is in recovery and in treatment, but he is not on medication now."),
+        C("El cliente está en probatoria.","The client is ___ probation.",["on"],"The client is on probation."),
+        C("Ella está de turno esta noche.","She is ___ duty tonight.",["on"],"She is on duty tonight."),
+        C("Mi papá está a dieta desde enero.","My father is ___ a diet since January.",["on"],"My father is on a diet since January.")]},
+ {id:"on-screens", mod:"M8", grp:"on", verb:"on + screens and signals", es:"en (televisión, teléfono, internet, radio)", disc:"on-islands", triage:"C",
+  rule:"So: broadcasts ride on a channel: on TV, on the phone, on the internet, on the radio. Print is the container that breaks the pattern: in the newspaper, in a book. If it is transmitted, it is on; if it is printed and held, it is in.",
+  cues:[C("Lo vi en televisión esa noche.","I saw it ___ TV that night.",["on"],"I saw it on TV that night."),
+        C("Estaba hablando por teléfono.","She was ___ the phone.",["on"],"She was on the phone."),
+        C("Lo leí en internet.","I read it ___ the internet.",["on"],"I read it on the internet."),
+        C("Salió en el periódico.","It was ___ the newspaper.",["in"],"It was in the newspaper."),
+        C("Lo escuché en la radio.","I heard it ___ the radio.",["on"],"I heard it on the radio.")]},
+ {id:"on-mind", mod:"M8", grp:"on", verb:"on my mind / on purpose", es:"en mi mente / a propósito", disc:"on-islands", triage:"C",
+  rule:"So: some on phrases have no logic to derive — they are islands, learned whole. On my mind (it sits on you, pressing down), on purpose, on the other hand, on average. Your sentence «Eso ha estado en mi mente» wants in from Spanish; English says on.",
+  cues:[C("Eso ha estado en mi mente toda la semana.","That has been ___ my mind all week.",["on"],"That has been on my mind all week."),
+        C("Lo hizo a propósito.","He did it ___ purpose.",["on"],"He did it on purpose."),
+        C("Por otro lado, tiene sentido.","___ the other hand, it makes sense.",["on"],"On the other hand, it makes sense."),
+        C("En promedio, llegan diez.","___ average, ten arrive.",["on"],"On average, ten arrive.")]},
+ {id:"on-time-pair", mod:"M8", grp:"time", verb:"on time / in time", es:"a tiempo (los dos)", disc:"on-time-pair", triage:"C",
+  rule:"So: a tiempo splits in two and the story changes with the word. On time = punctual, at the scheduled moment (the bus arrived on time). In time = before it was too late, with room to spare (he arrived in time to avoid a problem). Both feel like in from Spanish; one of them is a different story.",
+  cues:[C("Llegó a tiempo a la cita de las siete.","He arrived ___ for his seven o'clock appointment.",["on time"],"He arrived on time for his seven o'clock appointment."),
+        C("Llegó justo a tiempo para evitar un problema.","He arrived just ___ to avoid a problem.",["in time"],"He arrived just in time to avoid a problem."),
+        C("El autobús llegó a tiempo.","The bus arrived ___.",["on time"],"The bus arrived on time."),
+        C("Salimos justo a tiempo.","We left just ___.",["in time"],"We left just in time.")]},
+ {id:"time-size", mod:"M8", grp:"time", verb:"in / on / at + time", es:"en (julio, el lunes, las siete, la noche)", disc:"time-size", triage:"B",
+  rule:"So: time is chosen by the size of the unit. Big periods take in (in July, in the morning). Days take on (on Monday) — and the day beats the period: on Monday morning. Points take at (at seven, at noon) — and one famous rebel: at night.",
+  cues:[C("Lo pensé el lunes en la mañana.","I thought of it ___ Monday morning.",["on"],"I thought of it on Monday morning."),
+        C("Nos vemos en julio.","See you ___ July.",["in"],"See you in July."),
+        C("La cita es a las siete.","The appointment is ___ seven.",["at"],"The appointment is at seven."),
+        C("Trabaja de noche.","He works ___ night.",["at"],"He works at night."),
+        C("En la mañana leo las notas.","___ the morning I read the notes.",["in"],"In the morning I read the notes.")]},
+ {id:"transport", mod:"M8", grp:"place", verb:"by / on / in + vehicles", es:"en (tren, autobús, carro)", disc:"transport", triage:"C",
+  rule:"So: by + vehicle names the means, with no article (by train, by car). Boarding splits by size: you get on what you can stand up in or sit on top of (the bus, the train, a bike) and get in what you climb inside (a car, a taxi). Riding keeps the same word: on the bus, in the car.",
+  cues:[C("Viajó en tren.","He travelled ___ train.",["by"],"He travelled by train."),
+        C("Se subió al autobús.","He got ___ the bus.",["on"],"He got on the bus."),
+        C("Se subió al carro de su hermano.","He got ___ his brother's car.",["into"],"He got into his brother's car."),
+        C("Íbamos en el autobús cuando llamó.","We were ___ the bus when he called.",["on"],"We were on the bus when he called."),
+        C("Venía en un taxi.","He came ___ a taxi.",["in"],"He came in a taxi.")]},
+ {id:"at-points", mod:"M8", grp:"place", verb:"at + points", es:"en (casa, la puerta, riesgo, principio)", disc:"at-points", triage:"B",
+  rule:"So: at treats a place as a point on the map, not a container: at home, at work, at the door. And two fixed phrases ride with it: at risk and at first. You ranked at second-easiest, and you were right — this family mostly agrees with your instinct.",
+  cues:[C("Al principio no entendí.","___ first, I didn't understand.",["at"],"At first, I didn't understand."),
+        C("Está en casa.","He is ___ home.",["at"],"He is at home."),
+        C("Los clientes están en riesgo.","The clients are ___ risk.",["at"],"The clients are at risk."),
+        C("Alguien está en la puerta.","Someone is ___ the door.",["at"],"Someone is at the door.")]},
+ {id:"in-chunks", mod:"M8", grp:"chunks", verb:"in + chunks", es:"en (opinión, recuperación, problemas)", disc:"in-chunks", triage:"B",
+  rule:"So: this is the family you called easy peasy, and it is — in my opinion, in general, in trouble, in recovery, in treatment. Your en = in default happens to be right here, which is exactly why the on islands are dangerous: the default that wins here is the one that betrays you there.",
+  cues:[C("En mi opinión, en general, él está en problemas.","___ my opinion, in general, he is in trouble.",["in"],"In my opinion, in general, he is in trouble."),
+        C("Está en recuperación.","He is ___ recovery.",["in"],"He is in recovery."),
+        C("Ella está en tratamiento.","She is ___ treatment.",["in"],"She is in treatment."),
+        C("El cliente está en problemas.","The client is ___ trouble.",["in"],"The client is in trouble.")]},
+ {id:"in-the-end", mod:"M8", grp:"chunks", verb:"in the end / at the end", es:"al final (los dos)", disc:"end-pair", triage:"C",
+  rule:"So: al final also splits. In the end = finally, the outcome of a story (in the end, I understood). At the end = the physical end of a thing (at the end of the film, at the end of the road). One is time resolving; the other is a place on an object.",
+  cues:[C("Al final, sí entendí.","___ the end, I understood.",["in"],"In the end, I understood."),
+        C("Al final de la película, todos lloran.","___ the end of the film, everyone cries.",["at"],"At the end of the film, everyone cries."),
+        C("Al final del camino hay una casa.","___ the end of the road there is a house.",["at"],"At the end of the road there is a house.")]},
+ {id:"partners", mod:"M8", grp:"chunks", verb:"verb partners", es:"depender de, estar interesado en, ser bueno en…", disc:"partners", triage:"C",
+  rule:"So: some prepositions belong to the verb before them, not to the idea after them — they are partnerships, learned with their verb: depend on, interested in, good at, wait for, listen to. And pensar en splits by meaning: thought of staying (the idea visited you), thought about staying (you turned it over). Your sentence was «I had thought in staying»: in belongs to none of them.",
+  cues:[C("Depende de él.","It depends ___ him.",["on"],"It depends on him."),
+        C("Está interesado en el programa.","He is interested ___ the program.",["in"],"He is interested in the program."),
+        C("Había pensado en quedarme.","I had thought ___ staying.",["of","about"],"I had thought of staying."),
+        C("Es bueno en matemáticas.","He is good ___ math.",["at"],"He is good at math."),
+        C("Te esperé en la puerta.","I waited ___ you at the door.",["for"],"I waited for you at the door."),
+        C("Escucha lo que digo.","Listen ___ what I say.",["to"],"Listen to what I say.")]}
+];
+/* The 2026-11-11 probe sentences as M8's Prove-it-first set: 12 cards, one
+   per diagnostic slot (probe 1 rides in training as in-chunks cue 0). */
+var PROVE_M8 = [["on-time-pair",0],["on-time-pair",1],["on-regimen",0],["on-screens",0],["time-size",0],["transport",0],["transport",1],["on-mind",0],["at-points",0],["in-the-end",0],["partners",0],["partners",1]];
+
 /* M9 — SPELLING. Three interference families, built from Oscar's own written
    errors (decission, ocurrance, invertion, daubt). Each word: the correct
    shape, three foils drawn from his error patterns, and the trap chunk that
@@ -1315,7 +1402,7 @@ var PATH = [
  {id:"M4", name:"Narrative time-travel", sub:"Telling a story across past, present and future — plus the weekly tale", open:true},
  {id:"M2", name:"Reporting minds", sub:"Reported speech, expectations and protected negation", open:true},
  {id:"M6", name:"One-word splits", sub:"hacer, llevar, quedar, menos — one Spanish word, several English owners", open:true},
- {id:"M8", name:"At / on / in", sub:"Time, place and verb partnerships", open:false},
+ {id:"M8", name:"At / on / in", sub:"The ON islands, time by size, and verb partnerships — opens with your eight probe sentences", open:true},
  {id:"M5", name:"Everyday naming bank", sub:"Kitchen, body, house and yard — the ground-floor words", open:false},
  {id:"M7", name:"Comparisons", sub:"Bigger, smoother, more fun — the ending chooses the form", open:true},
  {id:"M9", name:"Spelling", sub:"32 words in 5 families — the fifth is English colliding with English", open:true},
@@ -1369,7 +1456,12 @@ var LESSONS = [
   scene:"Your probe, in your own hand: «The transition should be more smooth» — written, then caught by your own eye and corrected to smoother. Your monitor knew the answer; your hand reached for a taught rule (two syllables take more) and the rule was wrong. The real map is not syllables. It is endings.",
   commitEs:"La transición debe ser más suave.", commitTarget:"smoother", fadeItem:"er-or-more", transferItem:"as-as", lab:"zones",
   notice:"A rule from school (count the syllables) points the wrong way on happier, simpler, narrower, more careful, more tired. English sorts comparatives by how the word ENDS: -y, -le, -er, -ow take -er; -ful, -less, -ing, -ed, -ous take more; one syllable takes -er; long words take more. What did Spanish make you do? Nothing, this time — a school rule did. Spanish más never asked you to choose a form at all.",
-  name:"So: do not count syllables; read the ending. The ending chooses the form — and where the word is a participle (tired, bored), the answer is always more."}
+  name:"So: do not count syllables; read the ending. The ending chooses the form — and where the word is a participle (tired, bored), the answer is always more."},
+ {id:"L8", mod:"M8", title:"Lesson 1 — The islands of on", group:"M8 · At / on / in",
+  scene:"On November 11 I gave you eight Spanish sentences built to hit the abstract layer where you said it breaks — on medication, on TV, on my mind, a tiempo twice. You ranked the families instead: in easy peasy, at second, on hard. The eight sentences were never answered. They waited five days, and they are this module's entrance exam: Prove it first deals them, untouched, before any teaching.",
+  commitEs:"Eso ha estado en mi mente toda la semana.", commitTarget:"on", fadeItem:"on-regimen", transferItem:"on-time-pair", lab:"islands",
+  notice:"Your instinct says en = in, and it is a good instinct almost everywhere — in July, in recovery, in my opinion it pays out. The on islands are the places where English quietly chose the other word: signals, regimens, and a handful of fixed phrases. What did Spanish make you do? It made one honest default answer for three different words, and the default only fails where you cannot see it failing.",
+  name:"So: do not derive these — collect them. On for what is transmitted (TV, phone, internet), on for what holds a person (medication, probation, duty), on for the fixed islands (my mind, purpose, the other hand). The rest of the map runs by size: in for periods, on for days, at for points."}
 ];
 </script>
 <script>
@@ -1386,9 +1478,9 @@ try { S = JSON.parse(localStorage.getItem(LS_KEY)) || defaultState(); } catch(e)
 Object.keys(defaultState()).forEach(function(k){ if(!(k in S)) S[k]=defaultState()[k]; });
 function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){} }
 function itemState(id){ if(!S.items[id]) S.items[id]={step:0, due:null, daysCorrect:[], graduated:false, seenCues:[]}; return S.items[id]; }
-function allItems(){ return M1.concat(M3, M2, M4, M6, M7); }
+function allItems(){ return M1.concat(M3, M2, M4, M6, M7, M8); }
 function findItem(id){ var a=allItems(); for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; return null; }
-function modItems(mod){ if(mod==="M9") return []; if(mod==="M2") return M2; if(mod==="M4") return M4; if(mod==="M6") return M6; if(mod==="M7") return M7; return mod==="M1"? M1 : M3; }
+function modItems(mod){ if(mod==="M9") return []; if(mod==="M2") return M2; if(mod==="M4") return M4; if(mod==="M6") return M6; if(mod==="M7") return M7; if(mod==="M8") return M8; return mod==="M1"? M1 : M3; }
 function mastery(disc){ return S.mastery[disc]||0; }
 function setMastery(disc, v){ S.mastery[disc]=Math.max(0,Math.min(100,Math.round(v))); }
 
@@ -1876,7 +1968,7 @@ function itemGroup(mod, it){
     if(M1_HOME[it.id]) return "home";
     return "story";
   }
-  if(mod==="M2"||mod==="M4"||mod==="M6"||mod==="M7") return it.grp||"all";
+  if(mod==="M2"||mod==="M4"||mod==="M6"||mod==="M7"||mod==="M8") return it.grp||"all";
   if(it.danger) return "danger";
   if(it.senses) return "senses";
   return "twins";
@@ -1911,6 +2003,13 @@ function modChipDefs(mod){
     {id:"forms", label:"Forms", count:n("forms")},
     {id:"meaning", label:"Meaning", count:n("meaning")},
     {id:"degree", label:"Degree", count:n("degree")}
+  ];
+  if(mod==="M8") return [
+    {id:"all", label:"All", count:items.length},
+    {id:"on", label:"On islands", count:n("on")},
+    {id:"time", label:"Time", count:n("time")},
+    {id:"place", label:"Place", count:n("place")},
+    {id:"chunks", label:"Chunks + partners", count:n("chunks")}
   ];
   return [
     {id:"all", label:"All", count:items.length},
@@ -2107,6 +2206,21 @@ function wireZones(){
   document.querySelectorAll("[data-z]").forEach(function(b){ b.addEventListener("click", function(){ draw(+b.getAttribute("data-z")); }); });
   draw(0);
 }
+function islandsHTML(){
+  return "<h3>Move it — the three islands of on</h3>"+
+  "<p><em>On</em> looks scattered until you see the islands. Slide the family and watch which phrases live there — every one of them is an <em>en</em> in Spanish.</p>"+
+  "<div class='seg' role='group' aria-label='Island'><button type='button' data-isl='0' class='on'>Transmitted</button><button type='button' data-isl='1'>Holding a person</button><button type='button' data-isl='2'>Fixed phrases</button></div>"+
+  "<div class='splitout' id='islOut'></div>";
+}
+function wireIslands(){
+  var texts=["<strong>Transmitted:</strong> on TV · on the radio · on the phone · on the internet · on a call.<br>Broadcasts ride on a channel. Print breaks the pattern: <em>in</em> the newspaper, <em>in</em> a book.",
+             "<strong>Holding a person:</strong> on medication · on probation · on parole · on a diet · on duty.<br>A regimen or a status the person is under. Your work lives here: clients are on probation, on supervision.",
+             "<strong>Fixed phrases:</strong> on my mind · on purpose · on the other hand · on average.<br>No logic to derive. Islands, learned whole — the weight on your mind is literally sitting on it."];
+  var out=document.getElementById("islOut");
+  function draw(i){ out.innerHTML=texts[i]; document.querySelectorAll("[data-isl]").forEach(function(b){ b.classList.toggle("on", +b.getAttribute("data-isl")===i); }); }
+  document.querySelectorAll("[data-isl]").forEach(function(b){ b.addEventListener("click", function(){ draw(+b.getAttribute("data-isl")); }); });
+  draw(0);
+}
 function stepsHTML(cur){ return "<div class='steps'>"+STEP_NAMES.map(function(n,i){ return "<span class='"+(i===cur?"on":(i<cur?"done":""))+"'>"+(i+1)+". "+n+"</span>"; }).join("")+"</div>"; }
 function startLesson(id){
   var les = LESSONS.filter(function(x){return x.id===id;})[0];
@@ -2133,6 +2247,7 @@ function renderLesson(){
     else if(les.lab==="timeline") html+=timelineHTML();
     else if(les.lab==="splits") html+=splitsHTML();
     else if(les.lab==="zones") html+=zonesHTML();
+    else if(les.lab==="islands") html+=islandsHTML();
     else html+=compromisoHTML();
     var checks = les.lab==="builder" ? [{item:findItem("turn-on"), cue:findItem("turn-on").cues[1], cueIdx:1},{item:findItem("look-after"), cue:findItem("look-after").cues[0], cueIdx:0}]
       : les.lab==="builder3" ? [{item:findItem("run-out-of"), cue:findItem("run-out-of").cues[0], cueIdx:0},{item:findItem("come-up-with"), cue:findItem("come-up-with").cues[0], cueIdx:0}]
@@ -2142,6 +2257,7 @@ function renderLesson(){
       : les.lab==="timeline" ? [{item:findItem("had-been"), cue:findItem("had-been").cues[0], cueIdx:0},{item:findItem("will-have"), cue:findItem("will-have").cues[0], cueIdx:0}]
       : les.lab==="splits" ? [{item:findItem("hacer"), cue:findItem("hacer").cues[0], cueIdx:0},{item:findItem("llevar"), cue:findItem("llevar").cues[2], cueIdx:2}]
       : les.lab==="zones" ? [{item:findItem("er-or-more"), cue:findItem("er-or-more").cues[0], cueIdx:0},{item:findItem("as-as"), cue:findItem("as-as").cues[0], cueIdx:0}]
+      : les.lab==="islands" ? [{item:findItem("on-regimen"), cue:findItem("on-regimen").cues[0], cueIdx:0},{item:findItem("on-time-pair"), cue:findItem("on-time-pair").cues[0], cueIdx:0}]
       : [{item:findItem("compromiso"), cue:findItem("compromiso").cues[0], cueIdx:0},{item:findItem("compromiso"), cue:findItem("compromiso").cues[2], cueIdx:2}];
     html+="<h3 style='margin-top:18px'>Manipulation checks — typed, not tapped</h3>"+labChecksHTML(checks)+
       "<div class='btnrow' id='labDone' style='display:none'><button type='button' class='btn' id='lsNext'>Continue → Notice</button></div>";
@@ -2149,7 +2265,7 @@ function renderLesson(){
     html+="<h3>Notice</h3><p class='big'><strong>What did Spanish make you do?</strong></p><p>"+esc(les.notice)+"</p><div class='btnrow'><button type='button' class='btn' id='lsNext'>Name it →</button></div>";
   } else if(L.step===4){
     html+="<h3>Name it</h3><p class='big'>"+esc(les.name)+"</p>"+
-      modItems(les.mod).filter(function(it){ return les.mod==="M3" ? ["molestar","compromiso"].indexOf(it.id)>=0 : it.rule && ((les.id==="L1A"&&it.disc==="formal-switch")||(les.id==="L1B"&&["sep-pronoun","insep-order"].indexOf(it.disc)>=0)||(les.id==="L1C"&&it.disc==="three-word")||((les.mod==="M2"||les.mod==="M4"||les.mod==="M6"||les.mod==="M7")&&(it.id===les.fadeItem||it.id===les.transferItem))); }).map(function(it){ return "<p class='small muted'>"+esc(it.rule)+"</p>"; }).join("")+
+      modItems(les.mod).filter(function(it){ return les.mod==="M3" ? ["molestar","compromiso"].indexOf(it.id)>=0 : it.rule && ((les.id==="L1A"&&it.disc==="formal-switch")||(les.id==="L1B"&&["sep-pronoun","insep-order"].indexOf(it.disc)>=0)||(les.id==="L1C"&&it.disc==="three-word")||((les.mod==="M2"||les.mod==="M4"||les.mod==="M6"||les.mod==="M7"||les.mod==="M8")&&(it.id===les.fadeItem||it.id===les.transferItem))); }).map(function(it){ return "<p class='small muted'>"+esc(it.rule)+"</p>"; }).join("")+
       "<div class='btnrow'><button type='button' class='btn' id='lsNext'>Fade it →</button></div>";
   } else if(L.step===5){
     var fc=fadeCue(L.fadeRung), it=fc.item;
@@ -2184,7 +2300,7 @@ function renderLesson(){
     var v=document.getElementById("commitIn").value.trim();
     if(!v){ var fb=document.getElementById("commitFb"); fb.className="feedback show bad"; fb.textContent="Commit something first — even wrong. The gap at the end is built from this attempt."; return; }
     S.commits[les.id]=v; save(); L.step++; renderLesson(); }); }
-  if(L.step===2){ if(les.lab==="builder") wireBuilder(); else if(les.lab==="builder3") wireBuilder3(); else if(les.lab==="split") wireSplit(); else if(les.lab==="minds") wireMinds(); else if(les.lab==="negation") wireNegation(); else if(les.lab==="timeline") wireTimeline(); else if(les.lab==="splits") wireSplits(); else if(les.lab==="zones") wireZones(); else wireCompromiso();
+  if(L.step===2){ if(les.lab==="builder") wireBuilder(); else if(les.lab==="builder3") wireBuilder3(); else if(les.lab==="split") wireSplit(); else if(les.lab==="minds") wireMinds(); else if(les.lab==="negation") wireNegation(); else if(les.lab==="timeline") wireTimeline(); else if(les.lab==="splits") wireSplits(); else if(les.lab==="zones") wireZones(); else if(les.lab==="islands") wireIslands(); else wireCompromiso();
     wireLabChecks(les.lab==="builder" ? [{item:findItem("turn-on"), cue:findItem("turn-on").cues[1], cueIdx:1},{item:findItem("look-after"), cue:findItem("look-after").cues[0], cueIdx:0}]
       : les.lab==="builder3" ? [{item:findItem("run-out-of"), cue:findItem("run-out-of").cues[0], cueIdx:0},{item:findItem("come-up-with"), cue:findItem("come-up-with").cues[0], cueIdx:0}]
       : les.lab==="split" ? [{item:findItem("put-off"), cue:findItem("put-off").cues[0], cueIdx:0},{item:findItem("call-off"), cue:findItem("call-off").cues[0], cueIdx:0}]
@@ -2193,6 +2309,7 @@ function renderLesson(){
       : les.lab==="timeline" ? [{item:findItem("had-been"), cue:findItem("had-been").cues[0], cueIdx:0},{item:findItem("will-have"), cue:findItem("will-have").cues[0], cueIdx:0}]
       : les.lab==="splits" ? [{item:findItem("hacer"), cue:findItem("hacer").cues[0], cueIdx:0},{item:findItem("llevar"), cue:findItem("llevar").cues[2], cueIdx:2}]
       : les.lab==="zones" ? [{item:findItem("er-or-more"), cue:findItem("er-or-more").cues[0], cueIdx:0},{item:findItem("as-as"), cue:findItem("as-as").cues[0], cueIdx:0}]
+      : les.lab==="islands" ? [{item:findItem("on-regimen"), cue:findItem("on-regimen").cues[0], cueIdx:0},{item:findItem("on-time-pair"), cue:findItem("on-time-pair").cues[0], cueIdx:0}]
       : [{item:findItem("compromiso"), cue:findItem("compromiso").cues[0], cueIdx:0},{item:findItem("compromiso"), cue:findItem("compromiso").cues[2], cueIdx:2}], null); }
   if(L.step===5){
     var fn=document.getElementById("fadeNext");
@@ -2655,6 +2772,7 @@ function gateQueue(mod){
 }
 function startGate(mod){ currentMod=mod; startRunner("gate", gateQueue(mod), {mod:mod, perItemSec:15}); }
 function startProve(mod){ currentMod=mod;
+  if(mod==="M8" && typeof PROVE_M8!=="undefined"){ startRunner("prove", PROVE_M8.map(function(pr){ var it=findItem(pr[0]); return {item:it, cueIdx:pr[1], intruder:false}; }), {mod:mod, perItemSec:15}); return; }
   var items=modItems(mod).slice().sort(function(a,b2){ return mastery(a.disc)-mastery(b2.disc); }).slice(0,6);
   startRunner("prove", items.map(function(it){ return {item:it, cueIdx:pickCue(it,true), intruder:false}; }), {mod:mod, perItemSec:15});
 }
