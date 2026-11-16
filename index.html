@@ -544,7 +544,7 @@ html[data-theme="tron"]:is([data-hidden],[data-typing]) .btn::before{animation-p
     <div class="card" id="resumeCard" style="display:none"></div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.2C10 4.7 7.2 4.2 4 4.2v14c3.2 0 6 .5 8 2 2-1.5 4.8-2 8-2v-14c-3.2 0-6 .5-8 2Z"/><path d="M12 6.2v14"/></svg></span>Your path</h2>
-      <p class="muted small">12 modules · M1, M2, M3 and M4 open</p>
+      <p class="muted small" id="learnSub">12 modules · M1, M2, M3 and M4 open</p>
       <div class="chiprow" id="learnChips" role="group" aria-label="Filter modules by state"></div>
       <ol class="path" id="pathList"></ol>
     </div>
@@ -587,7 +587,7 @@ html[data-theme="tron"]:is([data-hidden],[data-typing]) .btn::before{animation-p
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.11.1</p>
+      <p class="muted" style="margin-top:12px">Version 2.12.0</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -997,7 +997,16 @@ var DISCS = {
  "reported-mind":{name:"Reporting minds", mod:"M2"},
  "protected-negation":{name:"Protected negation — the meaning rides on it", mod:"M2"},
  "time-anchor":{name:"Narrative time anchors", mod:"M4"},
- "transitions":{name:"Transition wordings", mod:"M4"}
+ "transitions":{name:"Transition wordings", mod:"M4"},
+ "hacer-split":{name:"hacer — make, do or take", mod:"M6"},
+ "llevar-split":{name:"llevar — wear, carry or take", mod:"M6"},
+ "quedar-split":{name:"quedar — stay or keep", mod:"M6"},
+ "count-split":{name:"Counting the English way", mod:"M6"},
+ "fun-split":{name:"divertido — fun or funny", mod:"M6"},
+ "reves-split":{name:"al revés — three pictures", mod:"M6"},
+ "compare-forms":{name:"Comparisons — which form", mod:"M7"},
+ "compare-meaning":{name:"Comparisons — which meaning", mod:"M7"},
+ "degree":{name:"Degree — as, so, too, enough", mod:"M7"}
 };
 M3.forEach(function(it){ DISCS[it.disc] = {name:"False friend: "+it.es, mod:"M3"}; });
 
@@ -1116,6 +1125,128 @@ var M4 = [
         C("Para entonces, ya habrás comido.","___ , you will have eaten.",["By then"],"By then, you will have eaten.")]}
 ];
 
+/* M6 — ONE-WORD SPLITS (Wave B, 2026-11-16). One Spanish word, several English
+   owners. Built from the Reinforcement Plan P1: the splits are his biggest
+   error generator. The countability core (menos, cantidad, estos, news/advice)
+   was promoted here from M12 by the Angle 2 addendum. Each item follows the
+   since-for model: one item per Spanish word, cues alternating owners. */
+var M6 = [
+ {id:"hacer", mod:"M6", grp:"verb-splits", verb:"make / do / take", es:"hacer", disc:"hacer-split", triage:"C",
+  rule:"So: hacer has three English owners. Make builds or produces something (the bed, a decision, dinner). Do performs a duty or activity (exercise, homework, your best). Take carries a fixed set: a photo, a break, an exam.",
+  cues:[C("Haz la cama antes de salir.","___ the bed before you leave.",["make"],"Make the bed before you leave."),
+        C("Hago ejercicio a las seis.","I ___ exercise at six.",["do"],"I do exercise at six."),
+        C("Tienes que hacer una decisión hoy.","You have to ___ a decision today.",["make"],"You have to make a decision today."),
+        C("Ella hace su tarea en la mesa de la cocina.","She ___ her homework at the kitchen table.",["does"],"She does her homework at the kitchen table."),
+        C("¿Puedes hacerme una foto?","Can you ___ a photo of me?",["take"],"Can you take a photo of me?"),
+        C("Haz lo mejor que puedas.","___ your best.",["do"],"Do your best.")]},
+ {id:"llevar", mod:"M6", grp:"verb-splits", verb:"wear / carry / take", es:"llevar", disc:"llevar-split", triage:"C",
+  rule:"So: llevar puesto is wear; cargar en los brazos o en el carro is carry; llevar a alguien a un lugar is take. And when llevar measures time, English turns it around: the trip takes two hours — the thing does the taking, not you.",
+  cues:[C("Hoy llevo la camisa azul.","Today I'm ___ the blue shirt.",["wearing"],"Today I'm wearing the blue shirt."),
+        C("Él lleva las cajas al carro.","He ___ the boxes to the car.",["carries"],"He carries the boxes to the car."),
+        C("El viaje a Managua lleva dos horas.","The trip to Managua ___ two hours.",["takes"],"The trip to Managua takes two hours."),
+        C("Los lunes llevo a los niños a la escuela.","On Mondays I ___ the kids to school.",["take"],"On Mondays I take the kids to school."),
+        C("Esto lleva más tiempo del que pensaba.","This ___ more time than I thought.",["takes"],"This takes more time than I thought.")]},
+ {id:"quedar", mod:"M6", grp:"verb-splits", verb:"stay / keep", es:"quedar / quedarse", disc:"quedar-split", triage:"C",
+  rule:"So: quedarse en un lugar is stay — never stand, which is only for being on your feet. Quedarse con algo is keep. Your sentence was «I stood at home»: the verb you wanted was stayed.",
+  cues:[C("Me quedé en casa todo el día.","I ___ home all day.",["stayed"],"I stayed home all day."),
+        C("Quédate con el cambio.","___ the change.",["keep"],"Keep the change."),
+        C("Nos quedamos en el rancho el fin de semana.","We ___ at the ranch for the weekend.",["stayed"],"We stayed at the ranch for the weekend."),
+        C("Ella se quedó con los documentos.","She ___ the documents.",["kept"],"She kept the documents.")]},
+ {id:"less-fewer", mod:"M6", grp:"counting", verb:"less / fewer / lesser", es:"menos", disc:"count-split", triage:"C",
+  rule:"So: menos splits by counting. Things you can count take fewer (people, classes, mistakes). Stuff you measure takes less (noise, time, money). Lesser survives in one fixed phrase: the lesser of two evils.",
+  cues:[C("Hay menos gente que antes.","There are ___ people than before.",["fewer"],"There are fewer people than before."),
+        C("Aquí hay menos ruido.","There is ___ noise here.",["less"],"There is less noise here."),
+        C("Este mes tengo menos clases.","This month I have ___ classes.",["fewer"],"This month I have fewer classes."),
+        C("Necesito menos tiempo para esto.","I need ___ time for this.",["less"],"I need less time for this."),
+        C("Es el menor de dos males.","It is the ___ of two evils.",["lesser"],"It is the lesser of two evils.")]},
+ {id:"amount-number", mod:"M6", grp:"counting", verb:"amount / number", es:"cantidad", disc:"count-split", triage:"C",
+  rule:"So: cantidad splits the same way. A number of things you can count (students, ways, mistakes). An amount of stuff you measure (money, time, work). Your sentence was «the amount of ways»: ways can be counted, so they take number.",
+  cues:[C("Me sorprendió la cantidad de dinero.","I was surprised by the ___ of money.",["amount"],"I was surprised by the amount of money."),
+        C("La cantidad de estudiantes crece.","The ___ of students is growing.",["number"],"The number of students is growing."),
+        C("Hay una cantidad de maneras de decirlo.","There is a ___ of ways to say it.",["number"],"There is a number of ways to say it."),
+        C("La cantidad de tiempo depende del caso.","The ___ of time depends on the case.",["amount"],"The amount of time depends on the case.")]},
+ {id:"this-these", mod:"M6", grp:"counting", verb:"this / these", es:"este / estos", disc:"count-split", triage:"B",
+  rule:"So: este and estos keep their number in English. This for one, these for more than one, and the noun follows the same number: this disease, these diseases. Your fast sentence was «all this diseases»: the noun was plural, so the pointer must be too.",
+  cues:[C("Todas estas enfermedades tienen tratamiento.","All ___ diseases have treatment.",["these"],"All these diseases have treatment."),
+        C("Esta clase es la avanzada.","___ class is the advanced one.",["this"],"This class is the advanced one."),
+        C("Estos libros son de psicología.","___ books are about psychology.",["these"],"These books are about psychology."),
+        C("Este problema tiene solución.","___ problem has a solution.",["this"],"This problem has a solution.")]},
+ {id:"news-advice", mod:"M6", grp:"counting", verb:"news / advice — no plural, no «a»", es:"noticias / consejo", disc:"count-split", triage:"C",
+  rule:"So: some Spanish plurals are illegal in English. News looks plural and is singular: the news IS good. Advice, information and progress never take -s and never take «a»: you give some advice, or a piece of advice.",
+  cues:[C("Las noticias de hoy son buenas.","Today's news ___ good.",["is"],"Today's news is good."),
+        C("Me dio un consejo útil.","He gave me ___ advice.",["some"],"He gave me some advice."),
+        C("La información era incorrecta.","The information ___ wrong.",["was"],"The information was wrong."),
+        C("Necesito un consejo antes de decidir.","I need a ___ of advice before I decide.",["piece"],"I need a piece of advice before I decide.")]},
+ {id:"fun-funny", mod:"M6", grp:"meaning", verb:"fun / funny", es:"divertido", disc:"fun-split", triage:"C",
+  rule:"So: divertido splits by what it does to people. Fun is the good time itself (the class was fun). Funny is what makes you laugh (the joke was funny). A class can be fun without a single laugh.",
+  cues:[C("La clase fue muy divertida.","The class was a lot of ___.",["fun"],"The class was a lot of fun."),
+        C("El chiste fue muy divertido.","The joke was very ___.",["funny"],"The joke was very funny."),
+        C("Fue un juego divertido para los niños.","It was a ___ game for the kids.",["fun"],"It was a fun game for the kids."),
+        C("Cuenta historias divertidas.","He tells ___ stories.",["funny"],"He tells funny stories.")]},
+ {id:"inside-out", mod:"M6", grp:"meaning", verb:"inside out / backwards / upside down", es:"al revés", disc:"reves-split", triage:"B",
+  rule:"So: al revés has three English owners, one per picture. Clothes turned through themselves: inside out. Facing the wrong way: backwards. Head where the feet should be: upside down. Your shirt was inside out, not upside down.",
+  cues:[C("Tienes la camisa al revés.","Your shirt is ___.",["inside out"],"Your shirt is inside out."),
+        C("Lleva la gorra al revés.","He wears his cap ___.",["backwards"],"He wears his cap backwards."),
+        C("El cuadro está al revés.","The picture is ___.",["upside down"],"The picture is upside down."),
+        C("Se puso la camiseta al revés.","He put his T-shirt on ___.",["inside out"],"He put his T-shirt on inside out."),
+        C("Caminó al revés hacia la puerta.","He walked ___ toward the door.",["backwards"],"He walked backwards toward the door.")]}
+];
+
+/* M7 — COMPARISONS (Wave B, 2026-11-16). M6 teaches which word; M7 teaches
+   which form. The zone map replaces his taught syllable rule; the degree line
+   (as…as, so, too/enough) comes from the Angle 2 addendum (his «as excellent»
+   calque of tan). */
+var M7 = [
+ {id:"er-or-more", mod:"M7", grp:"forms", verb:"-er or more?", es:"más + adjetivo", disc:"compare-forms", triage:"B",
+  rule:"So: the form follows the ending, not a syllable count. One syllable: -er. Ending in -y, -le, -er or -ow: -er (happier, simpler, narrower). Ending in -ful, -less, -ing, -ed or -ous: more (more careful, more tired). Three syllables or more: more.",
+  cues:[C("La transición debe ser más suave.","The transition should be ___.",["smoother"],"The transition should be smoother."),
+        C("Este cuarto es más grande.","This room is ___.",["bigger"],"This room is bigger."),
+        C("Ella es más feliz ahora.","She is ___ now.",["happier"],"She is happier now."),
+        C("Necesito un método más cuidadoso.","I need a ___ method.",["more careful"],"I need a more careful method."),
+        C("Estoy más cansado que ayer.","I am ___ than yesterday.",["more tired"],"I am more tired than yesterday."),
+        C("Este camino es más estrecho.","This road is ___.",["narrower"],"This road is narrower.")]},
+ {id:"simpler", mod:"M7", grp:"forms", verb:"simpler", es:"más sencillo / más sencilla", disc:"compare-forms", triage:"C",
+  rule:"So: más sencilla is simpler. In your probe you walked around it with «more straightforward» — a longer, heavier word doing a small word's job. Simple follows its ending: simple, simpler, simplest.",
+  cues:[C("Hay una manera más sencilla.","There is a ___ way.",["simpler"],"There is a simpler way."),
+        C("Este ejercicio es más sencillo que el otro.","This exercise is ___ than the other one.",["simpler"],"This exercise is simpler than the other one."),
+        C("Explícalo de la forma más sencilla.","Explain it in the ___ way.",["simplest"],"Explain it in the simplest way.")]},
+ {id:"common-both", mod:"M7", grp:"forms", verb:"common / polite — both forms live", es:"más común / más cortés", disc:"compare-forms", triage:"B",
+  rule:"So: a middle zone exists where English allows both: more common and commoner, more polite and politer are all real English. Neither is a mistake. The edges of the map are strict; the middle is free.",
+  cues:[C("Es más común de lo que crees.","It is ___ than you think.",["more common","commoner"],"It is more common than you think."),
+        C("Sé más cortés con ella.","Be ___ with her.",["more polite","politer"],"Be more polite with her."),
+        C("Es un error más común entre estudiantes.","It is a ___ mistake among students.",["more common","commoner"],"It is a more common mistake among students.")]},
+ {id:"better-worse", mod:"M7", grp:"meaning", verb:"better / worse / best / worst", es:"mejor / peor", disc:"compare-meaning", triage:"B",
+  rule:"So: good and bad refuse the regular machinery. Good, better, best. Bad, worse, worst. No «more good» exists, however regular más bueno feels from Spanish — English kept the old irregular pair.",
+  cues:[C("Hoy me siento mejor.","I feel ___ today.",["better"],"I feel better today."),
+        C("Este es el peor día del mes.","This is the ___ day of the month.",["worst"],"This is the worst day of the month."),
+        C("Su español es mejor que el mío.","His Spanish is ___ than mine.",["better"],"His Spanish is better than mine."),
+        C("El tráfico está peor hoy.","The traffic is ___ today.",["worse"],"The traffic is worse today.")]},
+ {id:"more-fun", mod:"M7", grp:"meaning", verb:"more fun / funnier", es:"más divertido / más gracioso", disc:"compare-meaning", triage:"C",
+  rule:"So: when divertido compares, the split compares too. Enjoyable takes more fun; laugh-making takes funnier. Your sentence «It was funnier than I was expecting» said the night made you laugh. You meant it was more fun.",
+  cues:[C("Fue más divertido de lo que esperaba.","It was ___ than I expected.",["more fun"],"It was more fun than I expected."),
+        C("El segundo chiste fue más gracioso.","The second joke was ___.",["funnier"],"The second joke was funnier."),
+        C("El viaje fue más divertido que la fiesta.","The trip was ___ than the party.",["more fun"],"The trip was more fun than the party."),
+        C("Ella es más graciosa que su hermano.","She is ___ than her brother.",["funnier"],"She is funnier than her brother.")]},
+ {id:"less-least", mod:"M7", grp:"meaning", verb:"less (of two) / least (of all)", es:"el menos … de los dos / de todos", disc:"compare-meaning", triage:"C",
+  rule:"So: between TWO things, English compares with less, not least: the less important of the two. Least is the superlative, for three or more. Your probe dodge used «the least relevant» for a pair of two — two swaps in one sentence, least for less and relevant for the word the context wanted.",
+  cues:[C("De los dos, este es el menos importante.","Of the two, this is the ___ important.",["less"],"Of the two, this is the less important."),
+        C("Es el menos importante de todos.","It is the ___ important of all.",["least"],"It is the least important of all."),
+        C("De los dos caminos, elige el menos caro.","Of the two roads, take the ___ expensive.",["less"],"Of the two roads, take the less expensive."),
+        C("Fue el día menos feliz del año.","It was the ___ happy day of the year.",["least"],"It was the least happy day of the year.")]},
+ {id:"as-as", mod:"M7", grp:"degree", verb:"as … as", es:"tan … como", disc:"degree", triage:"C",
+  rule:"So: tan + adjective never travels alone. English needs the second as to close the frame: as excellent AS the first one. Your sentence «Now it looks as excellent» left the frame open — Spanish tan closes by itself; English as does not.",
+  cues:[C("Ahora se ve tan excelente como el primero.","Now it looks ___ the first one.",["as excellent as"],"Now it looks as excellent as the first one."),
+        C("No es tan difícil como parece.","It is not ___ it seems.",["as hard as","as difficult as"],"It is not as hard as it seems."),
+        C("Tan pronto como puedas.","___ you can.",["as soon as"],"As soon as you can."),
+        C("Es tan alto como su padre.","He is ___ his father.",["as tall as"],"He is as tall as his father.")]},
+ {id:"so-too-enough", mod:"M7", grp:"degree", verb:"so / too / enough", es:"tan / demasiado / suficientemente", disc:"degree", triage:"B",
+  rule:"So: the tan family splits three ways. So + adjective for intensity (so tired that…). Too + adjective when the degree blocks something (too tired to work). Adjective + enough when it reaches the line (old enough, good enough). The English choice says what the degree DOES.",
+  cues:[C("Estaba tan cansado que me dormí en el sofá.","I was ___ I fell asleep on the sofa.",["so tired that"],"I was so tired that I fell asleep on the sofa."),
+        C("Estaba demasiado cansado para trabajar.","I was ___ to work.",["too tired"],"I was too tired to work."),
+        C("Ya es suficientemente grande para entender.","He is ___ to understand now.",["old enough","big enough"],"He is old enough to understand now."),
+        C("El café está demasiado caliente para tomarlo.","The coffee is ___ to drink.",["too hot"],"The coffee is too hot to drink.")]}
+];
+
 /* M9 — SPELLING. Three interference families, built from Oscar's own written
    errors (decission, ocurrance, invertion, daubt). Each word: the correct
    shape, three foils drawn from his error patterns, and the trap chunk that
@@ -1183,10 +1314,10 @@ var PATH = [
  {id:"M3", name:"False friends that flip meaning", sub:"15 traps — molestar pinned first, compromiso in three senses", open:true},
  {id:"M4", name:"Narrative time-travel", sub:"Telling a story across past, present and future — plus the weekly tale", open:true},
  {id:"M2", name:"Reporting minds", sub:"Reported speech, expectations and protected negation", open:true},
- {id:"M6", name:"One-word splits", sub:"hacer, quedar, llevar — one Spanish word, several English", open:false},
+ {id:"M6", name:"One-word splits", sub:"hacer, llevar, quedar, menos — one Spanish word, several English owners", open:true},
  {id:"M8", name:"At / on / in", sub:"Time, place and verb partnerships", open:false},
  {id:"M5", name:"Everyday naming bank", sub:"Kitchen, body, house and yard — the ground-floor words", open:false},
- {id:"M7", name:"Comparisons", sub:"Bigger, smoother, the most — without the Spanish detour", open:false},
+ {id:"M7", name:"Comparisons", sub:"Bigger, smoother, more fun — the ending chooses the form", open:true},
  {id:"M9", name:"Spelling", sub:"32 words in 5 families — the fifth is English colliding with English", open:true},
  {id:"M10", name:"Participles & twins", sub:"Irregular participles and confusable pairs", open:false},
  {id:"M12", name:"Countability, ’s & tags", sub:"News, advice, people — and the little endings", open:false},
@@ -1228,7 +1359,17 @@ var LESSONS = [
   scene:"The whiskey story — yours. At nine you were pouring; by ten your father was standing in the living-room door; by then you had already changed your clothes and thrown up twice. Told flat, event after event, it is a list. Told with anchors, the listener stands at ten and looks back. That looking-back is a verb form, and it is the one your instinct skips, jumping to I was.",
   commitEs:"Llevaba una hora esperando cuando ella llamó.", commitTarget:"had been waiting", fadeItem:"had-been", transferItem:"will-have", lab:"timeline",
   notice:"Spanish carries the looking-back inside llevaba, había, desde — the timeline hides in the verb you already have. English builds the timeline out of separate pieces: an anchor moment in the simple past, and had been / had + participle for everything standing before it. What did Spanish make you do? It made you narrate in one flat past, because Spanish never forced you to mark the step before the step.",
-  name:"So: a story stands on anchors. Set the moment (when she called), then mark what was already running before it (I had been waiting) — and for the deadline ahead, by next year I will have decided."}
+  name:"So: a story stands on anchors. Set the moment (when she called), then mark what was already running before it (I had been waiting) — and for the deadline ahead, by next year I will have decided."},
+ {id:"L6", mod:"M6", title:"Lesson 1 — One word, three owners", group:"M6 · One-word splits",
+  scene:"Your own sentence, from your own diagnosis: «esto lleva dos horas». You reached for the English and found nothing — the duration sense of llevar produced no word at all. It is not that you chose wrong. The shelf was empty, because Spanish keeps three English verbs inside one word and never told you where the walls are.",
+  commitEs:"El viaje a Managua lleva dos horas.", commitTarget:"takes", fadeItem:"hacer", transferItem:"llevar", lab:"splits",
+  notice:"Spanish hacer and llevar are single drawers holding three tools each. English sorts them by the job: making is building, doing is performing, taking is the fixed set — and all measured time. What did Spanish make you do? It made you search one drawer for a tool English keeps in three.",
+  name:"So: when one Spanish word covers three English ones, ask what the English word DOES — builds (make), performs (do), or carries and measures (take) — and the owner names itself."},
+ {id:"L7", mod:"M7", title:"Lesson 1 — The ending chooses the form", group:"M7 · Comparisons",
+  scene:"Your probe, in your own hand: «The transition should be more smooth» — written, then caught by your own eye and corrected to smoother. Your monitor knew the answer; your hand reached for a taught rule (two syllables take more) and the rule was wrong. The real map is not syllables. It is endings.",
+  commitEs:"La transición debe ser más suave.", commitTarget:"smoother", fadeItem:"er-or-more", transferItem:"as-as", lab:"zones",
+  notice:"A rule from school (count the syllables) points the wrong way on happier, simpler, narrower, more careful, more tired. English sorts comparatives by how the word ENDS: -y, -le, -er, -ow take -er; -ful, -less, -ing, -ed, -ous take more; one syllable takes -er; long words take more. What did Spanish make you do? Nothing, this time — a school rule did. Spanish más never asked you to choose a form at all.",
+  name:"So: do not count syllables; read the ending. The ending chooses the form — and where the word is a participle (tired, bored), the answer is always more."}
 ];
 </script>
 <script>
@@ -1245,9 +1386,9 @@ try { S = JSON.parse(localStorage.getItem(LS_KEY)) || defaultState(); } catch(e)
 Object.keys(defaultState()).forEach(function(k){ if(!(k in S)) S[k]=defaultState()[k]; });
 function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){} }
 function itemState(id){ if(!S.items[id]) S.items[id]={step:0, due:null, daysCorrect:[], graduated:false, seenCues:[]}; return S.items[id]; }
-function allItems(){ return M1.concat(M3, M2, M4); }
+function allItems(){ return M1.concat(M3, M2, M4, M6, M7); }
 function findItem(id){ var a=allItems(); for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; return null; }
-function modItems(mod){ if(mod==="M9") return []; if(mod==="M2") return M2; if(mod==="M4") return M4; return mod==="M1"? M1 : M3; }
+function modItems(mod){ if(mod==="M9") return []; if(mod==="M2") return M2; if(mod==="M4") return M4; if(mod==="M6") return M6; if(mod==="M7") return M7; return mod==="M1"? M1 : M3; }
 function mastery(disc){ return S.mastery[disc]||0; }
 function setMastery(disc, v){ S.mastery[disc]=Math.max(0,Math.min(100,Math.round(v))); }
 
@@ -1626,6 +1767,9 @@ function learnMatch(m){
   return true;
 }
 function renderLearn(){
+  var sub=document.getElementById("learnSub");
+  if(sub){ var openIds=PATH.filter(function(p){return p.open;}).map(function(p){return p.id;});
+    sub.textContent = "12 modules · "+(openIds.length>1 ? openIds.slice(0,-1).join(", ")+" and "+openIds[openIds.length-1] : openIds[0]||"none")+" open"; }
   var c = learnCounts();
   var defs = [
     {id:"all", label:"All", count:c.all},
@@ -1732,7 +1876,7 @@ function itemGroup(mod, it){
     if(M1_HOME[it.id]) return "home";
     return "story";
   }
-  if(mod==="M2"||mod==="M4") return it.grp||"all";
+  if(mod==="M2"||mod==="M4"||mod==="M6"||mod==="M7") return it.grp||"all";
   if(it.danger) return "danger";
   if(it.senses) return "senses";
   return "twins";
@@ -1755,6 +1899,18 @@ function modChipDefs(mod){
     {id:"all", label:"All", count:items.length},
     {id:"timeline", label:"Time anchors", count:n("timeline")},
     {id:"transitions", label:"Transitions", count:n("transitions")}
+  ];
+  if(mod==="M6") return [
+    {id:"all", label:"All", count:items.length},
+    {id:"verb-splits", label:"Verb splits", count:n("verb-splits")},
+    {id:"counting", label:"Counting", count:n("counting")},
+    {id:"meaning", label:"Meaning splits", count:n("meaning")}
+  ];
+  if(mod==="M7") return [
+    {id:"all", label:"All", count:items.length},
+    {id:"forms", label:"Forms", count:n("forms")},
+    {id:"meaning", label:"Meaning", count:n("meaning")},
+    {id:"degree", label:"Degree", count:n("degree")}
   ];
   return [
     {id:"all", label:"All", count:items.length},
@@ -1921,6 +2077,36 @@ function wireTimeline(){
 /* ============================== LESSONS ============================== */
 var STEP_NAMES=["Scene","Commit","Move it","Notice","Name it","Fade","Transfer","The gap"];
 var L=null;
+function splitsHTML(){
+  return "<h3>Move it — one Spanish verb, three English owners</h3>"+
+  "<p><em>Hacer</em> looks like one verb. Slide the owner and watch the sentences change hands — the Spanish never moves; the English sorts by the job.</p>"+
+  "<div class='seg' role='group' aria-label='Owner'><button type='button' data-sp='0' class='on'>make — it builds</button><button type='button' data-sp='1'>do — it performs</button><button type='button' data-sp='2'>take — the fixed set</button></div>"+
+  "<div class='splitout' id='splitsOut'></div>";
+}
+function wireSplits(){
+  var texts=["<strong>make</strong> — something exists afterwards that did not exist before.<br>“Make the bed.” · “Make a decision.” · “She makes dinner at seven.”",
+             "<strong>do</strong> — a duty or activity gets performed; nothing new is built.<br>“I do exercise at six.” · “She does her homework.” · “Do your best.”",
+             "<strong>take</strong> — the fixed set, plus every measured stretch of time.<br>“Take a photo.” · “Take a break.” · “The trip to Managua takes two hours.”"];
+  var out=document.getElementById("splitsOut");
+  function draw(i){ out.innerHTML=texts[i]; document.querySelectorAll("[data-sp]").forEach(function(b){ b.classList.toggle("on", +b.getAttribute("data-sp")===i); }); }
+  document.querySelectorAll("[data-sp]").forEach(function(b){ b.addEventListener("click", function(){ draw(+b.getAttribute("data-sp")); }); });
+  draw(0);
+}
+function zonesHTML(){
+  return "<h3>Move it — the ending chooses the form</h3>"+
+  "<p>Forget counting syllables. Slide the ending of the adjective and watch which form English demands.</p>"+
+  "<div class='seg' role='group' aria-label='Ending'><button type='button' data-z='0' class='on'>ends in -y</button><button type='button' data-z='1'>ends in -ful</button><button type='button' data-z='2'>a participle (-ed)</button></div>"+
+  "<div class='splitout' id='zonesOut'></div>";
+}
+function wireZones(){
+  var texts=["<strong>happy → happier.</strong><br>Endings in -y, -le, -er and -ow take -er, and the -y turns to -i: happy, happier; simple, simpler; narrow, narrower.",
+             "<strong>careful → more careful.</strong><br>Endings in -ful, -less, -ing and -ous refuse -er: more careful, more careless, more boring, more famous.",
+             "<strong>tired → more tired.</strong><br>Participles are adjectives built from verbs, and they always take more: more tired, more bored, more relaxed. Never «tireder»."];
+  var out=document.getElementById("zonesOut");
+  function draw(i){ out.innerHTML=texts[i]; document.querySelectorAll("[data-z]").forEach(function(b){ b.classList.toggle("on", +b.getAttribute("data-z")===i); }); }
+  document.querySelectorAll("[data-z]").forEach(function(b){ b.addEventListener("click", function(){ draw(+b.getAttribute("data-z")); }); });
+  draw(0);
+}
 function stepsHTML(cur){ return "<div class='steps'>"+STEP_NAMES.map(function(n,i){ return "<span class='"+(i===cur?"on":(i<cur?"done":""))+"'>"+(i+1)+". "+n+"</span>"; }).join("")+"</div>"; }
 function startLesson(id){
   var les = LESSONS.filter(function(x){return x.id===id;})[0];
@@ -1945,6 +2131,8 @@ function renderLesson(){
     else if(les.lab==="minds") html+=mindsHTML();
     else if(les.lab==="negation") html+=negationHTML();
     else if(les.lab==="timeline") html+=timelineHTML();
+    else if(les.lab==="splits") html+=splitsHTML();
+    else if(les.lab==="zones") html+=zonesHTML();
     else html+=compromisoHTML();
     var checks = les.lab==="builder" ? [{item:findItem("turn-on"), cue:findItem("turn-on").cues[1], cueIdx:1},{item:findItem("look-after"), cue:findItem("look-after").cues[0], cueIdx:0}]
       : les.lab==="builder3" ? [{item:findItem("run-out-of"), cue:findItem("run-out-of").cues[0], cueIdx:0},{item:findItem("come-up-with"), cue:findItem("come-up-with").cues[0], cueIdx:0}]
@@ -1952,6 +2140,8 @@ function renderLesson(){
       : les.lab==="minds" ? [{item:findItem("pretend-have"), cue:findItem("pretend-have").cues[0], cueIdx:0},{item:findItem("expected-me"), cue:findItem("expected-me").cues[0], cueIdx:0}]
       : les.lab==="negation" ? [{item:findItem("asif-negation"), cue:findItem("asif-negation").cues[0], cueIdx:0},{item:findItem("without-ing"), cue:findItem("without-ing").cues[0], cueIdx:0}]
       : les.lab==="timeline" ? [{item:findItem("had-been"), cue:findItem("had-been").cues[0], cueIdx:0},{item:findItem("will-have"), cue:findItem("will-have").cues[0], cueIdx:0}]
+      : les.lab==="splits" ? [{item:findItem("hacer"), cue:findItem("hacer").cues[0], cueIdx:0},{item:findItem("llevar"), cue:findItem("llevar").cues[2], cueIdx:2}]
+      : les.lab==="zones" ? [{item:findItem("er-or-more"), cue:findItem("er-or-more").cues[0], cueIdx:0},{item:findItem("as-as"), cue:findItem("as-as").cues[0], cueIdx:0}]
       : [{item:findItem("compromiso"), cue:findItem("compromiso").cues[0], cueIdx:0},{item:findItem("compromiso"), cue:findItem("compromiso").cues[2], cueIdx:2}];
     html+="<h3 style='margin-top:18px'>Manipulation checks — typed, not tapped</h3>"+labChecksHTML(checks)+
       "<div class='btnrow' id='labDone' style='display:none'><button type='button' class='btn' id='lsNext'>Continue → Notice</button></div>";
@@ -1959,7 +2149,7 @@ function renderLesson(){
     html+="<h3>Notice</h3><p class='big'><strong>What did Spanish make you do?</strong></p><p>"+esc(les.notice)+"</p><div class='btnrow'><button type='button' class='btn' id='lsNext'>Name it →</button></div>";
   } else if(L.step===4){
     html+="<h3>Name it</h3><p class='big'>"+esc(les.name)+"</p>"+
-      modItems(les.mod).filter(function(it){ return les.mod==="M3" ? ["molestar","compromiso"].indexOf(it.id)>=0 : it.rule && ((les.id==="L1A"&&it.disc==="formal-switch")||(les.id==="L1B"&&["sep-pronoun","insep-order"].indexOf(it.disc)>=0)||(les.id==="L1C"&&it.disc==="three-word")||((les.mod==="M2"||les.mod==="M4")&&(it.id===les.fadeItem||it.id===les.transferItem))); }).map(function(it){ return "<p class='small muted'>"+esc(it.rule)+"</p>"; }).join("")+
+      modItems(les.mod).filter(function(it){ return les.mod==="M3" ? ["molestar","compromiso"].indexOf(it.id)>=0 : it.rule && ((les.id==="L1A"&&it.disc==="formal-switch")||(les.id==="L1B"&&["sep-pronoun","insep-order"].indexOf(it.disc)>=0)||(les.id==="L1C"&&it.disc==="three-word")||((les.mod==="M2"||les.mod==="M4"||les.mod==="M6"||les.mod==="M7")&&(it.id===les.fadeItem||it.id===les.transferItem))); }).map(function(it){ return "<p class='small muted'>"+esc(it.rule)+"</p>"; }).join("")+
       "<div class='btnrow'><button type='button' class='btn' id='lsNext'>Fade it →</button></div>";
   } else if(L.step===5){
     var fc=fadeCue(L.fadeRung), it=fc.item;
@@ -1994,13 +2184,15 @@ function renderLesson(){
     var v=document.getElementById("commitIn").value.trim();
     if(!v){ var fb=document.getElementById("commitFb"); fb.className="feedback show bad"; fb.textContent="Commit something first — even wrong. The gap at the end is built from this attempt."; return; }
     S.commits[les.id]=v; save(); L.step++; renderLesson(); }); }
-  if(L.step===2){ if(les.lab==="builder") wireBuilder(); else if(les.lab==="builder3") wireBuilder3(); else if(les.lab==="split") wireSplit(); else if(les.lab==="minds") wireMinds(); else if(les.lab==="negation") wireNegation(); else if(les.lab==="timeline") wireTimeline(); else wireCompromiso();
+  if(L.step===2){ if(les.lab==="builder") wireBuilder(); else if(les.lab==="builder3") wireBuilder3(); else if(les.lab==="split") wireSplit(); else if(les.lab==="minds") wireMinds(); else if(les.lab==="negation") wireNegation(); else if(les.lab==="timeline") wireTimeline(); else if(les.lab==="splits") wireSplits(); else if(les.lab==="zones") wireZones(); else wireCompromiso();
     wireLabChecks(les.lab==="builder" ? [{item:findItem("turn-on"), cue:findItem("turn-on").cues[1], cueIdx:1},{item:findItem("look-after"), cue:findItem("look-after").cues[0], cueIdx:0}]
       : les.lab==="builder3" ? [{item:findItem("run-out-of"), cue:findItem("run-out-of").cues[0], cueIdx:0},{item:findItem("come-up-with"), cue:findItem("come-up-with").cues[0], cueIdx:0}]
       : les.lab==="split" ? [{item:findItem("put-off"), cue:findItem("put-off").cues[0], cueIdx:0},{item:findItem("call-off"), cue:findItem("call-off").cues[0], cueIdx:0}]
       : les.lab==="minds" ? [{item:findItem("pretend-have"), cue:findItem("pretend-have").cues[0], cueIdx:0},{item:findItem("expected-me"), cue:findItem("expected-me").cues[0], cueIdx:0}]
       : les.lab==="negation" ? [{item:findItem("asif-negation"), cue:findItem("asif-negation").cues[0], cueIdx:0},{item:findItem("without-ing"), cue:findItem("without-ing").cues[0], cueIdx:0}]
       : les.lab==="timeline" ? [{item:findItem("had-been"), cue:findItem("had-been").cues[0], cueIdx:0},{item:findItem("will-have"), cue:findItem("will-have").cues[0], cueIdx:0}]
+      : les.lab==="splits" ? [{item:findItem("hacer"), cue:findItem("hacer").cues[0], cueIdx:0},{item:findItem("llevar"), cue:findItem("llevar").cues[2], cueIdx:2}]
+      : les.lab==="zones" ? [{item:findItem("er-or-more"), cue:findItem("er-or-more").cues[0], cueIdx:0},{item:findItem("as-as"), cue:findItem("as-as").cues[0], cueIdx:0}]
       : [{item:findItem("compromiso"), cue:findItem("compromiso").cues[0], cueIdx:0},{item:findItem("compromiso"), cue:findItem("compromiso").cues[2], cueIdx:2}], null); }
   if(L.step===5){
     var fn=document.getElementById("fadeNext");
