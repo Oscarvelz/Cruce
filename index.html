@@ -587,7 +587,7 @@ html[data-theme="tron"]:is([data-hidden],[data-typing]) .btn::before{animation-p
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.13.0</p>
+      <p class="muted" style="margin-top:12px">Version 2.14.0</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -1014,7 +1014,17 @@ var DISCS = {
  "at-points":{name:"at — the point", mod:"M8"},
  "in-chunks":{name:"The in chunks", mod:"M8"},
  "end-pair":{name:"in the end / at the end", mod:"M8"},
- "partners":{name:"Verb partnerships", mod:"M8"}
+ "partners":{name:"Verb partnerships", mod:"M8"},
+ "name-kitchen":{name:"Naming — kitchen actions", mod:"M5"},
+ "name-body":{name:"Naming — body and skin", mod:"M5"},
+ "name-house":{name:"Naming — house and yard", mod:"M5"},
+ "name-clothing":{name:"Naming — clothing and appearance", mod:"M5"},
+ "name-people":{name:"Naming — personality labels", mod:"M5"},
+ "twins-forms":{name:"Twins in the has slot", mod:"M10"},
+ "participle-forms":{name:"Irregular participles", mod:"M10"},
+ "poss":{name:"Possession — 's and of", mod:"M12"},
+ "tags":{name:"Question tags", mod:"M12"},
+ "agree-flip":{name:"Agreement flips — people are", mod:"M12"}
 };
 M3.forEach(function(it){ DISCS[it.disc] = {name:"False friend: "+it.es, mod:"M3"}; });
 
@@ -1334,6 +1344,164 @@ var M8 = [
    per diagnostic slot (probe 1 rides in training as in-chunks cue 0). */
 var PROVE_M8 = [["on-time-pair",0],["on-time-pair",1],["on-regimen",0],["on-screens",0],["time-size",0],["transport",0],["transport",1],["on-mind",0],["at-points",0],["in-the-end",0],["partners",0],["partners",1]];
 
+/* M5 — EVERYDAY NAMING BANK (Wave D, 2026-11-16). A-type words: never taught,
+   not failed retrieval. From the Gemini study-guide themes (kitchen actions,
+   body and skin, house and yard, clothing and appearance, personality labels,
+   reduplications) and his own specimens (whisk unknown, chapped, puffy,
+   peeling, buttons are off, cool vs cold). Small items, three cues each. */
+var M5 = [
+ {id:"whisk", mod:"M5", grp:"kitchen", verb:"whisk", es:"batir (con batidor)", disc:"name-kitchen", triage:"A",
+  rule:"So: whisk is the wire tool and the action it does — eggs and cream are whisked, fast, with air going in. Stir is the spoon, slow, in a pot. Your default was stir for everything; the eggs disagree.",
+  cues:[C("Bate los huevos.","___ the eggs.",["whisk"],"Whisk the eggs."),
+        C("Bate la crema hasta que espese.","___ the cream until it thickens.",["whisk"],"Whisk the cream until it thickens."),
+        C("Ella bate la mezcla rápidamente.","She ___ the mixture quickly.",["whisks"],"She whisks the mixture quickly.")]},
+ {id:"foamy", mod:"M5", grp:"kitchen", verb:"foamy", es:"espumoso", disc:"name-kitchen", triage:"A",
+  rule:"So: foam is the mass of small bubbles; foamy is covered in it — beer, shampoo, shaving cream, the sea at the edge.",
+  cues:[C("La cerveza está espumosa.","The beer is ___.",["foamy"],"The beer is foamy."),
+        C("Un champú espumoso","a ___ shampoo",["foamy"],"a foamy shampoo"),
+        C("El jabón hace el agua espumosa.","The soap makes the water ___.",["foamy"],"The soap makes the water foamy.")]},
+ {id:"chapped", mod:"M5", grp:"body", verb:"chapped", es:"agrietado (piel, labios)", disc:"name-body", triage:"A",
+  rule:"So: skin cracked dry by cold or wind is chapped — lips first, then hands. Not broken, not cut: dried into little cracks.",
+  cues:[C("Tengo los labios agrietados por el frío.","My lips are ___ from the cold.",["chapped"],"My lips are chapped from the cold."),
+        C("Sus manos se agrietan en invierno.","His hands get ___ in winter.",["chapped"],"His hands get chapped in winter."),
+        C("Piel agrietada y seca","___ , dry skin",["chapped"],"Chapped, dry skin")]},
+ {id:"puffy", mod:"M5", grp:"body", verb:"puffy", es:"hinchado (ojos, cara)", disc:"name-body", triage:"A",
+  rule:"So: soft swelling with air or tears behind it is puffy — eyes after crying or no sleep, a face in the morning. Swollen is the medical word; puffy is the mirror's word.",
+  cues:[C("Despertó con los ojos hinchados.","He woke up with ___ eyes.",["puffy"],"He woke up with puffy eyes."),
+        C("Tengo la cara hinchada por la mañana.","My face is ___ in the morning.",["puffy"],"My face is puffy in the morning."),
+        C("Después de llorar, tenía los ojos hinchados.","After crying, her eyes were ___.",["puffy"],"After crying, her eyes were puffy.")]},
+ {id:"peeling", mod:"M5", grp:"house", verb:"peeling", es:"pelándose (pintura, piel)", disc:"name-house", triage:"A",
+  rule:"So: a surface coming off in thin pieces is peeling — paint, wallpaper, sunburned skin. Your written form was «pealing»: the word is peel + ing, with the double e of the fruit skin it is named after.",
+  cues:[C("La pintura se está pelando.","The paint is ___.",["peeling"],"The paint is peeling."),
+        C("Tengo los hombros pelándose por el sol.","My shoulders are ___ from the sun.",["peeling"],"My shoulders are peeling from the sun."),
+        C("El papel de la pared se está pelando.","The wallpaper is ___.",["peeling"],"The wallpaper is peeling.")]},
+ {id:"fluffy", mod:"M5", grp:"house", verb:"fluffy", es:"esponjoso / suave y aireado", disc:"name-house", triage:"A",
+  rule:"So: light, soft and full of air is fluffy — towels out of the dryer, a cake, a cat's coat, clouds. If you can press it and it springs back, it is fluffy.",
+  cues:[C("Toallas suaves y esponjosas","soft, ___ towels",["fluffy"],"soft, fluffy towels"),
+        C("Un pastel esponjoso","a ___ cake",["fluffy"],"a fluffy cake"),
+        C("El gato es esponjoso.","The cat is ___.",["fluffy"],"The cat is fluffy.")]},
+ {id:"buttons-off", mod:"M5", grp:"clothing", verb:"buttons are off", es:"mal abotonado", disc:"name-clothing", triage:"A",
+  rule:"So: a shirt buttoned into the wrong holes is not broken — its buttons are off: off the alignment, one hole out. The phrase is the whole diagnosis in three words.",
+  cues:[C("Estás mal abotonado.","Your buttons are ___.",["off"],"Your buttons are off."),
+        C("Se abotonó mal la camisa.","He buttoned his shirt wrong: the buttons are ___.",["off"],"He buttoned his shirt wrong: the buttons are off."),
+        C("Revísate: estás mal abotonado.","Check yourself: your buttons are ___.",["off"],"Check yourself: your buttons are off.")]},
+ {id:"wrinkled", mod:"M5", grp:"clothing", verb:"wrinkled", es:"arrugado", disc:"name-clothing", triage:"A",
+  rule:"So: cloth (and skin) full of unwanted lines is wrinkled. The w is silent: it sounds like «rinkled». An iron removes it from shirts; years put it on foreheads.",
+  cues:[C("La camisa está arrugada.","The shirt is ___.",["wrinkled"],"The shirt is wrinkled."),
+        C("No uses pantalones arrugados.","Don't wear ___ trousers.",["wrinkled"],"Don't wear wrinkled trousers."),
+        C("Su frente arrugada","his ___ forehead",["wrinkled"],"his wrinkled forehead")]},
+ {id:"cool-cold", mod:"M5", grp:"clothing", verb:"cool / cold", es:"fresco / frío", disc:"name-clothing", triage:"C",
+  rule:"So: temperature has a middle word Spanish skips. Cold is frío proper. Cool is fresco — pleasantly or noticeably less warm, not yet cold: a cool morning, cool water, a cool breeze. Your hot/heat family lives next door: this is its other half.",
+  cues:[C("Hoy hace fresco.","It's ___ today.",["cool"],"It's cool today."),
+        C("El agua de la ducha está fría.","The shower water is ___.",["cold"],"The shower water is cold."),
+        C("Una brisa fresca en la noche","a ___ breeze at night",["cool"],"a cool breeze at night"),
+        C("Sus manos están frías.","Her hands are ___.",["cold"],"Her hands are cold.")]},
+ {id:"stubborn", mod:"M5", grp:"people", verb:"stubborn", es:"terco", disc:"name-people", triage:"A",
+  rule:"So: the person who will not move once decided is stubborn — said of clients, children, mules and oneself, half criticism, half respect.",
+  cues:[C("Es muy terco.","He is very ___.",["stubborn"],"He is very stubborn."),
+        C("No seas terco.","Don't be ___.",["stubborn"],"Don't be stubborn."),
+        C("Una mula terca","a ___ mule",["stubborn"],"a stubborn mule")]},
+ {id:"shy", mod:"M5", grp:"people", verb:"shy", es:"tímido", disc:"name-people", triage:"A",
+  rule:"So: shy is quiet from fear of the room — with strangers, at the start, until trust arrives. Not a defect: a starting position.",
+  cues:[C("Ella es tímida con extraños.","She is ___ with strangers.",["shy"],"She is shy with strangers."),
+        C("No seas tímido.","Don't be ___.",["shy"],"Don't be shy."),
+        C("El niño tímido se escondió.","The ___ boy hid.",["shy"],"The shy boy hid.")]},
+ {id:"moody", mod:"M5", grp:"people", verb:"moody", es:"temperamental / de humor cambiante", disc:"name-people", triage:"A",
+  rule:"So: when the mood itself changes fast and without warning, the person is moody. A mood is a weather; moody is a climate of changing weather.",
+  cues:[C("Es temperamental: su humor cambia rápido.","He is ___ — his mood changes fast.",["moody"],"He is moody — his mood changes fast."),
+        C("No estés tan temperamental.","Don't be so ___.",["moody"],"Don't be so moody."),
+        C("Un adolescente temperamental","a ___ teenager",["moody"],"a moody teenager")]},
+ {id:"clumsy", mod:"M5", grp:"people", verb:"clumsy", es:"torpe", disc:"name-people", triage:"A",
+  rule:"So: hands and feet that drop, trip and knock things over are clumsy. Said of oneself it is an apology; of others, a diagnosis.",
+  cues:[C("Es torpe con las manos.","He is ___ with his hands.",["clumsy"],"He is clumsy with his hands."),
+        C("Qué torpe soy: rompí el vaso.","How ___ I am: I broke the glass.",["clumsy"],"How clumsy I am: I broke the glass."),
+        C("Un paso torpe","a ___ step",["clumsy"],"a clumsy step")]},
+ {id:"wishy-washy", mod:"M5", grp:"people", verb:"wishy-washy", es:"indeciso, sin carácter", disc:"name-people", triage:"A",
+  rule:"So: English keeps a drawer of rhyming pairs for character: wishy-washy is the person (or the answer) with no firm shape — yes, no, maybe, whatever you say. The rhyme is the mnemonic.",
+  cues:[C("Es un indeciso sin carácter.","He is so ___ : he never decides.",["wishy-washy"],"He is so wishy-washy: he never decides."),
+        C("Una respuesta vaga e indecisa","a ___ answer",["wishy-washy"],"a wishy-washy answer")]}
+];
+
+/* M10 — PARTICIPLES & TWINS (Wave D, 2026-11-16). The has ___ slot family:
+   irregular participles and the twin pairs his probes produced (has come for
+   his blank, spelled vs spilled, brought vs taught, worn for his wore gap). */
+var M10 = [
+ {id:"become-come", mod:"M10", grp:"twins", verb:"has become / has come", es:"se ha convertido / ha venido", disc:"twins-forms", triage:"C",
+  rule:"So: two verbs share the has ___ slot and Spanish blurs them. Come is venir arriving (he has come home, he has come a long way). Become is convertirse, turning into (it has become a problem, it has become clear). Your blank took «had»; the slot wanted come.",
+  cues:[C("Ha recorrido un largo camino.","He has ___ a long way.",["come"],"He has come a long way."),
+        C("Se ha convertido en un problema.","It has ___ a problem.",["become"],"It has become a problem."),
+        C("Ya ha vuelto a casa.","He has ___ home.",["come"],"He has come home."),
+        C("Ha quedado claro.","It has ___ clear.",["become"],"It has become clear.")]},
+ {id:"spill-spell", mod:"M10", grp:"twins", verb:"spill / spell", es:"derramar / deletrear", disc:"twins-forms", triage:"C",
+  rule:"So: one letter separates the accident from the alphabet. Spill, spilled — liquids escaping. Spell, spelled — letters in order. Your probes crossed them twice, in both directions: «spelled» in the spill slot, and «Is your name well spelled?» where the name itself was the question.",
+  cues:[C("Derramó el café.","He ___ the coffee.",["spilled"],"He spilled the coffee."),
+        C("¿Cómo se deletrea tu nombre?","How do you ___ your name?",["spell"],"How do you spell your name?"),
+        C("¿Tu nombre está bien deletreado?","Is your name well ___?",["spelled"],"Is your name well spelled?"),
+        C("No derrames la leche.","Don't ___ the milk.",["spill"],"Don't spill the milk.")]},
+ {id:"bring-teach", mod:"M10", grp:"twins", verb:"brought / taught", es:"trajo / enseñó", disc:"twins-forms", triage:"C",
+  rule:"So: brought and taught rhyme, and their presents are strangers: bring → brought (things arriving), teach → taught (knowledge arriving). The -aught/-ought pair is learned as a pair or not at all.",
+  cues:[C("Me trajo un libro.","He ___ me a book.",["brought"],"He brought me a book."),
+        C("Ella me enseñó inglés.","She ___ me English.",["taught"],"She taught me English."),
+        C("¿Quién te trajo eso?","Who ___ you that?",["brought"],"Who brought you that?"),
+        C("Su padre le enseñó a nadar.","His father ___ him to swim.",["taught"],"His father taught him to swim.")]},
+ {id:"participle-set-a", mod:"M10", grp:"participles", verb:"written / driven / spoken / broken", es:"escrito / manejado / hablado / roto", disc:"participle-forms", triage:"B",
+  rule:"So: the -en family keeps its old ending in the has slot: written, driven, spoken, broken. The past is different (wrote, drove, spoke, broke) — the participle is the form Spanish -ado/-ido never prepares you for.",
+  cues:[C("Ha escrito la nota.","He has ___ the note.",["written"],"He has written the note."),
+        C("Ha manejado toda la noche.","She has ___ all night.",["driven"],"She has driven all night."),
+        C("Ha hablado con él.","He has ___ to him.",["spoken"],"He has spoken to him."),
+        C("Se ha roto dos veces.","It has ___ twice.",["broken"],"It has broken twice.")]},
+ {id:"participle-set-b", mod:"M10", grp:"participles", verb:"chosen / begun / fallen / woken", es:"elegido / empezado / caído / despertado", disc:"participle-forms", triage:"B",
+  rule:"So: the vowel-shift family changes its middle in the has slot: chosen, begun, fallen, woken. Began is the past; begun is the participle — one letter, two jobs, and only the has tells you which one the slot wants.",
+  cues:[C("Ya ha elegido.","He has already ___.",["chosen"],"He has already chosen."),
+        C("Ya ha empezado.","It has already ___.",["begun"],"It has already begun."),
+        C("El precio ha caído.","The price has ___.",["fallen"],"The price has fallen."),
+        C("Se ha despertado temprano.","She has ___ early.",["woken"],"She has woken early.")]},
+ {id:"worn-paradigm", mod:"M10", grp:"participles", verb:"wear / wears / wore / worn", es:"llevar puesto (toda la familia)", disc:"participle-forms", triage:"B",
+  rule:"So: the whole wear family in one item, because the interview showed the split: wear today, wears for he and she, wore yesterday, worn after has. Wore is the one that would not come when you needed it — here it is drilled inside its family, where it belongs.",
+  cues:[C("Ha usado esa chaqueta por años.","He has ___ that jacket for years.",["worn"],"He has worn that jacket for years."),
+        C("Ayer llevó el traje azul.","Yesterday he ___ the blue suit.",["wore"],"Yesterday he wore the blue suit."),
+        C("Lleva gafas todos los días.","He ___ glasses every day.",["wears"],"He wears glasses every day.")]}
+];
+
+/* M12 — POSSESSIVE 's & TAGS (Wave D, 2026-11-16). The countability core moved
+   to M6 in Wave B; what remains here is what he marked S and ? himself on
+   2026-11-11: the possessive 's («I've been working on it... I need to work
+   on this») and question tags (the blind spot: heard as a universal ¿verdad?). */
+var M12 = [
+ {id:"poss-s", mod:"M12", grp:"possessive", verb:"'s (people)", es:"de (personas)", disc:"poss", triage:"B",
+  rule:"So: for people, English glues the owner to the thing with 's and drops the de entirely: my brother's car, my father's ranch, the client's appointment. The car of my brother is Spanish wearing English words — you marked this S yourself: it is being worked on here.",
+  cues:[C("Es el carro de mi hermano.","It is my brother___ car.",["'s"],"It is my brother's car."),
+        C("La finca de mi papá está en Nicaragua.","My father___ ranch is in Nicaragua.",["'s"],"My father's ranch is in Nicaragua."),
+        C("La cita del cliente es a las cinco.","The client___ appointment is at five.",["'s"],"The client's appointment is at five."),
+        C("El maestro de los niños llega tarde.","The children___ teacher is late.",["'s"],"The children's teacher is late.")]},
+ {id:"poss-plural", mod:"M12", grp:"possessive", verb:"' (plurals)", es:"de (plurales)", disc:"poss", triage:"B",
+  rule:"So: when the owner already ends in s, the glue is a bare apostrophe: the students' work, the clients' files, my parents' house. Nothing is pronounced — the apostrophe is written only, which is why it vanishes from speech-shaped writing.",
+  cues:[C("El trabajo de los estudiantes","the students___ work",["'"],"the students' work"),
+        C("Los archivos de los clientes","the clients___ files",["'"],"the clients' files"),
+        C("La casa de mis padres","my parents___ house",["'"],"my parents' house")]},
+ {id:"poss-of", mod:"M12", grp:"possessive", verb:"of (things)", es:"de (cosas)", disc:"poss", triage:"B",
+  rule:"So: things take of instead: the lid of the box, the name of the street, the door of the car. People glue with 's; objects phrase with of. Both exist for some nouns, but of is the safe default for things.",
+  cues:[C("La tapa de la caja","the lid ___ the box",["of"],"the lid of the box"),
+        C("El nombre de la calle","the name ___ the street",["of"],"the name of the street"),
+        C("La puerta del carro","the door ___ the car",["of"],"the door of the car")]},
+ {id:"tags-present", mod:"M12", grp:"tags", verb:"tags — present", es:"¿verdad? (presente)", disc:"tags", triage:"C",
+  rule:"So: Spanish has one tag for everything (¿verdad?); English rebuilds the tag from the sentence every time: copy its auxiliary, flip its sign. You're coming → aren't you? She works (does hidden inside) → doesn't she? They can → can't they? The tag is a mirror, not a phrase.",
+  cues:[C("Vienes mañana, ¿verdad?","You're coming tomorrow, ___?",["aren't you"],"You're coming tomorrow, aren't you?"),
+        C("Ella trabaja aquí, ¿verdad?","She works here, ___?",["doesn't she"],"She works here, doesn't she?"),
+        C("Ellos pueden nadar, ¿verdad?","They can swim, ___?",["can't they"],"They can swim, can't they?"),
+        C("Hace calor, ¿verdad?","It's hot, ___?",["isn't it"],"It's hot, isn't it?")]},
+ {id:"tags-past", mod:"M12", grp:"tags", verb:"tags — past", es:"¿verdad? (pasado)", disc:"tags", triage:"C",
+  rule:"So: past tags copy the past auxiliary the same way: a negative sentence takes a positive tag (He didn't call, did he?), a positive one takes the negative (You went, didn't you? — the did was hiding inside went).",
+  cues:[C("Él no llamó, ¿verdad?","He didn't call, ___?",["did he"],"He didn't call, did he?"),
+        C("Fuiste ayer, ¿verdad?","You went yesterday, ___?",["didn't you"],"You went yesterday, didn't you?"),
+        C("Ella estaba allí, ¿verdad?","She was there, ___?",["wasn't she"],"She was there, wasn't she?")]},
+ {id:"people-are", mod:"M12", grp:"agreement", verb:"people are", es:"la gente es / son", disc:"agree-flip", triage:"C",
+  rule:"So: la gente is singular in Spanish and plural in English, all the way down: people are, people were, people want. The word looks like a mass and behaves like a crowd. Your countability family (news is, advice) lives in M6; this is its mirror: a singular-looking Spanish noun that English counts as many.",
+  cues:[C("La gente es amable.","People ___ kind.",["are"],"People are kind."),
+        C("La gente estaba cansada.","People ___ tired.",["were"],"People were tired."),
+        C("La gente quiere respuestas.","People ___ answers.",["want"],"People want answers.")]}
+];
+
 /* M9 — SPELLING. Three interference families, built from Oscar's own written
    errors (decission, ocurrance, invertion, daubt). Each word: the correct
    shape, three foils drawn from his error patterns, and the trap chunk that
@@ -1403,11 +1571,11 @@ var PATH = [
  {id:"M2", name:"Reporting minds", sub:"Reported speech, expectations and protected negation", open:true},
  {id:"M6", name:"One-word splits", sub:"hacer, llevar, quedar, menos — one Spanish word, several English owners", open:true},
  {id:"M8", name:"At / on / in", sub:"The ON islands, time by size, and verb partnerships — opens with your eight probe sentences", open:true},
- {id:"M5", name:"Everyday naming bank", sub:"Kitchen, body, house and yard — the ground-floor words", open:false},
+ {id:"M5", name:"Everyday naming bank", sub:"Kitchen, body, house, clothing, people — the ground-floor words, dosed daily", open:true},
  {id:"M7", name:"Comparisons", sub:"Bigger, smoother, more fun — the ending chooses the form", open:true},
  {id:"M9", name:"Spelling", sub:"32 words in 5 families — the fifth is English colliding with English", open:true},
- {id:"M10", name:"Participles & twins", sub:"Irregular participles and confusable pairs", open:false},
- {id:"M12", name:"Countability, ’s & tags", sub:"News, advice, people — and the little endings", open:false},
+ {id:"M10", name:"Participles & twins", sub:"The has ___ slot: become/come, spill/spell, brought/taught, worn", open:true},
+ {id:"M12", name:"Countability, ’s & tags", sub:"Possession and the rebuilt tag — countability itself lives in M6 now", open:true},
  {id:"M11", name:"The 12 vowels", sub:"Hearing and making the vowel system", open:false}
 ];
 
@@ -1461,7 +1629,22 @@ var LESSONS = [
   scene:"On November 11 I gave you eight Spanish sentences built to hit the abstract layer where you said it breaks — on medication, on TV, on my mind, a tiempo twice. You ranked the families instead: in easy peasy, at second, on hard. The eight sentences were never answered. They waited five days, and they are this module's entrance exam: Prove it first deals them, untouched, before any teaching.",
   commitEs:"Eso ha estado en mi mente toda la semana.", commitTarget:"on", fadeItem:"on-regimen", transferItem:"on-time-pair", lab:"islands",
   notice:"Your instinct says en = in, and it is a good instinct almost everywhere — in July, in recovery, in my opinion it pays out. The on islands are the places where English quietly chose the other word: signals, regimens, and a handful of fixed phrases. What did Spanish make you do? It made one honest default answer for three different words, and the default only fails where you cannot see it failing.",
-  name:"So: do not derive these — collect them. On for what is transmitted (TV, phone, internet), on for what holds a person (medication, probation, duty), on for the fixed islands (my mind, purpose, the other hand). The rest of the map runs by size: in for periods, on for days, at for points."}
+  name:"So: do not derive these — collect them. On for what is transmitted (TV, phone, internet), on for what holds a person (medication, probation, duty), on for the fixed islands (my mind, purpose, the other hand). The rest of the map runs by size: in for periods, on for days, at for points."},
+ {id:"L5", mod:"M5", title:"Lesson 1 — The words that were never taught", group:"M5 · Everyday naming bank",
+  scene:"The study guide listed them by the dozen: whisk, chapped, puffy, peeling. I asked if you knew them and you answered honestly: «I don't, really.» These are not retrieval failures and not Spanish interference. Nobody ever taught you the ground floor of the house: the words for what hands, skin, paint and shirts do every day.",
+  commitEs:"Tengo los labios agrietados por el frío.", commitTarget:"chapped", fadeItem:"whisk", transferItem:"chapped", lab:"bank",
+  notice:"Your English was built from the university down: concepts first, objects later. So the abstract vocabulary is strong and the kitchen drawer is empty. What did Spanish make you do? Nothing, this time — the words were simply never installed. That is the cheapest kind of gap there is: one honest encoding each, in a real sentence of yours.",
+  name:"So: a naming word is learned where it lives — whisk at the eggs, chapped on the lips, peeling on the wall. This bank pays them out in small daily doses, one theme at a time, always inside a sentence from your house, your ranch, your work."},
+ {id:"L10", mod:"M10", title:"Lesson 1 — The has slot", group:"M10 · Participles & twins",
+  scene:"Your probe sentence had a hole in it: «He has ___ a long way.» You reached in and offered «had» — the only English word that felt like it belonged after has. It does not. The slot after has belongs to a family of forms Spanish never shows you, and two of its members are twins that swap places when you are not looking: come and become, spill and spell.",
+  commitEs:"Ha recorrido un largo camino.", commitTarget:"come", fadeItem:"become-come", transferItem:"spill-spell", lab:"hasslot",
+  notice:"Spanish participles are regular citizens: -ado, -ido, done. English keeps an old irregular family in the has slot (written, begun, worn) and a few pairs that differ by one letter and mean different worlds. What did Spanish make you do? It made you expect the participle to be predictable — and to grab the nearest past-shaped word when it was not.",
+  name:"So: after has, ask two questions. Is it the irregular family (written, driven, begun, worn)? And if it is a twin, which world: arriving (come) or turning into (become), letters (spell) or liquids (spill), things carried (brought) or knowledge carried (taught)?"},
+ {id:"L12", mod:"M12", title:"Lesson 1 — The little endings that rebuild themselves", group:"M12 · Possessive 's & tags",
+  scene:"Two markings of yours built this module. The possessive 's you graded S: «I've been working on it. I need to work on this.» And the tags you graded with a question mark: you had never thought of aren't you, did he, can't she as your ¿verdad? in disguise. One ending you are still installing; the other you had never seen at all.",
+  commitEs:"Es el carro de mi hermano.", commitTarget:"'s", fadeItem:"poss-s", transferItem:"tags-present", lab:"taglab",
+  notice:"Spanish de does possession with a whole phrase, so the glued 's feels like a shortcut you cannot trust, and Spanish ¿verdad? does every tag with one word, so the rebuilt English tag is invisible as a system. What did Spanish make you do? It made you expand what English compresses, and miss what English rebuilds from scratch each time.",
+  name:"So: people glue with 's (my brother's car), plurals with a bare apostrophe (the clients' files), things phrase with of (the lid of the box). And a tag is a mirror: copy the sentence's auxiliary, flip its sign — you're coming, aren't you?"}
 ];
 </script>
 <script>
@@ -1478,9 +1661,9 @@ try { S = JSON.parse(localStorage.getItem(LS_KEY)) || defaultState(); } catch(e)
 Object.keys(defaultState()).forEach(function(k){ if(!(k in S)) S[k]=defaultState()[k]; });
 function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){} }
 function itemState(id){ if(!S.items[id]) S.items[id]={step:0, due:null, daysCorrect:[], graduated:false, seenCues:[]}; return S.items[id]; }
-function allItems(){ return M1.concat(M3, M2, M4, M6, M7, M8); }
+function allItems(){ return M1.concat(M3, M2, M4, M6, M7, M8, M5, M10, M12); }
 function findItem(id){ var a=allItems(); for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; return null; }
-function modItems(mod){ if(mod==="M9") return []; if(mod==="M2") return M2; if(mod==="M4") return M4; if(mod==="M6") return M6; if(mod==="M7") return M7; if(mod==="M8") return M8; return mod==="M1"? M1 : M3; }
+function modItems(mod){ if(mod==="M9") return []; if(mod==="M2") return M2; if(mod==="M4") return M4; if(mod==="M6") return M6; if(mod==="M7") return M7; if(mod==="M8") return M8; if(mod==="M5") return M5; if(mod==="M10") return M10; if(mod==="M12") return M12; return mod==="M1"? M1 : M3; }
 function mastery(disc){ return S.mastery[disc]||0; }
 function setMastery(disc, v){ S.mastery[disc]=Math.max(0,Math.min(100,Math.round(v))); }
 
@@ -1968,7 +2151,7 @@ function itemGroup(mod, it){
     if(M1_HOME[it.id]) return "home";
     return "story";
   }
-  if(mod==="M2"||mod==="M4"||mod==="M6"||mod==="M7"||mod==="M8") return it.grp||"all";
+  if(mod==="M2"||mod==="M4"||mod==="M6"||mod==="M7"||mod==="M8"||mod==="M5"||mod==="M10"||mod==="M12") return it.grp||"all";
   if(it.danger) return "danger";
   if(it.senses) return "senses";
   return "twins";
@@ -2010,6 +2193,25 @@ function modChipDefs(mod){
     {id:"time", label:"Time", count:n("time")},
     {id:"place", label:"Place", count:n("place")},
     {id:"chunks", label:"Chunks + partners", count:n("chunks")}
+  ];
+  if(mod==="M5") return [
+    {id:"all", label:"All", count:items.length},
+    {id:"kitchen", label:"Kitchen", count:n("kitchen")},
+    {id:"body", label:"Body", count:n("body")},
+    {id:"house", label:"House", count:n("house")},
+    {id:"clothing", label:"Clothing", count:n("clothing")},
+    {id:"people", label:"People", count:n("people")}
+  ];
+  if(mod==="M10") return [
+    {id:"all", label:"All", count:items.length},
+    {id:"twins", label:"Twins", count:n("twins")},
+    {id:"participles", label:"Participles", count:n("participles")}
+  ];
+  if(mod==="M12") return [
+    {id:"all", label:"All", count:items.length},
+    {id:"possessive", label:"Possessive", count:n("possessive")},
+    {id:"tags", label:"Tags", count:n("tags")},
+    {id:"agreement", label:"Agreement", count:n("agreement")}
   ];
   return [
     {id:"all", label:"All", count:items.length},
@@ -2221,6 +2423,51 @@ function wireIslands(){
   document.querySelectorAll("[data-isl]").forEach(function(b){ b.addEventListener("click", function(){ draw(+b.getAttribute("data-isl")); }); });
   draw(0);
 }
+function bankHTML(){
+  return "<h3>Move it — the bank, by rooms of the house</h3>"+
+  "<p>These words were never taught, so there is nothing to contrast — only to install, each in the room where it lives. Slide the room.</p>"+
+  "<div class='seg' role='group' aria-label='Room'><button type='button' data-bk='0' class='on'>Kitchen</button><button type='button' data-bk='1'>Body and skin</button><button type='button' data-bk='2'>House and clothes</button></div>"+
+  "<div class='splitout' id='bankOut'></div>";
+}
+function wireBank(){
+  var texts=["<strong>Kitchen:</strong> whisk (the eggs — fast, with air) · foamy (beer, shampoo).<br>Stir is the spoon in the pot; whisk is the wire tool and its action.",
+             "<strong>Body and skin:</strong> chapped (lips and hands, cracked dry by cold) · puffy (eyes after crying, a face in the morning).<br>The mirror's words, not the doctor's.",
+             "<strong>House and clothes:</strong> peeling (paint, wallpaper, sunburn) · fluffy (towels, cake, a cat) · wrinkled (a shirt, a forehead) · buttons are off (buttoned into the wrong holes)."];
+  var out=document.getElementById("bankOut");
+  function draw(i){ out.innerHTML=texts[i]; document.querySelectorAll("[data-bk]").forEach(function(b){ b.classList.toggle("on", +b.getAttribute("data-bk")===i); }); }
+  document.querySelectorAll("[data-bk]").forEach(function(b){ b.addEventListener("click", function(){ draw(+b.getAttribute("data-bk")); }); });
+  draw(0);
+}
+function hasslotHTML(){
+  return "<h3>Move it — two twins fight for the has slot</h3>"+
+  "<p>Same frame, «He has ___», two different worlds. Slide the verb and watch which world the sentence falls into.</p>"+
+  "<div class='seg' role='group' aria-label='Twin'><button type='button' data-hs='0' class='on'>has come</button><button type='button' data-hs='1'>has become</button><button type='button' data-hs='2'>has spilled / has spelled</button></div>"+
+  "<div class='splitout' id='hsOut'></div>";
+}
+function wireHasslot(){
+  var texts=["<strong>He has come a long way.</strong><br>Come is arriving: venir completed. He has come home. He has come back. If the person or thing got here, it is come.",
+             "<strong>It has become a problem.</strong><br>Become is turning into: convertirse completed. It has become clear. She has become a psychologist. If something changed into something else, it is become.",
+             "<strong>He has spilled the coffee. / Is your name well spelled?</strong><br>One letter apart: spill for liquids escaping, spell for letters in order. The twin that costs a record is the one nobody notices."];
+  var out=document.getElementById("hsOut");
+  function draw(i){ out.innerHTML=texts[i]; document.querySelectorAll("[data-hs]").forEach(function(b){ b.classList.toggle("on", +b.getAttribute("data-hs")===i); }); }
+  document.querySelectorAll("[data-hs]").forEach(function(b){ b.addEventListener("click", function(){ draw(+b.getAttribute("data-hs")); }); });
+  draw(0);
+}
+function taglabHTML(){
+  return "<h3>Move it — one ¿verdad?, a hundred mirrors</h3>"+
+  "<p>Spanish asks ¿verdad? after anything. English rebuilds the little ending from the sentence itself. Slide the sentence and watch its tag being built.</p>"+
+  "<div class='seg' role='group' aria-label='Sentence'><button type='button' data-tg='0' class='on'>You're coming</button><button type='button' data-tg='1'>He didn't call</button><button type='button' data-tg='2'>She works here</button></div>"+
+  "<div class='splitout' id='tgOut'></div>";
+}
+function wireTaglab(){
+  var texts=["<strong>You're coming, aren't you?</strong><br>The sentence's auxiliary is are; the tag copies it and flips the sign: are → aren't, and keeps the person: you.",
+             "<strong>He didn't call, did he?</strong><br>The sentence is negative, so the tag goes positive — and the past auxiliary is did, the one hiding inside didn't.",
+             "<strong>She works here, doesn't she?</strong><br>No auxiliary on the surface: works hides a does. The tag digs it out, flips it, and hands it back: doesn't she?"];
+  var out=document.getElementById("tgOut");
+  function draw(i){ out.innerHTML=texts[i]; document.querySelectorAll("[data-tg]").forEach(function(b){ b.classList.toggle("on", +b.getAttribute("data-tg")===i); }); }
+  document.querySelectorAll("[data-tg]").forEach(function(b){ b.addEventListener("click", function(){ draw(+b.getAttribute("data-tg")); }); });
+  draw(0);
+}
 function stepsHTML(cur){ return "<div class='steps'>"+STEP_NAMES.map(function(n,i){ return "<span class='"+(i===cur?"on":(i<cur?"done":""))+"'>"+(i+1)+". "+n+"</span>"; }).join("")+"</div>"; }
 function startLesson(id){
   var les = LESSONS.filter(function(x){return x.id===id;})[0];
@@ -2248,6 +2495,9 @@ function renderLesson(){
     else if(les.lab==="splits") html+=splitsHTML();
     else if(les.lab==="zones") html+=zonesHTML();
     else if(les.lab==="islands") html+=islandsHTML();
+    else if(les.lab==="bank") html+=bankHTML();
+    else if(les.lab==="hasslot") html+=hasslotHTML();
+    else if(les.lab==="taglab") html+=taglabHTML();
     else html+=compromisoHTML();
     var checks = les.lab==="builder" ? [{item:findItem("turn-on"), cue:findItem("turn-on").cues[1], cueIdx:1},{item:findItem("look-after"), cue:findItem("look-after").cues[0], cueIdx:0}]
       : les.lab==="builder3" ? [{item:findItem("run-out-of"), cue:findItem("run-out-of").cues[0], cueIdx:0},{item:findItem("come-up-with"), cue:findItem("come-up-with").cues[0], cueIdx:0}]
@@ -2258,6 +2508,9 @@ function renderLesson(){
       : les.lab==="splits" ? [{item:findItem("hacer"), cue:findItem("hacer").cues[0], cueIdx:0},{item:findItem("llevar"), cue:findItem("llevar").cues[2], cueIdx:2}]
       : les.lab==="zones" ? [{item:findItem("er-or-more"), cue:findItem("er-or-more").cues[0], cueIdx:0},{item:findItem("as-as"), cue:findItem("as-as").cues[0], cueIdx:0}]
       : les.lab==="islands" ? [{item:findItem("on-regimen"), cue:findItem("on-regimen").cues[0], cueIdx:0},{item:findItem("on-time-pair"), cue:findItem("on-time-pair").cues[0], cueIdx:0}]
+      : les.lab==="bank" ? [{item:findItem("whisk"), cue:findItem("whisk").cues[0], cueIdx:0},{item:findItem("chapped"), cue:findItem("chapped").cues[0], cueIdx:0}]
+      : les.lab==="hasslot" ? [{item:findItem("become-come"), cue:findItem("become-come").cues[0], cueIdx:0},{item:findItem("spill-spell"), cue:findItem("spill-spell").cues[1], cueIdx:1}]
+      : les.lab==="taglab" ? [{item:findItem("poss-s"), cue:findItem("poss-s").cues[0], cueIdx:0},{item:findItem("tags-present"), cue:findItem("tags-present").cues[0], cueIdx:0}]
       : [{item:findItem("compromiso"), cue:findItem("compromiso").cues[0], cueIdx:0},{item:findItem("compromiso"), cue:findItem("compromiso").cues[2], cueIdx:2}];
     html+="<h3 style='margin-top:18px'>Manipulation checks — typed, not tapped</h3>"+labChecksHTML(checks)+
       "<div class='btnrow' id='labDone' style='display:none'><button type='button' class='btn' id='lsNext'>Continue → Notice</button></div>";
@@ -2265,7 +2518,7 @@ function renderLesson(){
     html+="<h3>Notice</h3><p class='big'><strong>What did Spanish make you do?</strong></p><p>"+esc(les.notice)+"</p><div class='btnrow'><button type='button' class='btn' id='lsNext'>Name it →</button></div>";
   } else if(L.step===4){
     html+="<h3>Name it</h3><p class='big'>"+esc(les.name)+"</p>"+
-      modItems(les.mod).filter(function(it){ return les.mod==="M3" ? ["molestar","compromiso"].indexOf(it.id)>=0 : it.rule && ((les.id==="L1A"&&it.disc==="formal-switch")||(les.id==="L1B"&&["sep-pronoun","insep-order"].indexOf(it.disc)>=0)||(les.id==="L1C"&&it.disc==="three-word")||((les.mod==="M2"||les.mod==="M4"||les.mod==="M6"||les.mod==="M7"||les.mod==="M8")&&(it.id===les.fadeItem||it.id===les.transferItem))); }).map(function(it){ return "<p class='small muted'>"+esc(it.rule)+"</p>"; }).join("")+
+      modItems(les.mod).filter(function(it){ return les.mod==="M3" ? ["molestar","compromiso"].indexOf(it.id)>=0 : it.rule && ((les.id==="L1A"&&it.disc==="formal-switch")||(les.id==="L1B"&&["sep-pronoun","insep-order"].indexOf(it.disc)>=0)||(les.id==="L1C"&&it.disc==="three-word")||((les.mod==="M2"||les.mod==="M4"||les.mod==="M6"||les.mod==="M7"||les.mod==="M8"||les.mod==="M5"||les.mod==="M10"||les.mod==="M12")&&(it.id===les.fadeItem||it.id===les.transferItem))); }).map(function(it){ return "<p class='small muted'>"+esc(it.rule)+"</p>"; }).join("")+
       "<div class='btnrow'><button type='button' class='btn' id='lsNext'>Fade it →</button></div>";
   } else if(L.step===5){
     var fc=fadeCue(L.fadeRung), it=fc.item;
@@ -2300,7 +2553,7 @@ function renderLesson(){
     var v=document.getElementById("commitIn").value.trim();
     if(!v){ var fb=document.getElementById("commitFb"); fb.className="feedback show bad"; fb.textContent="Commit something first — even wrong. The gap at the end is built from this attempt."; return; }
     S.commits[les.id]=v; save(); L.step++; renderLesson(); }); }
-  if(L.step===2){ if(les.lab==="builder") wireBuilder(); else if(les.lab==="builder3") wireBuilder3(); else if(les.lab==="split") wireSplit(); else if(les.lab==="minds") wireMinds(); else if(les.lab==="negation") wireNegation(); else if(les.lab==="timeline") wireTimeline(); else if(les.lab==="splits") wireSplits(); else if(les.lab==="zones") wireZones(); else if(les.lab==="islands") wireIslands(); else wireCompromiso();
+  if(L.step===2){ if(les.lab==="builder") wireBuilder(); else if(les.lab==="builder3") wireBuilder3(); else if(les.lab==="split") wireSplit(); else if(les.lab==="minds") wireMinds(); else if(les.lab==="negation") wireNegation(); else if(les.lab==="timeline") wireTimeline(); else if(les.lab==="splits") wireSplits(); else if(les.lab==="zones") wireZones(); else if(les.lab==="islands") wireIslands(); else if(les.lab==="bank") wireBank(); else if(les.lab==="hasslot") wireHasslot(); else if(les.lab==="taglab") wireTaglab(); else wireCompromiso();
     wireLabChecks(les.lab==="builder" ? [{item:findItem("turn-on"), cue:findItem("turn-on").cues[1], cueIdx:1},{item:findItem("look-after"), cue:findItem("look-after").cues[0], cueIdx:0}]
       : les.lab==="builder3" ? [{item:findItem("run-out-of"), cue:findItem("run-out-of").cues[0], cueIdx:0},{item:findItem("come-up-with"), cue:findItem("come-up-with").cues[0], cueIdx:0}]
       : les.lab==="split" ? [{item:findItem("put-off"), cue:findItem("put-off").cues[0], cueIdx:0},{item:findItem("call-off"), cue:findItem("call-off").cues[0], cueIdx:0}]
@@ -2310,6 +2563,9 @@ function renderLesson(){
       : les.lab==="splits" ? [{item:findItem("hacer"), cue:findItem("hacer").cues[0], cueIdx:0},{item:findItem("llevar"), cue:findItem("llevar").cues[2], cueIdx:2}]
       : les.lab==="zones" ? [{item:findItem("er-or-more"), cue:findItem("er-or-more").cues[0], cueIdx:0},{item:findItem("as-as"), cue:findItem("as-as").cues[0], cueIdx:0}]
       : les.lab==="islands" ? [{item:findItem("on-regimen"), cue:findItem("on-regimen").cues[0], cueIdx:0},{item:findItem("on-time-pair"), cue:findItem("on-time-pair").cues[0], cueIdx:0}]
+      : les.lab==="bank" ? [{item:findItem("whisk"), cue:findItem("whisk").cues[0], cueIdx:0},{item:findItem("chapped"), cue:findItem("chapped").cues[0], cueIdx:0}]
+      : les.lab==="hasslot" ? [{item:findItem("become-come"), cue:findItem("become-come").cues[0], cueIdx:0},{item:findItem("spill-spell"), cue:findItem("spill-spell").cues[1], cueIdx:1}]
+      : les.lab==="taglab" ? [{item:findItem("poss-s"), cue:findItem("poss-s").cues[0], cueIdx:0},{item:findItem("tags-present"), cue:findItem("tags-present").cues[0], cueIdx:0}]
       : [{item:findItem("compromiso"), cue:findItem("compromiso").cues[0], cueIdx:0},{item:findItem("compromiso"), cue:findItem("compromiso").cues[2], cueIdx:2}], null); }
   if(L.step===5){
     var fn=document.getElementById("fadeNext");
