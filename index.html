@@ -587,7 +587,7 @@ html[data-theme="tron"]:is([data-hidden],[data-typing]) .btn::before{animation-p
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.15.0</p>
+      <p class="muted" style="margin-top:12px">Version 2.16.0</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -1355,6 +1355,17 @@ var PROVE_M8 = [["on-time-pair",0],["on-time-pair",1],["on-regimen",0],["on-scre
    A drill unlocks only when its item has collected 2+ FORM-SLIP verdicts —
    the drill is earned by real slips, never assigned blind. Slots are
    base / third person / past. */
+/* M11 ear diagnostic pairs (Wave E, first half, 2026-11-16): the contrasts
+   Spanish's five vowels predict he will merge. Measured in-app by ear; only
+   proven merges get trained. Production stays gated on his voice list. */
+var EAR_PAIRS = [
+ {id:"ee-i", a:"sheep", b:"ship"},
+ {id:"oo-u", a:"fool", b:"full"},
+ {id:"a-e", a:"bad", b:"bed"},
+ {id:"ay-e", a:"late", b:"let"},
+ {id:"ar-u", a:"cart", b:"cut"},
+ {id:"ear-eer", a:"bear", b:"beer"}
+];
 var PARADIGMS = {
  "molestar":["bother","bothers","bothered"],
  "asistir":["attend","attends","attended"],
@@ -1604,7 +1615,7 @@ var PATH = [
  {id:"M9", name:"Spelling", sub:"36 words in 5 families — the fifth is English colliding with English", open:true},
  {id:"M10", name:"Participles & twins", sub:"The has ___ slot: become/come, spill/spell, brought/taught, worn", open:true},
  {id:"M12", name:"Countability, ’s & tags", sub:"Possession and the rebuilt tag — countability itself lives in M6 now", open:true},
- {id:"M11", name:"The 12 vowels", sub:"Hearing and making the vowel system", open:false}
+ {id:"M11", name:"The 12 vowels", sub:"Ear first: the diagnostic measures which vowels your ear separates — training follows the results", open:true}
 ];
 
 var LESSONS = [
@@ -1691,7 +1702,7 @@ function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e)
 function itemState(id){ if(!S.items[id]) S.items[id]={step:0, due:null, daysCorrect:[], graduated:false, seenCues:[]}; return S.items[id]; }
 function allItems(){ return M1.concat(M3, M2, M4, M6, M7, M8, M5, M10, M12); }
 function findItem(id){ var a=allItems(); for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; return null; }
-function modItems(mod){ if(mod==="M9") return []; if(mod==="M2") return M2; if(mod==="M4") return M4; if(mod==="M6") return M6; if(mod==="M7") return M7; if(mod==="M8") return M8; if(mod==="M5") return M5; if(mod==="M10") return M10; if(mod==="M12") return M12; return mod==="M1"? M1 : M3; }
+function modItems(mod){ if(mod==="M9") return []; if(mod==="M2") return M2; if(mod==="M4") return M4; if(mod==="M6") return M6; if(mod==="M7") return M7; if(mod==="M8") return M8; if(mod==="M5") return M5; if(mod==="M10") return M10; if(mod==="M12") return M12; if(mod==="M11") return []; return mod==="M1"? M1 : M3; }
 function mastery(disc){ return S.mastery[disc]||0; }
 function setMastery(disc, v){ S.mastery[disc]=Math.max(0,Math.min(100,Math.round(v))); }
 
@@ -2105,7 +2116,11 @@ function renderLearn(){
     if(m.open){
       var lessons = LESSONS.filter(function(l){ return l.mod===m.id; });
       var doneN = lessons.filter(function(l){ return S.lessonsDone[l.id]; }).length;
-      if(m.id==="M9"){
+      if(m.id==="M11"){
+        var eN = EAR_PAIRS.filter(function(p){ return S.ear && S.ear[p.id] && S.ear[p.id].n; }).length;
+        html += "<div class='modmeta'><span class='small muted'>"+(eN? eN+" of "+EAR_PAIRS.length+" vowel contrasts measured — results inside the module" : "Not measured yet — the ear diagnostic takes about three minutes")+"</span></div>"+
+          "<div class='btnrow'><button type='button' class='btn secondary' data-open-mod='"+m.id+"'>Open module</button></div>";
+      } else if(m.id==="M9"){
         var sAvg = Math.round(SPELL.reduce(function(a,g){ return a+mastery(g.disc); },0)/SPELL.length);
         var sGrad = allSpellWords().filter(function(w){ var st=spellSt(w.id); return st && st.graduated; }).length;
         html += "<div class='modmeta'><div class='bar' style='max-width:340px'><i style='width:"+sAvg+"%'></i></div>"+
@@ -2150,6 +2165,7 @@ function wireFormsDrill(mod){
 }
 function openModule(mod){
   if(mod==="M9"){ renderSpellModule(); return; }
+  if(mod==="M11"){ renderEarModule(); return; }
   var items = modItems(mod), lessons = LESSONS.filter(function(l){return l.mod===mod;});
   var discs = []; items.forEach(function(it){ if(discs.indexOf(it.disc)<0) discs.push(it.disc); });
   var g = S.gates[mod]||{}; currentMod = mod;
@@ -3003,18 +3019,21 @@ function intruderPool(){
   });
 }
 function renderTrainInfo(){
+  var sdwN = spellDueWords().length;
+  var spellLine = sdwN? "<p class='small'><strong>Spelling:</strong> "+sdwN+" word"+(sdwN===1?"":"s")+" due today. <button type='button' class='chipbtn' id='homeSpellBtn'>Train spelling</button></p>" : "";
   var due = allItems().filter(function(it){ var d=itemState(it.id).due; return d && d<=todayStr(); });
   var forced = allItems().filter(function(it){ return (S.strikes[it.disc]||0)>=2; });
   var nextDue = allItems().map(function(it){ return itemState(it.id).due; }).filter(Boolean).sort()[0];
   var el=document.getElementById("trainInfo"); if(!el) return;
   if(due.length===0 && forced.length===0){
-    el.innerHTML="<p><strong>Nothing is due today.</strong> "+(nextDue? "The next items fall due on <strong>"+nextDue+"</strong>.":"Run a lesson to start the schedule.")+"</p>"+
+    el.innerHTML="<p><strong>Nothing is due today.</strong> "+(nextDue? "The next items fall due on <strong>"+nextDue+"</strong>.":"Run a lesson to start the schedule.")+"</p>"+spellLine+
      "<p class='muted small'>Practice doesn’t change any schedule.</p>"+
      "<div class='btnrow'><button type='button' class='btn secondary' id='practiceBtn'>Practice anyway</button></div>";
     var pb=document.getElementById("practiceBtn"); if(pb) pb.addEventListener("click", function(){ startTrain(true); });
   } else {
-    el.innerHTML="<p><strong>"+due.length+" item"+(due.length===1?"":"s")+" due</strong>"+(forced.length? ", plus returns from repeated misses":"")+". Weakest discriminations first"+(S.lastMix? " — the mix leans hardest on <strong>"+esc(DISCS[S.lastMix.disc].name)+"</strong>":"")+".</p>";
+    el.innerHTML="<p><strong>"+due.length+" item"+(due.length===1?"":"s")+" due</strong>"+(forced.length? ", plus returns from repeated misses":"")+". Weakest discriminations first"+(S.lastMix? " — the mix leans hardest on <strong>"+esc(DISCS[S.lastMix.disc].name)+"</strong>":"")+".</p>"+spellLine;
   }
+  var hb=document.getElementById("homeSpellBtn"); if(hb) hb.addEventListener("click", function(){ openModule("M9"); });
 }
 function renderReview(){
   var chipsEl = document.getElementById("reviewChips"); if(!chipsEl) return;
@@ -3046,19 +3065,22 @@ function renderReview(){
     }).sort(function(a,b){ var x=itemState(a.id).due, y=itemState(b.id).due; return x<y?-1:1; });
     var titles = {due:"Due today", week:"Due this week", all:"All scheduled"};
     var emptyTxt = {due:"Nothing is due today.", week:"Nothing due in the next seven days.", all:"No reviews scheduled yet — finish a lesson first."};
-    body.innerHTML = rows.length ? "<div class='statelist'>"+rows.map(reviewRow).join("")+"</div>" : emptyHTML("Nothing here — "+titles[reviewFilter].toLowerCase(), emptyTxt[reviewFilter]);
+    var spellBanner = "";
+    if(reviewFilter==="due"){ var sdw=spellDueWords(); if(sdw.length) spellBanner = "<p class='itemrow'><strong>Spelling</strong> — "+sdw.length+" word"+(sdw.length===1?"":"s")+" due <button type='button' class='chipbtn' id='revSpellBtn'>Train spelling</button></p>"; }
+    body.innerHTML = spellBanner + (rows.length ? "<div class='statelist'>"+rows.map(reviewRow).join("")+"</div>" : emptyHTML("Nothing here — "+titles[reviewFilter].toLowerCase(), emptyTxt[reviewFilter]));
+    var rsb=document.getElementById("revSpellBtn"); if(rsb) rsb.addEventListener("click", function(){ openModule("M9"); });
   }
   var fc = document.getElementById("forecastBody"); if(!fc) return;
   var overdueN = allItems().filter(function(it){ var d=itemState(it.id).due; return d && d<t; }).length;
   var days = [];
-  for(var k=0;k<7;k++){ var dt = addDays(t,k); days.push({date:dt, n:allItems().filter(function(it){ return itemState(it.id).due===dt; }).length}); }
-  var maxN = Math.max.apply(null, days.map(function(d){ return d.n; }).concat([1]));
+  for(var k=0;k<7;k++){ var dt = addDays(t,k); days.push({date:dt, n:allItems().filter(function(it){ return itemState(it.id).due===dt; }).length, sn:allSpellWords().filter(function(w){ var s2=spellSt(w.id); return s2 && s2.due===dt; }).length}); }
+  var maxN = Math.max.apply(null, days.map(function(d){ return d.n+d.sn; }).concat([1]));
   var fhtml = overdueN ? "<p style='margin-bottom:6px'><span class='chip danger'>Overdue now: "+overdueN+"</span></p>" : "";
   fhtml += days.map(function(d){
     var lab = d.date===t ? "Today" : d.date.slice(5);
-    return "<div class='frow'><span style='width:64px' class='small'><strong>"+lab+"</strong></span><span class='fbar'><i style='width:"+(d.n/maxN*100)+"%'></i></span><span class='small muted'>"+d.n+" scheduled</span></div>";
+    return "<div class='frow'><span style='width:64px' class='small'><strong>"+lab+"</strong></span><span class='fbar'><i style='width:"+((d.n+d.sn)/maxN*100)+"%'></i></span><span class='small muted'>"+(d.n+d.sn)+" scheduled"+(d.sn? " · "+d.sn+" spelling":"")+"</span></div>";
   }).join("");
-  if(!allN && !overdueN) fhtml = emptyHTML("No forecast yet", "No due dates saved yet.");
+  if(!allN && !overdueN && !days.some(function(d){ return d.sn>0; })) fhtml = emptyHTML("No forecast yet", "No due dates saved yet.");
   fc.innerHTML = fhtml;
 }
 document.getElementById("startTrainBtn").addEventListener("click", function(){
@@ -3271,12 +3293,67 @@ function recordSpell(w, mode, ok){
   }
   save();
 }
+/* M11 — the ear diagnostic and contrast training (Wave E, first half). */
+function earState(){ if(!S.ear) S.ear={}; return S.ear; }
+var EAR=null;
+function earSpeak(word){ if(!("speechSynthesis" in window)) return false; try{ var u=new SpeechSynthesisUtterance(word); u.lang="en-US"; u.rate=0.85; var vs=speechSynthesis.getVoices().filter(function(v){ return v.lang && v.lang.indexOf("en")===0; }); if(vs.length) u.voice=vs[0]; speechSynthesis.cancel(); speechSynthesis.speak(u); return true; }catch(e){ return false; } }
+function earPairById(id){ for(var i=0;i<EAR_PAIRS.length;i++) if(EAR_PAIRS[i].id===id) return EAR_PAIRS[i]; return null; }
+function renderEarModule(msg){
+  currentMod="M11";
+  var E=earState(), canSpeak=("speechSynthesis" in window);
+  var html="<div class='card'><h2>"+ticJS(IC.book)+"M11 — The 12 vowels</h2>"+
+   "<div class='btnrow'><button type='button' class='btn secondary' id='earBack'>← Learn</button></div>"+
+   "<p style='margin-top:10px'>Spanish gives you five vowels; English runs about twelve, and your ear files the extra ones into the nearest Spanish drawer. That is how live and leave land in the same place. This module is ear first by design: before anything is trained, the diagnostic measures which contrasts your ear actually separates, and only the merged ones get trained. Your voice list from our chat completes the picture from the production side.</p></div>";
+  html+="<div class='card'><h3>The ear diagnostic</h3>";
+  if(msg) html+="<p><span class='chip proven'>"+esc(msg)+"</span></p>";
+  EAR_PAIRS.forEach(function(p){ var r=E[p.id]; var txt=(!r||!r.n)? "not tested" : (r.ok+" / "+r.n+" — "+(Math.round(r.ok/r.n*100)>=75?"separated":"merged for now")); html+="<div class='mrow'><span>"+p.a+" / "+p.b+"</span><strong>"+txt+"</strong></div>"; });
+  if(canSpeak){
+    html+="<div class='btnrow'><button type='button' class='btn' id='earStart'>Run the diagnostic — 24 listens</button></div>";
+    EAR_PAIRS.forEach(function(p){ var r=E[p.id]; if(r && r.n && Math.round(r.ok/r.n*100)<75) html+="<div class='btnrow'><button type='button' class='btn secondary' data-eartrain='"+p.id+"'>Train "+p.a+" / "+p.b+" — 12 listens</button></div>"; });
+  } else {
+    html+="<p class='small muted'>This browser cannot speak, so the diagnostic cannot run here. On your phone's browser it can. The production half (your voice list) works anywhere.</p>";
+  }
+  html+="</div><div id='earStage'></div>";
+  document.getElementById("moduleBody").innerHTML=html; show("module");
+  document.getElementById("earBack").addEventListener("click", function(){ show("learn"); });
+  var stb=document.getElementById("earStart"); if(stb) stb.addEventListener("click", function(){ startEarRun(null); });
+  document.querySelectorAll("[data-eartrain]").forEach(function(b){ b.addEventListener("click", function(){ startEarRun(b.getAttribute("data-eartrain")); }); });
+}
+function startEarRun(pairId){
+  var trials=[], k, i, j, tmp;
+  if(pairId){ var p=earPairById(pairId); for(k=0;k<12;k++) trials.push({pair:p, word: Math.random()<0.5? p.a : p.b}); }
+  else { EAR_PAIRS.forEach(function(pp){ for(k=0;k<4;k++) trials.push({pair:pp, word: Math.random()<0.5? pp.a : pp.b}); });
+    for(i=trials.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); tmp=trials[i]; trials[i]=trials[j]; trials[j]=tmp; } }
+  EAR={trials:trials, i:0, mode: pairId? "train":"diag"};
+  renderEarTrial();
+}
+function renderEarTrial(){
+  var stage=document.getElementById("earStage"); if(!stage) return;
+  if(!EAR || EAR.i>=EAR.trials.length){ renderEarModule(EAR && EAR.mode==="diag" ? "Diagnostic complete — results above" : "Training set complete — results above"); return; }
+  var tr=EAR.trials[EAR.i];
+  var opts = Math.random()<0.5? [tr.pair.a, tr.pair.b] : [tr.pair.b, tr.pair.a];
+  stage.innerHTML="<div class='card'><h3>"+(EAR.mode==="diag"?"Ear diagnostic":"Contrast training")+" — listen "+(EAR.i+1)+" of "+EAR.trials.length+"</h3>"+
+   "<p class='small muted'>One word will be spoken. Tap the word you heard. Guessing is data too: a contrast at chance level is a merged contrast.</p>"+
+   "<div class='btnrow'><button type='button' class='btn' id='earPlay'>Play the word</button></div>"+
+   "<div class='btnrow' style='margin-top:8px'>"+opts.map(function(w){ return "<button type='button' class='btn secondary' data-earpick='"+w+"'>"+w+"</button>"; }).join("")+"</div>"+
+   "<div id='earFb' style='margin-top:8px'></div></div>";
+  document.getElementById("earPlay").addEventListener("click", function(){ earSpeak(tr.word); });
+  document.querySelectorAll("[data-earpick]").forEach(function(b){ b.addEventListener("click", function(){ earAnswer(b.getAttribute("data-earpick")); }); });
+  earSpeak(tr.word);
+}
+function earAnswer(pick){
+  var tr=EAR.trials[EAR.i]; var ok = pick===tr.word;
+  var E=earState(); if(!E[tr.pair.id]) E[tr.pair.id]={n:0, ok:0}; E[tr.pair.id].n++; if(ok) E[tr.pair.id].ok++; S.earLast=todayStr(); save();
+  document.querySelectorAll("[data-earpick]").forEach(function(b){ b.disabled=true; });
+  var fb=document.getElementById("earFb"); if(fb) fb.innerHTML = ok? "<p><strong>Heard right.</strong></p>" : "<p><strong>That was «"+tr.word+"».</strong></p>";
+  EAR.i++; setTimeout(function(){ renderEarTrial(); }, 1000);
+}
 function renderSpellModule(){
   currentMod="M9";
   var dueN = spellDueWords().length;
   var gradN = allSpellWords().filter(function(w){ var st=spellSt(w.id); return st && st.graduated; }).length;
   var html = "<div class='card'><h2>"+ticJS(IC.book)+"M9 — Spelling</h2>"+
-    "<p>Spanish spells almost exactly what it hears. English doesn't — it doubles letters Spanish never doubles, and keeps silent ones it never says. These 18 words are built from your own written errors: <em>decission, ocurrance, invertion, daubt</em>.</p>"+
+    "<p>Spanish spells almost exactly what it hears. English doesn't — it doubles letters Spanish never doubles, and keeps silent ones it never says. These "+allSpellWords().length+" words are built from your own written errors: <em>decission, ocurrance, invertion, daubt</em>.</p>"+
     "<p class='small muted'>"+gradN+" of "+allSpellWords().length+" words quite controllable now"+(dueN? " · <strong>"+dueN+" due today</strong>":"")+"</p>"+
     "<div class='btnrow'><button type='button' class='btn secondary' id='spellBack'>← Learn</button></div></div>";
   html += "<div class='card'><h3>Spot it — pick the right spelling</h3>"+
