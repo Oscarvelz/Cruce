@@ -587,7 +587,7 @@ html[data-theme="tron"]:is([data-hidden],[data-typing]) .btn::before{animation-p
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.14.0</p>
+      <p class="muted" style="margin-top:12px">Version 2.15.0</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -1002,6 +1002,7 @@ var DISCS = {
  "llevar-split":{name:"llevar — wear, carry or take", mod:"M6"},
  "quedar-split":{name:"quedar — stay or keep", mod:"M6"},
  "count-split":{name:"Counting the English way", mod:"M6"},
+ "decision-split":{name:"decisión — decision or choice", mod:"M6"},
  "fun-split":{name:"divertido — fun or funny", mod:"M6"},
  "reves-split":{name:"al revés — three pictures", mod:"M6"},
  "compare-forms":{name:"Comparisons — which form", mod:"M7"},
@@ -1201,6 +1202,12 @@ var M6 = [
         C("El chiste fue muy divertido.","The joke was very ___.",["funny"],"The joke was very funny."),
         C("Fue un juego divertido para los niños.","It was a ___ game for the kids.",["fun"],"It was a fun game for the kids."),
         C("Cuenta historias divertidas.","He tells ___ stories.",["funny"],"He tells funny stories.")]},
+ {id:"decision-choice", mod:"M6", grp:"meaning", verb:"decision / choice", es:"decisión / elección", disc:"decision-split", triage:"C",
+  rule:"So: your comfort word is choice — you said so yourself: the words you feel safe with come out instead of the word the sentence needs. Split them by the job. The act of deciding and its result are a decision: make a decision, my decision, a final decision. The options on the table, or the picking between them, are a choice: your choice, two choices, no choice. When the sentence reports what was decided, choice is the detour.",
+  cues:[C("Tomé una decisión.","I made a ___.",["decision"],"I made a decision."),
+        C("Es tu elección.","It's your ___.",["choice"],"It's your choice."),
+        C("Su decisión final sorprendió a todos.","His final ___ surprised everyone.",["decision"],"His final decision surprised everyone."),
+        C("Tienes dos opciones: elige una.","You have two ___ : pick one.",["choices"],"You have two choices: pick one.")]},
  {id:"inside-out", mod:"M6", grp:"meaning", verb:"inside out / backwards / upside down", es:"al revés", disc:"reves-split", triage:"B",
   rule:"So: al revés has three English owners, one per picture. Clothes turned through themselves: inside out. Facing the wrong way: backwards. Head where the feet should be: upside down. Your shirt was inside out, not upside down.",
   cues:[C("Tienes la camisa al revés.","Your shirt is ___.",["inside out"],"Your shirt is inside out."),
@@ -1343,6 +1350,23 @@ var M8 = [
 /* The 2026-11-11 probe sentences as M8's Prove-it-first set: 12 cards, one
    per diagnostic slot (probe 1 rides in training as in-chunks cue 0). */
 var PROVE_M8 = [["on-time-pair",0],["on-time-pair",1],["on-regimen",0],["on-screens",0],["time-size",0],["transport",0],["transport",1],["on-mind",0],["at-points",0],["in-the-end",0],["partners",0],["partners",1]];
+
+/* R2 forms thread (2026-11-16): verb paradigms for the module-page micro-drill.
+   A drill unlocks only when its item has collected 2+ FORM-SLIP verdicts —
+   the drill is earned by real slips, never assigned blind. Slots are
+   base / third person / past. */
+var PARADIGMS = {
+ "molestar":["bother","bothers","bothered"],
+ "asistir":["attend","attends","attended"],
+ "discutir":["argue","argues","argued"],
+ "pretender":["pretend","pretends","pretended"],
+ "put-off":["put off","puts off","put off"],
+ "turn-off":["turn off","turns off","turned off"],
+ "pick-up":["pick up","picks up","picked up"],
+ "look-after":["look after","looks after","looked after"],
+ "worn-paradigm":["wear","wears","wore"],
+ "become-come":["become","becomes","became"]
+};
 
 /* M5 — EVERYDAY NAMING BANK (Wave D, 2026-11-16). A-type words: never taught,
    not failed retrieval. From the Gemini study-guide themes (kitchen actions,
@@ -1557,7 +1581,11 @@ var SPELL = [
    {id:"sp-wear", w:"wear", es:"llevar puesto", foils:["were","where","wore"], pre:"w", chunk:"ear", post:""},
    {id:"sp-wore", w:"wore", es:"llevé puesto (ayer)", foils:["wear","were","where"], pre:"w", chunk:"ore", post:""},
    {id:"sp-through", w:"through", es:"a través de", foils:["throughout","thorough","though"], pre:"thr", chunk:"ough", post:""},
-   {id:"sp-throughout", w:"throughout", es:"durante todo / en todas partes", foils:["through","thorough","though"], pre:"through", chunk:"out", post:""}
+   {id:"sp-throughout", w:"throughout", es:"durante todo / en todas partes", foils:["through","thorough","though"], pre:"through", chunk:"out", post:""},
+   {id:"sp-weigh", w:"weigh", es:"pesar (verbo)", foils:["weight","wiegh","way"], pre:"w", chunk:"eigh", post:""},
+   {id:"sp-weight", w:"weight", es:"el peso", foils:["weigh","wieght","wait"], pre:"weigh", chunk:"t", post:""},
+   {id:"sp-peel", w:"peel", es:"pelar", foils:["peal","peele","piel"], pre:"p", chunk:"eel", post:""},
+   {id:"sp-peal", w:"peal", es:"repique (de campanas)", foils:["peel","peale","piel"], pre:"p", chunk:"eal", post:""}
   ]}
 ];
 SPELL.forEach(function(g){ DISCS[g.disc] = {name:"Spelling: "+g.name, mod:"M9"}; g.words.forEach(function(w){ w.disc = g.disc; }); });
@@ -1573,7 +1601,7 @@ var PATH = [
  {id:"M8", name:"At / on / in", sub:"The ON islands, time by size, and verb partnerships — opens with your eight probe sentences", open:true},
  {id:"M5", name:"Everyday naming bank", sub:"Kitchen, body, house, clothing, people — the ground-floor words, dosed daily", open:true},
  {id:"M7", name:"Comparisons", sub:"Bigger, smoother, more fun — the ending chooses the form", open:true},
- {id:"M9", name:"Spelling", sub:"32 words in 5 families — the fifth is English colliding with English", open:true},
+ {id:"M9", name:"Spelling", sub:"36 words in 5 families — the fifth is English colliding with English", open:true},
  {id:"M10", name:"Participles & twins", sub:"The has ___ slot: become/come, spill/spell, brought/taught, worn", open:true},
  {id:"M12", name:"Countability, ’s & tags", sub:"Possession and the rebuilt tag — countability itself lives in M6 now", open:true},
  {id:"M11", name:"The 12 vowels", sub:"Hearing and making the vowel system", open:false}
@@ -1842,6 +1870,7 @@ function calState(){ if(!S.cal) S.cal={n:0, brier:0, lv:[{n:0,ok:0},{n:0,ok:0},{
 function recordAttempt(item, ok, opts){
   opts = opts||{}; var st = itemState(item.id);
   if(opts.conf!=null && opts.firstAttempt){ var CS=calState(), CP=[0.2,0.6,0.95][opts.conf]; CS.n++; CS.brier+=(CP-(ok?1:0))*(CP-(ok?1:0)); CS.lv[opts.conf].n++; if(ok) CS.lv[opts.conf].ok++; }
+  if(opts.tag && opts.firstAttempt){ if(opts.tag==="DETOUR"||opts.tag==="FORMAL-DEFAULT"){ S.avoid=S.avoid||{}; S.avoid[item.id]=(S.avoid[item.id]||0)+1; } if(opts.tag==="FORM-SLIP"){ S.formSlips=S.formSlips||{}; S.formSlips[item.id]=(S.formSlips[item.id]||0)+1; } }
   if(opts.cueIdx!=null && st.seenCues.indexOf(opts.cueIdx)<0) st.seenCues.push(opts.cueIdx);
   if(opts.cueIdx!=null) st.lastCue=opts.cueIdx;
   var d = mastery(item.disc);
@@ -2099,6 +2128,26 @@ function renderLearn(){
 }
 
 /* ============================== MODULE PAGE ============================== */
+function formsDrillHTML(mod){
+  var fs = S.formSlips||{};
+  var list = modItems(mod).filter(function(it){ return PARADIGMS[it.id] && (fs[it.id]||0)>=2; });
+  if(!list.length) return "";
+  var h = "<div class='card'><h3>Forms drill — earned by your slips</h3><p class='small muted'>These items collected two or more right-word-wrong-form verdicts. Produce the family: base, third person (he/she), past. Production, not recognition.</p>";
+  list.forEach(function(it){ var P=PARADIGMS[it.id];
+    h += "<div style='margin-top:14px'><div class='lab' style='margin-top:0'>"+esc(it.verb||it.id)+"</div>"+
+    "<div style='display:flex;gap:8px;flex-wrap:wrap;margin-top:6px'>"+["Base","He / she","Past"].map(function(lab,j){ return "<label class='small' style='flex:1;min-width:90px'>"+lab+"<input type='text' data-fd='"+it.id+"' data-fdj='"+j+"' autocomplete='off' autocapitalize='none' style='width:100%'></label>"; }).join("")+"</div>"+
+    "<button type='button' class='chipbtn' data-fdbtn='"+it.id+"' style='margin-top:8px'>Check the family</button> <span class='small' data-fdfb='"+it.id+"'></span></div>";
+  });
+  return h+"</div>";
+}
+function wireFormsDrill(mod){
+  document.querySelectorAll("[data-fdbtn]").forEach(function(b){ b.addEventListener("click", function(){
+    var id=b.getAttribute("data-fdbtn"), P=PARADIGMS[id], fb=document.querySelector("[data-fdfb='"+id+"']"), bad=[];
+    for(var j=0;j<3;j++){ var inp=document.querySelector("[data-fd='"+id+"'][data-fdj='"+j+"']"); var v=(inp.value||"").trim().toLowerCase().replace(/\s+/g," "); if(v!==P[j]) bad.push(j); }
+    if(!bad.length){ fb.innerHTML="<strong>Family produced.</strong> All three forms, from memory."; }
+    else { var names=["base","third person","past"]; fb.innerHTML="Not yet: "+bad.map(function(j){ return names[j]+" is «"+P[j]+"»"; }).join(" · ")+". Write the missed forms once, then retype the family."; }
+  }); });
+}
 function openModule(mod){
   if(mod==="M9"){ renderSpellModule(); return; }
   var items = modItems(mod), lessons = LESSONS.filter(function(l){return l.mod===mod;});
@@ -2130,12 +2179,14 @@ function openModule(mod){
   if(mod==="M1"){ html += "<details><summary>Particle families — meaning hints, not rules</summary>"+PARTICLES.map(function(p){return "<p><strong>"+p[0]+"</strong> = "+p[1]+"</p>";}).join("")+"</details>"; }
   html += "</div>";
   if(mod==="M4"){ html += taleCardHTML(); }
+  html += formsDrillHTML(mod);
   document.getElementById("moduleBody").innerHTML = html;
   show("module");
   document.getElementById("backHome").addEventListener("click", function(){ renderLearn(); show("learn"); });
   document.getElementById("proveBtn").addEventListener("click", function(){ startProve(mod); });
   document.getElementById("gateBtn").addEventListener("click", function(){ startGate(mod); });
   var taleBtnEl = document.getElementById("taleBtn"); if(taleBtnEl) taleBtnEl.addEventListener("click", function(){ startTale(); });
+  wireFormsDrill(mod);
   document.querySelectorAll("[data-lesson]").forEach(function(b){ b.addEventListener("click", function(){ startLesson(b.getAttribute("data-lesson")); }); });
   wireChips("data-mchip", function(v){
     document.querySelectorAll("[data-mchip]").forEach(function(x){ x.setAttribute("aria-selected", x.getAttribute("data-mchip")===v ? "true" : "false"); });
@@ -2802,7 +2853,7 @@ function submitRun(timedOut){
   var r = timedOut ? {ok:false, tag:"DETOUR", msg:"Time out — at speaking speed this counts as a miss. The form has to arrive inside the limit."} : checkAnswer(item, cue, raw);
   var ok = r.ok && senseOk;
   if(!senseOk && r.ok){ ok=false; r={ok:false, tag:"SENSE-SPLIT", msg:"The deciding feature was wrong — the sense decides the word before you produce it."}; }
-  if(!R.practice) recordAttempt(item, ok, {firstAttempt:true, cueIdx:q.cueIdx, hintRung:R.hintRung, timedOut:timedOut, conf:R.conf});
+  if(!R.practice) recordAttempt(item, ok, {firstAttempt:true, cueIdx:q.cueIdx, hintRung:R.hintRung, timedOut:timedOut, conf:R.conf, tag:(!ok&&!timedOut)?r.tag:null});
   else setMastery(item.disc, mastery(item.disc) + (ok?3:-2)), save();
   if(ok) R.correct++;
   if(!ok && (R.kind==="gate"||R.kind==="confirm") && isCritical(R.mod, item, q.cueIdx)) R.criticalFail.push(item.id);
@@ -3106,6 +3157,10 @@ function renderStats(){
       honest += "<p class='small muted'>Rate your confidence before the verdict on training cards and this fills with your real calibration — accuracy per level, plus a Brier score.</p>";
     }
     honest += "<div class='stat' style='margin-top:12px'><div class='lab' style='margin-top:0'><strong>Proof audit.</strong></div><div class='sub'>Every one of the "+grad+" graduations above was earned on an unseen sentence, on two separate days. Scores on seen sentences never count as proof — 0 exceptions, by construction.</div></div>";
+    var avIds = Object.keys(S.avoid||{}).filter(function(k){ return S.avoid[k]>0; }).sort(function(a,b2){ return S.avoid[b2]-S.avoid[a]; });
+    honest += "<div class='stat' style='margin-top:12px'><div class='lab' style='margin-top:0'><strong>Avoidance watch.</strong></div><div class='sub'>"+
+      (avIds.length ? "Detours and formal defaults, counted per item — the comfortable word that took the slot instead of the target:<br>"+avIds.map(function(k){ var it2=findItem(k); return "· "+(it2? (it2.verb||it2.target||k) : k)+": "+S.avoid[k]; }).join("<br>") : "No detour or formal-default misses recorded yet. When a comfortable word takes the slot instead of the target (pushed for put off, postpone for put off), it is counted here, per item.")+
+      "</div></div>";
     var html = "<div class='statgrid'>"+
       stat(avg+"<span class='small muted'> / 100</span>", "Overall mastery — average across all "+ds.length+" discriminations")+
       stat(grad+"<span class='small muted'> / "+items.length+"</span>", "Items “Quite controllable now”")+
