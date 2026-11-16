@@ -587,7 +587,7 @@ html[data-theme="tron"]:is([data-hidden],[data-typing]) .btn::before{animation-p
       </div>
       <p style="margin-top:14px">Production first — you produce the English before you are shown it. No points, no matching, no multiple choice.</p>
       <p class="muted">Your progress is saved on this device.</p>
-      <p class="muted" style="margin-top:12px">Version 2.10.0</p>
+      <p class="muted" style="margin-top:12px">Version 2.11.0</p>
     </div>
     <div class="card">
       <h2><span class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.4"/><circle cx="9" cy="17" r="2.4"/></svg></span>Settings</h2>
@@ -629,6 +629,11 @@ html[data-theme="tron"]:is([data-hidden],[data-typing]) .btn::before{animation-p
   <!-- SPELL LAB (M9) -->
   <section class="view" id="view-spell">
     <div id="spellBody"></div>
+  </section>
+
+  <!-- WEEKLY TALE (M4 capstone) -->
+  <section class="view" id="view-tale">
+    <div id="taleBody"></div>
   </section>
 
 </main>
@@ -988,9 +993,128 @@ var DISCS = {
  "formal-switch":{name:"Formal → phrasal switch", mod:"M1"},
  "sep-pronoun":{name:"Separable verbs — pronoun inside", mod:"M1"},
  "insep-order":{name:"Inseparable verbs — never split", mod:"M1"},
- "three-word":{name:"Three-word & whole-particle verbs", mod:"M1"}
+ "three-word":{name:"Three-word & whole-particle verbs", mod:"M1"},
+ "reported-mind":{name:"Reporting minds", mod:"M2"},
+ "protected-negation":{name:"Protected negation — the meaning rides on it", mod:"M2"},
+ "time-anchor":{name:"Narrative time anchors", mod:"M4"},
+ "transitions":{name:"Transition wordings", mod:"M4"}
 };
 M3.forEach(function(it){ DISCS[it.disc] = {name:"False friend: "+it.es, mod:"M3"}; });
+
+/* M2 — REPORTING MINDS + PROTECTED NEGATION (Wave A, 2026-11-15). Built from
+   Oscar's own diagnostic sentences: "Ella pretendió haber entendido", his
+   expectations gap, and the negation that vanished in his as-if clause and
+   flipped the meaning. The slot is always the discriminating chunk. */
+var M2 = [
+ {id:"pretend-have", mod:"M2", grp:"minds", verb:"pretended to have …", es:"fingió haber …", disc:"reported-mind", triage:"B",
+  rule:"So: when the faked thing already happened, English stacks two pasts: pretended + to have + participle. Pretend to understand fakes the present moment; pretend to have understood fakes a past.",
+  cues:[C("Ella fingió haber entendido.","She pretended ___.",["to have understood"],"She pretended to have understood."),
+        C("Él fingió haber leído el informe.","He pretended ___ the report.",["to have read"],"He pretended to have read the report."),
+        C("Ella fingió haberme visto antes.","She pretended ___ me before.",["to have seen"],"She pretended to have seen me before."),
+        C("Fingió haber estado allí.","He pretended ___ there.",["to have been"],"He pretended to have been there.")]},
+ {id:"seem-have", mod:"M2", grp:"minds", verb:"seemed to have …", es:"parecía haber …", disc:"reported-mind", triage:"B",
+  rule:"So: parecer haber is seemed to have + participle. The seeming is now; the having-happened sits before it.",
+  cues:[C("Parecía haber olvidado la cita.","He seemed ___ the appointment.",["to have forgotten"],"He seemed to have forgotten the appointment."),
+        C("El ruido parecía haber parado.","The noise seemed ___.",["to have stopped"],"The noise seemed to have stopped."),
+        C("Ella parecía haber entendido la explicación.","She seemed ___ the explanation.",["to have understood"],"She seemed to have understood the explanation.")]},
+ {id:"expected-me", mod:"M2", grp:"minds", verb:"expected me to …", es:"esperaba que yo …", disc:"reported-mind", triage:"B",
+  rule:"So: esperar que + a person becomes expected + person + to. No that-clause, no subjunctive: she expected me to call.",
+  cues:[C("Ella esperaba que yo la llamara.","She expected ___ her.",["me to call"],"She expected me to call her."),
+        C("Esperaban que llegáramos a tiempo.","They expected ___ on time.",["us to arrive"],"They expected us to arrive on time."),
+        C("Él esperaba que le dijera la verdad.","He expected ___ him the truth.",["me to tell"],"He expected me to tell him the truth."),
+        C("El grupo esperaba que el nuevo hablara primero.","The group expected ___ first.",["the new man to speak"],"The group expected the new man to speak first.")]},
+ {id:"asif-past", mod:"M2", grp:"minds", verb:"as if + past", es:"como si + imperfecto", disc:"reported-mind", triage:"C",
+  rule:"So: como si pushes English one step into the past: as if he knew, as if he owned it. The past form does not mean past time; it means not real, just acted.",
+  cues:[C("Habla como si supiera todo.","He talks as if he ___ everything.",["knew"],"He talks as if he knew everything."),
+        C("Actuaba como si fuera el dueño de la finca.","He acted as if he ___ the ranch.",["owned"],"He acted as if he owned the ranch."),
+        C("Me miró como si me conociera.","She looked at me as if she ___ me.",["knew"],"She looked at me as if she knew me.")]},
+ {id:"asif-negation", mod:"M2", grp:"negation", verb:"as if + negation", es:"como si no …", disc:"protected-negation", triage:"C",
+  rule:"So: in as if he didn't want to talk to anyone, the little didn't carries the whole meaning. Drop it and the sentence says the opposite. The negation lives inside the as-if clause, and it takes anyone, never someone.",
+  cues:[C("Actuó como si no quisiera hablar con nadie.","He acted as if he ___ to anyone.",["didn't want to talk","did not want to talk","didnt want to talk"],"He acted as if he didn't want to talk to anyone."),
+        C("Sonrió como si no supiera nada.","She smiled as if she ___ anything.",["didn't know","did not know","didnt know"],"She smiled as if she didn't know anything."),
+        C("Salió como si no hubiera pasado nada.","He left as if nothing ___.",["had happened"],"He left as if nothing had happened."),
+        C("Hablaba como si no le importara nadie.","He talked as if he ___ about anyone.",["didn't care","did not care","didnt care"],"He talked as if he didn't care about anyone.")]},
+ {id:"without-ing", mod:"M2", grp:"negation", verb:"without + -ing", es:"sin + infinitivo", disc:"protected-negation", triage:"B",
+  rule:"So: sin decir nada is without saying anything. Without takes the -ing form, and nada becomes anything, not nothing.",
+  cues:[C("Se fue sin decir nada.","He left without ___ anything.",["saying"],"He left without saying anything."),
+        C("Pagó sin mirar el precio.","She paid without ___ at the price.",["looking"],"She paid without looking at the price."),
+        C("Respondió sin pensar.","He answered without ___.",["thinking"],"He answered without thinking."),
+        C("Entró sin hacer ruido.","She came in without ___ any noise.",["making"],"She came in without making any noise.")]},
+ {id:"not-to", mod:"M2", grp:"negation", verb:"not to + verb", es:"no + infinitivo", disc:"protected-negation", triage:"B",
+  rule:"So: the not goes before the to: decided not to go, pretended not to hear. Never after the verb, never split.",
+  cues:[C("Decidió no ir.","He decided ___.",["not to go"],"He decided not to go."),
+        C("Fingió no escucharme.","He pretended ___ me.",["not to hear"],"He pretended not to hear me."),
+        C("Prefirió no decir nada.","She preferred ___ anything.",["not to say"],"She preferred not to say anything.")]},
+ {id:"never-anyone", mod:"M2", grp:"negation", verb:"never / didn't + any-", es:"nunca / no + nadie, nada", disc:"protected-negation", triage:"C",
+  rule:"So: Spanish negates twice (no dijo nada); English negates once and lets the any- words carry the rest: didn't say anything, never told anyone. A second English negation breaks the sentence or flips it.",
+  cues:[C("Nunca se lo dijo a nadie.","He never ___ anyone.",["told"],"He never told anyone."),
+        C("No conozco a nadie aquí.","I don't ___ anyone here.",["know"],"I don't know anyone here."),
+        C("Ella no dijo nada.","She didn't ___ anything.",["say"],"She didn't say anything."),
+        C("No había nadie en la sesión.","There wasn't ___ at the session.",["anyone","anybody"],"There wasn't anyone at the session.")]}
+];
+
+/* M4 — NARRATIVE TIME-TRAVEL (Wave A, 2026-11-15). His stated goal: the
+   anecdote that connects past, present and future. Built from his fights:
+   "I had been..." collapsing to "I was", since, and "For next year, I would
+   have?" — plus the transition wordings he asked for by name. */
+var M4 = [
+ {id:"had-been", mod:"M4", grp:"timeline", verb:"had been + -ing", es:"llevaba + gerundio", disc:"time-anchor", triage:"B",
+  rule:"So: when a past moment looks back at an action already running, English says had been + -ing. I was waiting names the scene; I had been waiting anchors it before the call.",
+  cues:[C("Llevaba una hora esperando cuando ella llamó.","I ___ for an hour when she called.",["had been waiting"],"I had been waiting for an hour when she called."),
+        C("Cuando llegué, él ya llevaba dos horas esperando.","When I arrived, he ___ for two hours.",["had been waiting"],"When I arrived, he had been waiting for two hours."),
+        C("Cuando terminó la sesión, yo llevaba una hora tomando notas.","When the session ended, I ___ notes for an hour.",["had been taking"],"When the session ended, I had been taking notes for an hour."),
+        C("Cuando salimos, llevaba horas lloviendo.","When we left, it ___ for hours.",["had been raining"],"When we left, it had been raining for hours.")]},
+ {id:"had-done", mod:"M4", grp:"timeline", verb:"had + participle", es:"ya había + participio", disc:"time-anchor", triage:"B",
+  rule:"So: two past events, one anchor. The later moment stands in the simple past; the step before it takes had. When I arrived is the anchor; he had left is what stood before it.",
+  cues:[C("Cuando llegué, él ya se había ido.","When I arrived, he ___ already.",["had left"],"When I arrived, he had left already."),
+        C("Para cuando llegamos, la película ya había empezado.","By the time we got there, the movie ___.",["had started"],"By the time we got there, the movie had started."),
+        C("No pude entrar porque había olvidado las llaves.","I couldn't get in because I ___ my keys.",["had forgotten"],"I couldn't get in because I had forgotten my keys."),
+        C("Cuando sonó el teléfono, ya me había dormido.","When the phone rang, I ___.",["had fallen asleep"],"When the phone rang, I had fallen asleep.")]},
+ {id:"since-for", mod:"M4", grp:"timeline", verb:"since / for", es:"desde / desde hace", disc:"time-anchor", triage:"C",
+  rule:"So: since takes the starting point (since Monday, since 2015); for takes the length (for years, for ten years). Spanish desde covers both; English makes you choose.",
+  cues:[C("Lo conozco desde 2015.","I have known him ___ 2015.",["since"],"I have known him since 2015."),
+        C("No lo veo desde el lunes.","I haven't seen him ___ Monday.",["since"],"I haven't seen him since Monday."),
+        C("Lo conozco desde hace años.","I have known him ___ years.",["for"],"I have known him for years."),
+        C("Vivimos aquí desde que nos casamos.","We have lived here ___ we got married.",["since"],"We have lived here since we got married."),
+        C("Trabaja en la finca desde hace diez años.","He has worked at the ranch ___ ten years.",["for"],"He has worked at the ranch for ten years.")]},
+ {id:"will-have", mod:"M4", grp:"timeline", verb:"will have + participle", es:"para + fecha, ya habré …", disc:"time-anchor", triage:"B",
+  rule:"So: by + a future date takes will have decided, never would have. Would have belongs to the unreal past (if I had known, I would have…). A deadline in the future takes will.",
+  cues:[C("Para el año que viene, ya habré decidido.","By next year, I ___.",["will have decided"],"By next year, I will have decided."),
+        C("Para diciembre, ya habremos regresado.","By December, we ___.",["will have returned"],"By December, we will have returned."),
+        C("Para las cinco, ya habrá terminado.","By five, it ___.",["will have ended"],"By five, it will have ended."),
+        C("Para el viernes, ya habré terminado el informe.","By Friday, I ___ the report.",["will have finished"],"By Friday, I will have finished the report.")]},
+ {id:"when-present", mod:"M4", grp:"timeline", verb:"when + present", es:"cuando + subjuntivo (futuro)", disc:"time-anchor", triage:"C",
+  rule:"So: after when, English borrows the present for the future: when I get home, I'll call you. The will lives in the main clause only. When I will get is Spanish wearing English words.",
+  cues:[C("Cuando llegue a casa, te llamo.","When I ___ home, I'll call you.",["get"],"When I get home, I'll call you."),
+        C("En cuanto termine, salimos.","As soon as I ___, we'll leave.",["finish"],"As soon as I finish, we'll leave."),
+        C("Cuando sea mayor, lo entenderá.","When he ___ older, he'll understand.",["gets","is"],"When he gets older, he'll understand."),
+        C("Te escribo cuando llegue a Managua.","I'll write to you when I ___ in Managua.",["arrive","get"],"I'll write to you when I arrive in Managua.")]},
+ {id:"suddenly", mod:"M4", grp:"transitions", verb:"suddenly", es:"de repente", disc:"transitions", triage:"B",
+  rule:"So: de repente at the head of a sentence is Suddenly, with a comma. It opens the scene; it does not hide inside it.",
+  cues:[C("De repente, se fue la luz.","___ , the lights went out.",["Suddenly"],"Suddenly, the lights went out."),
+        C("De repente, empezó a llover.","___ , it started to rain.",["Suddenly"],"Suddenly, it started to rain."),
+        C("Entonces, de repente, lo entendí todo.","Then, ___ , I understood everything.",["suddenly"],"Then, suddenly, I understood everything.")]},
+ {id:"after-that", mod:"M4", grp:"transitions", verb:"after that / then", es:"después / luego", disc:"transitions", triage:"B",
+  rule:"So: stories move on after that and then. After that opens a new sentence; then rides inside one.",
+  cues:[C("Cenamos. Después, fuimos a casa.","We had dinner. ___ , we went home.",["After that"],"We had dinner. After that, we went home."),
+        C("Primero firmó; luego se fue.","First he signed; ___ he left.",["then"],"First he signed; then he left."),
+        C("Terminó la sesión y después todos se fueron.","The session ended and ___ everyone left.",["then","after that"],"The session ended and then everyone left.")]},
+ {id:"in-the-end", mod:"M4", grp:"transitions", verb:"in the end", es:"al final (el resultado)", disc:"transitions", triage:"B",
+  rule:"So: al final as the outcome of a story is in the end. At the end names a point (at the end of the day, at the end of the street); in the end is how the story closed.",
+  cues:[C("Al final, aceptó la oferta.","___ , he accepted the offer.",["In the end"],"In the end, he accepted the offer."),
+        C("Al final, el ruido paró.","___ , the noise stopped.",["In the end"],"In the end, the noise stopped."),
+        C("Trabajamos todo el día y, al final, terminamos.","We worked all day and, ___ , we finished.",["in the end"],"We worked all day and, in the end, we finished.")]},
+ {id:"meanwhile", mod:"M4", grp:"transitions", verb:"meanwhile", es:"mientras tanto", disc:"transitions", triage:"B",
+  rule:"So: mientras tanto is meanwhile, one word. It is the second camera of the story, the one filming somewhere else at the same time.",
+  cues:[C("Mientras tanto, los niños jugaban afuera.","___ , the children were playing outside.",["Meanwhile"],"Meanwhile, the children were playing outside."),
+        C("Yo cocinaba; mientras tanto, él limpiaba.","I was cooking; ___ , he was cleaning.",["meanwhile"],"I was cooking; meanwhile, he was cleaning."),
+        C("Mientras tanto, en la finca, mi papá trabajaba.","___ , at the ranch, my father was working.",["Meanwhile"],"Meanwhile, at the ranch, my father was working.")]},
+ {id:"by-then", mod:"M4", grp:"transitions", verb:"by then", es:"para entonces", disc:"transitions", triage:"B",
+  rule:"So: para entonces is by then: the camera arrives late and reports what the earlier hour had already done.",
+  cues:[C("Para entonces, ya lo sabía.","___ , I already knew.",["By then"],"By then, I already knew."),
+        C("Llegamos a las ocho; para entonces, la sesión había terminado.","We arrived at eight; ___ , the session had ended.",["by then"],"We arrived at eight; by then, the session had ended."),
+        C("Para entonces, ya habrás comido.","___ , you will have eaten.",["By then"],"By then, you will have eaten.")]}
+];
 
 /* M9 — SPELLING. Three interference families, built from Oscar's own written
    errors (decission, ocurrance, invertion, daubt). Each word: the correct
@@ -1057,8 +1181,8 @@ var PARTICLES = [["up","completion / rising — finish it, lift it"],["out","exh
 var PATH = [
  {id:"M1", name:"Phrasal verbs as a system", sub:"31 verbs, 3 groups — separability and particle families", open:true},
  {id:"M3", name:"False friends that flip meaning", sub:"15 traps — molestar pinned first, compromiso in three senses", open:true},
- {id:"M4", name:"Narrative time-travel", sub:"Telling a story across past, present and future", open:false},
- {id:"M2", name:"Reporting minds", sub:"Reported speech, expectations and protected negation", open:false},
+ {id:"M4", name:"Narrative time-travel", sub:"Telling a story across past, present and future — plus the weekly tale", open:true},
+ {id:"M2", name:"Reporting minds", sub:"Reported speech, expectations and protected negation", open:true},
  {id:"M6", name:"One-word splits", sub:"hacer, quedar, llevar — one Spanish word, several English", open:false},
  {id:"M8", name:"At / on / in", sub:"Time, place and verb partnerships", open:false},
  {id:"M5", name:"Everyday naming bank", sub:"Kitchen, body, house and yard — the ground-floor words", open:false},
@@ -1089,7 +1213,22 @@ var LESSONS = [
   scene:"A note for a work record: a resident’s behaviour bothered the night staff. One wrong twin — molested — and the note stops being a complaint about noise and becomes a sexual allegation against a named person. That is why molestar is pinned first, in red, forever.",
   commitEs:"El ruido molestaba a los vecinos.", commitTarget:"bothered", fadeItem:"parientes", transferItem:"molestar", lab:"compromiso",
   notice:"Spanish and English share thousands of look-alike words, and most are honest. These fourteen are not. What did Spanish make you do? It made you trust the shape of the word instead of its meaning.",
-  name:"So: when the English word looks exactly like the Spanish one, stop — that is precisely where the meaning flipped."}
+  name:"So: when the English word looks exactly like the Spanish one, stop — that is precisely where the meaning flipped."},
+ {id:"L2A", mod:"M2", title:"Lesson 1 — Reporting what a mind did", group:"M2 · Reporting minds",
+  scene:"In the group, a man says he understood the plan. Later, writing it up, you need more than he said: what did he do with his mind? He acted as if he had understood. She expected you to call. The session turns on minds, and English reports them with machinery Spanish does not use.",
+  commitEs:"Ella fingió haber entendido.", commitTarget:"pretended to have understood", fadeItem:"pretend-have", transferItem:"expected-me", lab:"minds",
+  notice:"Spanish reports a mind with que and the subjunctive, or with haber + participle packed inside one word: fingió haber entendido. English unpacks it into a frame: pretended + to have + understood. What did Spanish make you do? It made you hunt for a single verb where English builds a small machine, and it hid the second past inside haber where English spells it out as to have.",
+  name:"So: report a mind with the frame, not a twin verb — pretended to have understood, seemed to have forgotten, expected me to call."},
+ {id:"L2B", mod:"M2", title:"Lesson 2 — The negation that carries the meaning", group:"M2 · Protected negation",
+  scene:"Your own sentence, from your diagnostic: “Actuó como si no quisiera relacionarme con nadie.” Produced fast, it came out as “as if I wanted to relate to anyone” — the negation vanished inside the long clause, and the sentence said the exact opposite of the man. Nothing else in English costs so much for one small word.",
+  commitEs:"Actuó como si no quisiera hablar con nadie.", commitTarget:"acted as if he didn't want to talk to anyone", fadeItem:"asif-negation", transferItem:"without-ing", lab:"negation",
+  notice:"Spanish negates twice and the meaning survives anywhere: no… nadie, no… nada. English negates once, inside the clause where it belongs, and lets anyone / anything carry the rest. In a long clause your Spanish ear hears the main clause finish and lets the little didn't fall — and with it, the whole meaning. What did Spanish make you do? It made you treat the negation as decoration. In English it is the load-bearing wall.",
+  name:"So: protect the negation. As if he didn't want to talk to anyone — didn't inside the clause, anyone after it. Drop either one and the sentence betrays the person it describes."},
+ {id:"L4", mod:"M4", title:"Lesson 1 — Anchoring a story in time", group:"M4 · Narrative time-travel",
+  scene:"The whiskey story — yours. At nine you were pouring; by ten your father was standing in the living-room door; by then you had already changed your clothes and thrown up twice. Told flat, event after event, it is a list. Told with anchors, the listener stands at ten and looks back. That looking-back is a verb form, and it is the one your instinct skips, jumping to I was.",
+  commitEs:"Llevaba una hora esperando cuando ella llamó.", commitTarget:"had been waiting", fadeItem:"had-been", transferItem:"will-have", lab:"timeline",
+  notice:"Spanish carries the looking-back inside llevaba, había, desde — the timeline hides in the verb you already have. English builds the timeline out of separate pieces: an anchor moment in the simple past, and had been / had + participle for everything standing before it. What did Spanish make you do? It made you narrate in one flat past, because Spanish never forced you to mark the step before the step.",
+  name:"So: a story stands on anchors. Set the moment (when she called), then mark what was already running before it (I had been waiting) — and for the deadline ahead, by next year I will have decided."}
 ];
 </script>
 <script>
@@ -1100,15 +1239,15 @@ var INTERVALS = [1,3,7,30];
 function todayStr(d){ d = d||new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 function addDays(str, n){ var d = new Date(str+"T12:00:00"); d.setDate(d.getDate()+n); return todayStr(d); }
 function defaultState(){ return { mastery:{}, items:{}, commits:{}, teachbacks:{}, cMiss:{}, strikes:{},
-  gates:{}, proven:{}, lessonsDone:{}, daily:{lastDone:null, streak:0, paused:false, doneDate:null}, hintLog:[], sessions:0, spell:{} }; }
+  gates:{}, proven:{}, lessonsDone:{}, daily:{lastDone:null, streak:0, paused:false, doneDate:null}, hintLog:[], sessions:0, spell:{}, tales:[], taleLast:null }; }
 var S;
 try { S = JSON.parse(localStorage.getItem(LS_KEY)) || defaultState(); } catch(e){ S = defaultState(); }
 Object.keys(defaultState()).forEach(function(k){ if(!(k in S)) S[k]=defaultState()[k]; });
 function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){} }
 function itemState(id){ if(!S.items[id]) S.items[id]={step:0, due:null, daysCorrect:[], graduated:false, seenCues:[]}; return S.items[id]; }
-function allItems(){ return M1.concat(M3); }
+function allItems(){ return M1.concat(M3, M2, M4); }
 function findItem(id){ var a=allItems(); for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; return null; }
-function modItems(mod){ if(mod==="M9") return []; return mod==="M1"? M1 : M3; }
+function modItems(mod){ if(mod==="M9") return []; if(mod==="M2") return M2; if(mod==="M4") return M4; return mod==="M1"? M1 : M3; }
 function mastery(disc){ return S.mastery[disc]||0; }
 function setMastery(disc, v){ S.mastery[disc]=Math.max(0,Math.min(100,Math.round(v))); }
 
@@ -1253,8 +1392,8 @@ function checkAnswer(item, cue, raw){
   for(var j=0;j<cue.ans.length;j++) if(stemAll(n)===stemAll(cue.ans[j])) return {ok:false, tag:"FORM-SLIP", msg:"Right word — wrong form. This cue needs «"+cue.ans[0]+"»."};
   /* particle drop: typed just the base verb */
   var base = norm(item.verb||item.target||"").split(" ")[0];
-  if(item.verb && n===base) return {ok:false, tag:"PARTICLE-DROP"};
-  if(item.verb && norm(item.verb).split(" ").length>1 && n.split(" ").indexOf(norm(item.verb).split(" ")[1])<0 && n.indexOf(base)>=0) return {ok:false, tag:"PARTICLE-DROP"};
+  if(item.type && item.verb && n===base) return {ok:false, tag:"PARTICLE-DROP"};
+  if(item.type && item.verb && norm(item.verb).split(" ").length>1 && n.split(" ").indexOf(norm(item.verb).split(" ")[1])<0 && n.indexOf(base)>=0) return {ok:false, tag:"PARTICLE-DROP"};
   /* pronoun placement: right words, wrong order */
   var targetWords = norm(cue.ans[0]).split(" "), typedWords = n.split(" ");
   var sameSet = targetWords.every(function(w){ return typedWords.indexOf(w)>=0; }) && typedWords.length===targetWords.length;
@@ -1270,7 +1409,7 @@ function checkAnswer(item, cue, raw){
   if(item.twin && norm(item.twin).indexOf("(")<0 && item.id!=="actually" && item.id!=="discutir" && stemAll(n)===stemAll(item.twin)) return {ok:false, tag:"FALSE-TWIN"};
   /* an unrelated word on a false-friend item is a plain miss — never let the
      fallback accuse him of a twin he never reached for (Oscar, 2026-11-14) */
-  return {ok:false, tag: item.mod==="M3"||item.twin ? "MISS" : "DETOUR"};
+  return {ok:false, tag: (item.mod && item.mod!=="M1")||item.twin ? "MISS" : "DETOUR"};
 }
 var TAG_EXPLAIN = {
  "PARTICLE-DROP":"The particle fell off — exactly what Spanish hides. The particle is half the verb.",
@@ -1321,14 +1460,15 @@ function hintFor(item, cue, rung){
 }
 
 /* ============================== NAV ============================== */
-var views = ["home","learn","module","lesson","run","spell","review","stats","more"];
-var DOCK_FOR = {home:"home", learn:"learn", module:"learn", lesson:"learn", run:"home", spell:"learn", review:"review", stats:"stats", more:"more"};
+var views = ["home","learn","module","lesson","run","spell","tale","review","stats","more"];
+var DOCK_FOR = {home:"home", learn:"learn", module:"learn", lesson:"learn", run:"home", spell:"learn", tale:"learn", review:"review", stats:"stats", more:"more"};
 var currentView = "home", POPNAV = false, dockStack = ["home"];
 function show(name){
   if(name==="train") name="home";
   if(name==="about" || name==="settings") name="more";
   currentView = name;
   views.forEach(function(v){ var el=document.getElementById("view-"+v); if(el) el.classList.toggle("active", v===name); });
+  if(name!=="tale" && typeof taleTimer!=="undefined" && taleTimer){ clearInterval(taleTimer); taleTimer=null; }
   var dk = DOCK_FOR[name] || "home";
   document.querySelectorAll("[data-dock]").forEach(function(b){
     if(b.getAttribute("data-dock")===dk) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
@@ -1355,6 +1495,7 @@ window.addEventListener("popstate", function(){
     if(currentView==="lesson"){ openModule(L ? L.les.mod : "M1"); }
     else if(currentView==="module"){ goDock("learn", true); }
     else if(currentView==="spell"){ openModule("M9"); }
+    else if(currentView==="tale"){ if(taleTimer){ clearInterval(taleTimer); taleTimer=null; } openModule("M4"); }
     else if(currentView==="run"){ goDock("home", true); }
     else if(currentView!=="home"){
       if(dockStack.length>1){ dockStack.pop(); goDock(dockStack[dockStack.length-1], true); }
@@ -1569,11 +1710,13 @@ function openModule(mod){
   html += "</div>";
   if(mod==="M1"){ html += "<details><summary>Particle families — meaning hints, not rules</summary>"+PARTICLES.map(function(p){return "<p><strong>"+p[0]+"</strong> = "+p[1]+"</p>";}).join("")+"</details>"; }
   html += "</div>";
+  if(mod==="M4"){ html += taleCardHTML(); }
   document.getElementById("moduleBody").innerHTML = html;
   show("module");
   document.getElementById("backHome").addEventListener("click", function(){ renderLearn(); show("learn"); });
   document.getElementById("proveBtn").addEventListener("click", function(){ startProve(mod); });
   document.getElementById("gateBtn").addEventListener("click", function(){ startGate(mod); });
+  var taleBtnEl = document.getElementById("taleBtn"); if(taleBtnEl) taleBtnEl.addEventListener("click", function(){ startTale(); });
   document.querySelectorAll("[data-lesson]").forEach(function(b){ b.addEventListener("click", function(){ startLesson(b.getAttribute("data-lesson")); }); });
   wireChips("data-mchip", function(v){
     document.querySelectorAll("[data-mchip]").forEach(function(x){ x.setAttribute("aria-selected", x.getAttribute("data-mchip")===v ? "true" : "false"); });
@@ -1589,6 +1732,7 @@ function itemGroup(mod, it){
     if(M1_HOME[it.id]) return "home";
     return "story";
   }
+  if(mod==="M2"||mod==="M4") return it.grp||"all";
   if(it.danger) return "danger";
   if(it.senses) return "senses";
   return "twins";
@@ -1601,6 +1745,16 @@ function modChipDefs(mod){
     {id:"formal", label:"Formal → phrasal", count:n("formal")},
     {id:"home", label:"Home actions", count:n("home")},
     {id:"story", label:"Story verbs", count:n("story")}
+  ];
+  if(mod==="M2") return [
+    {id:"all", label:"All", count:items.length},
+    {id:"minds", label:"Reporting minds", count:n("minds")},
+    {id:"negation", label:"Protected negation", count:n("negation")}
+  ];
+  if(mod==="M4") return [
+    {id:"all", label:"All", count:items.length},
+    {id:"timeline", label:"Time anchors", count:n("timeline")},
+    {id:"transitions", label:"Transitions", count:n("transitions")}
   ];
   return [
     {id:"all", label:"All", count:items.length},
@@ -1720,6 +1874,50 @@ function wireCompromiso(){
   draw(0);
 }
 
+function mindsHTML(){
+  return "<h3>Move it — one thought, two English shapes</h3>"+
+  "<p>“Ella fingió haber entendido.” Two English shapes compete for that thought. Slide between them and watch what moves.</p>"+
+  "<div class='seg' role='group' aria-label='Rendering'><button type='button' data-m='0' class='on'>pretended to have understood</button><button type='button' data-m='1'>pretended to understand</button></div>"+
+  "<div class='splitout' id='mindsOut'></div>";
+}
+function wireMinds(){
+  var texts=["<strong>She pretended to have understood.</strong><br>The understanding is faked as <u>already done</u>: she acted as if it had happened before, inside her. This is the shape for <em>fingió haber entendido</em>.",
+             "<strong>She pretended to understand.</strong><br>She is faking it <u>right now</u>, in front of you, as it happens. A different scene — and a different sentence in the record."];
+  var out=document.getElementById("mindsOut");
+  function draw(i){ out.innerHTML=texts[i]; document.querySelectorAll("[data-m]").forEach(function(b){ b.classList.toggle("on", +b.getAttribute("data-m")===i); }); }
+  document.querySelectorAll("[data-m]").forEach(function(b){ b.addEventListener("click", function(){ draw(+b.getAttribute("data-m")); }); });
+  draw(0);
+}
+function negationHTML(){
+  return "<h3>Move it — the negation carries the meaning</h3>"+
+  "<p>One sentence, two fates. Slide the negation out and watch the man reverse.</p>"+
+  "<div class='seg' role='group' aria-label='Negation'><button type='button' data-ng='0' class='on'>With the negation</button><button type='button' data-ng='1'>Without it</button></div>"+
+  "<div class='splitout' id='negOut'></div>";
+}
+function wireNegation(){
+  var texts=["<strong>He acted as if he <u>didn't</u> want to talk to <u>anyone</u>.</strong><br>He was avoiding people. The <em>didn't</em> sits inside the as-if clause and the <em>anyone</em> carries it to the end of the sentence.",
+             "<strong>He acted as if he wanted to talk to anyone.</strong><br>The opposite man: open, available, reaching out. One dropped <em>didn't</em> reversed him — this is exactly the flip your diagnostic sentence made."];
+  var out=document.getElementById("negOut");
+  function draw(i){ out.innerHTML=texts[i]; document.querySelectorAll("[data-ng]").forEach(function(b){ b.classList.toggle("on", +b.getAttribute("data-ng")===i); }); }
+  document.querySelectorAll("[data-ng]").forEach(function(b){ b.addEventListener("click", function(){ draw(+b.getAttribute("data-ng")); }); });
+  draw(0);
+}
+function timelineHTML(){
+  return "<h3>Move it — the anchor</h3>"+
+  "<p>One wait, three camera positions. Slide the moment you are standing in, and watch the verb change around the same facts.</p>"+
+  "<div class='seg' role='group' aria-label='Anchor'><button type='button' data-t='0' class='on'>9:00 — it starts</button><button type='button' data-t='1'>10:00 — she calls</button><button type='button' data-t='2'>Today — you tell it</button></div>"+
+  "<div class='splitout' id='tlOut'></div>";
+}
+function wireTimeline(){
+  var texts=["<strong>At nine, I start waiting.</strong><br>Nothing to look back at yet: <em>I am waiting.</em> The present continuous, standing inside the moment.",
+             "<strong>At ten, she calls.</strong><br>Standing at ten and looking back at the running wait: <em>I had been waiting for an hour.</em> The past perfect continuous is the view from a later past moment — the anchor your instinct skips when it jumps to <em>I was</em>.",
+             "<strong>Today, you tell the story.</strong><br>Standing now, the same wait is <em>I have been waiting since nine</em> — or finished and reported with its anchors intact. Same facts; the anchor moved, so the form moved."];
+  var out=document.getElementById("tlOut");
+  function draw(i){ out.innerHTML=texts[i]; document.querySelectorAll("[data-t]").forEach(function(b){ b.classList.toggle("on", +b.getAttribute("data-t")===i); }); }
+  document.querySelectorAll("[data-t]").forEach(function(b){ b.addEventListener("click", function(){ draw(+b.getAttribute("data-t")); }); });
+  draw(0);
+}
+
 /* ============================== LESSONS ============================== */
 var STEP_NAMES=["Scene","Commit","Move it","Notice","Name it","Fade","Transfer","The gap"];
 var L=null;
@@ -1744,10 +1942,16 @@ function renderLesson(){
     if(les.lab==="builder") html+=builderHTML();
     else if(les.lab==="builder3") html+=builder3HTML();
     else if(les.lab==="split") html+=splitHTML();
+    else if(les.lab==="minds") html+=mindsHTML();
+    else if(les.lab==="negation") html+=negationHTML();
+    else if(les.lab==="timeline") html+=timelineHTML();
     else html+=compromisoHTML();
     var checks = les.lab==="builder" ? [{item:findItem("turn-on"), cue:findItem("turn-on").cues[1], cueIdx:1},{item:findItem("look-after"), cue:findItem("look-after").cues[0], cueIdx:0}]
       : les.lab==="builder3" ? [{item:findItem("run-out-of"), cue:findItem("run-out-of").cues[0], cueIdx:0},{item:findItem("come-up-with"), cue:findItem("come-up-with").cues[0], cueIdx:0}]
       : les.lab==="split" ? [{item:findItem("put-off"), cue:findItem("put-off").cues[0], cueIdx:0},{item:findItem("call-off"), cue:findItem("call-off").cues[0], cueIdx:0}]
+      : les.lab==="minds" ? [{item:findItem("pretend-have"), cue:findItem("pretend-have").cues[0], cueIdx:0},{item:findItem("expected-me"), cue:findItem("expected-me").cues[0], cueIdx:0}]
+      : les.lab==="negation" ? [{item:findItem("asif-negation"), cue:findItem("asif-negation").cues[0], cueIdx:0},{item:findItem("without-ing"), cue:findItem("without-ing").cues[0], cueIdx:0}]
+      : les.lab==="timeline" ? [{item:findItem("had-been"), cue:findItem("had-been").cues[0], cueIdx:0},{item:findItem("will-have"), cue:findItem("will-have").cues[0], cueIdx:0}]
       : [{item:findItem("compromiso"), cue:findItem("compromiso").cues[0], cueIdx:0},{item:findItem("compromiso"), cue:findItem("compromiso").cues[2], cueIdx:2}];
     html+="<h3 style='margin-top:18px'>Manipulation checks — typed, not tapped</h3>"+labChecksHTML(checks)+
       "<div class='btnrow' id='labDone' style='display:none'><button type='button' class='btn' id='lsNext'>Continue → Notice</button></div>";
@@ -1755,7 +1959,7 @@ function renderLesson(){
     html+="<h3>Notice</h3><p class='big'><strong>What did Spanish make you do?</strong></p><p>"+esc(les.notice)+"</p><div class='btnrow'><button type='button' class='btn' id='lsNext'>Name it →</button></div>";
   } else if(L.step===4){
     html+="<h3>Name it</h3><p class='big'>"+esc(les.name)+"</p>"+
-      modItems(les.mod).filter(function(it){ return les.mod==="M3" ? ["molestar","compromiso"].indexOf(it.id)>=0 : it.rule && ((les.id==="L1A"&&it.disc==="formal-switch")||(les.id==="L1B"&&["sep-pronoun","insep-order"].indexOf(it.disc)>=0)||(les.id==="L1C"&&it.disc==="three-word")); }).map(function(it){ return "<p class='small muted'>"+esc(it.rule)+"</p>"; }).join("")+
+      modItems(les.mod).filter(function(it){ return les.mod==="M3" ? ["molestar","compromiso"].indexOf(it.id)>=0 : it.rule && ((les.id==="L1A"&&it.disc==="formal-switch")||(les.id==="L1B"&&["sep-pronoun","insep-order"].indexOf(it.disc)>=0)||(les.id==="L1C"&&it.disc==="three-word")||((les.mod==="M2"||les.mod==="M4")&&(it.id===les.fadeItem||it.id===les.transferItem))); }).map(function(it){ return "<p class='small muted'>"+esc(it.rule)+"</p>"; }).join("")+
       "<div class='btnrow'><button type='button' class='btn' id='lsNext'>Fade it →</button></div>";
   } else if(L.step===5){
     var fc=fadeCue(L.fadeRung), it=fc.item;
@@ -1790,10 +1994,13 @@ function renderLesson(){
     var v=document.getElementById("commitIn").value.trim();
     if(!v){ var fb=document.getElementById("commitFb"); fb.className="feedback show bad"; fb.textContent="Commit something first — even wrong. The gap at the end is built from this attempt."; return; }
     S.commits[les.id]=v; save(); L.step++; renderLesson(); }); }
-  if(L.step===2){ if(les.lab==="builder") wireBuilder(); else if(les.lab==="builder3") wireBuilder3(); else if(les.lab==="split") wireSplit(); else wireCompromiso();
+  if(L.step===2){ if(les.lab==="builder") wireBuilder(); else if(les.lab==="builder3") wireBuilder3(); else if(les.lab==="split") wireSplit(); else if(les.lab==="minds") wireMinds(); else if(les.lab==="negation") wireNegation(); else if(les.lab==="timeline") wireTimeline(); else wireCompromiso();
     wireLabChecks(les.lab==="builder" ? [{item:findItem("turn-on"), cue:findItem("turn-on").cues[1], cueIdx:1},{item:findItem("look-after"), cue:findItem("look-after").cues[0], cueIdx:0}]
       : les.lab==="builder3" ? [{item:findItem("run-out-of"), cue:findItem("run-out-of").cues[0], cueIdx:0},{item:findItem("come-up-with"), cue:findItem("come-up-with").cues[0], cueIdx:0}]
       : les.lab==="split" ? [{item:findItem("put-off"), cue:findItem("put-off").cues[0], cueIdx:0},{item:findItem("call-off"), cue:findItem("call-off").cues[0], cueIdx:0}]
+      : les.lab==="minds" ? [{item:findItem("pretend-have"), cue:findItem("pretend-have").cues[0], cueIdx:0},{item:findItem("expected-me"), cue:findItem("expected-me").cues[0], cueIdx:0}]
+      : les.lab==="negation" ? [{item:findItem("asif-negation"), cue:findItem("asif-negation").cues[0], cueIdx:0},{item:findItem("without-ing"), cue:findItem("without-ing").cues[0], cueIdx:0}]
+      : les.lab==="timeline" ? [{item:findItem("had-been"), cue:findItem("had-been").cues[0], cueIdx:0},{item:findItem("will-have"), cue:findItem("will-have").cues[0], cueIdx:0}]
       : [{item:findItem("compromiso"), cue:findItem("compromiso").cues[0], cueIdx:0},{item:findItem("compromiso"), cue:findItem("compromiso").cues[2], cueIdx:2}], null); }
   if(L.step===5){
     var fn=document.getElementById("fadeNext");
@@ -1829,6 +2036,105 @@ function renderLesson(){
 </script>
 <script>
 "use strict";
+/* ============================== THE WEEKLY TALE (M4 capstone) ==============================
+   Angle-2 law (2026-11-15): narrative English is functionally absent from
+   Oscar's daily life, so this capstone RECURS weekly instead of graduating
+   once and closing. 4/3/2: the same story told three times, faster each
+   pass. Then the R3 second pass: he hunts his own speed slips (articles,
+   agreement, prepositions, doubling, time anchors) in his own text and
+   edits in place. The app never grades free text; the monitor being
+   trained here is his. */
+var TALE_PROMPTS = [
+ {id:"whiskey", label:"The whiskey night", hint:"Your first whiskey, the film, the second glass, your father in the living-room door. Tell it standing at the door, looking back."},
+ {id:"ranch", label:"A morning at the ranch", hint:"Your father, the animals, the work that was already done before you arrived. Who had done what, by when?"},
+ {id:"session", label:"A session that changed direction", hint:"A group or individual session that turned somewhere nobody expected. No names, no case details: the shape of the turn only."},
+ {id:"trip", label:"The road to Nicaragua", hint:"Leaving Miami, the flight, arriving. What had been prepared, what was already waiting, what happened after that."},
+ {id:"class", label:"My first class", hint:"The first toolkit class you taught. What you had planned, what the room did with it, how it ended."}
+];
+var TALE_CHECKS = [
+ {id:"articles", label:"Articles", hint:"the / a where the story needs them; none dropped at speed"},
+ {id:"agreement", label:"Agreement", hint:"every verb matches its subject (my family knows, not know)"},
+ {id:"preps", label:"Prepositions", hint:"on / in / at chosen, not defaulted from Spanish en"},
+ {id:"doubling", label:"Doubling", hint:"no doubled frames: a present gift, ever since to this day"},
+ {id:"anchors", label:"Time anchors", hint:"had been / since / by then where the story turns"}
+];
+var TALE = null, taleTimer = null;
+function taleDue(){ if(!S.taleLast) return true; return addDays(S.taleLast, 7) <= todayStr(); }
+function taleCardHTML(){
+  var past = (S.tales||[]).slice().reverse();
+  var h = "<div class='card'><h3>The weekly tale — the capstone</h3>"+
+   "<p class='small'>One story from your life, told three times: four minutes, then three, then two. Then a second pass where you hunt your own slips in your own text. This is the only storytelling practice loop in your week, so it comes back every week; it never graduates and closes.</p>"+
+   (taleDue() ? "<p><span class='chip prog'>This week's tale is waiting</span></p>" : "<p><span class='chip proven'>This week's tale is told — "+esc(S.taleLast)+". The next one opens "+esc(addDays(S.taleLast,7))+".</span></p>")+
+   "<div class='btnrow'><button type='button' class='btn' id='taleBtn'>"+(taleDue()?"Tell this week's tale":"Tell another tale")+"</button></div>";
+  if(past.length){ h += "<details style='margin-top:10px'><summary>Past tales ("+past.length+")</summary>"+ past.map(function(t){ return "<p class='small' style='margin-top:8px'><strong>"+esc(t.date)+" — "+esc(t.promptLabel)+"</strong></p><p class='small muted'>"+esc(t.text)+"</p>"; }).join("") + "</details>"; }
+  return h + "</div>";
+}
+function startTale(){ TALE = {stage:"pick", prompt:null, pass:0, texts:[], checks:{}}; renderTale(); show("tale"); }
+function talePassSeconds(){ return [240,180,120][TALE.pass]; }
+function taleAdvance(){
+  var ta = document.getElementById("taleText"); if(!ta) return;
+  var v = ta.value.trim();
+  if(!v){ ta.focus(); return; }
+  TALE.texts.push(v);
+  if(TALE.pass<2){ TALE.pass++; } else { TALE.stage="review"; }
+  renderTale();
+}
+function renderTale(){
+  var b = document.getElementById("taleBody"); if(!b) return;
+  if(taleTimer){ clearInterval(taleTimer); taleTimer=null; }
+  var h = "";
+  if(TALE.stage==="pick"){
+    h = "<div class='card'><h2>The weekly tale</h2><p>Pick the story. You will tell the same one three times, faster each time. Write it the way you would say it: standing in the scene, not reporting it.</p>"+
+     TALE_PROMPTS.map(function(p,i){ return "<p><button type='button' class='btn secondary' data-tprompt='"+i+"'>"+esc(p.label)+"</button><br><span class='small muted'>"+esc(p.hint)+"</span></p>"; }).join("")+
+     "<div class='btnrow'><button type='button' class='btn secondary' id='taleBack'>← Back to M4</button></div></div>";
+  } else if(TALE.stage==="write"){
+    var secs = talePassSeconds();
+    h = "<div class='card'><h2>"+esc(TALE.prompt.label)+" — pass "+(TALE.pass+1)+" of 3</h2>"+
+     "<p class='small muted'>"+esc(TALE.prompt.hint)+"</p>"+
+     "<p>Time left: <span class='timer' id='taleTimer'>"+secs+"</span>s</p><div class='timerbar'><i id='taleBar' style='width:100%'></i></div>"+
+     "<label class='sr' for='taleText'>Your telling</label><textarea id='taleText' rows='9' style='width:100%' placeholder='Tell it here…'></textarea>"+
+     "<div class='btnrow'><button type='button' class='btn' id='taleNext'>"+(TALE.pass<2 ? "Done — next pass, faster" : "Done — second pass: review")+"</button></div></div>";
+  } else if(TALE.stage==="review"){
+    var last = TALE.texts[TALE.texts.length-1] || "";
+    h = "<div class='card'><h2>The second pass — hunt your own slips</h2>"+
+     "<p>Below is your fastest telling, exactly as you wrote it. Your monitor is strong when it gets a second pass; this is that pass. Check each line against your text, tap it when you have truly looked, and edit the text in place.</p>"+
+     TALE_CHECKS.map(function(c){ return "<p><button type='button' class='chipbtn' data-tcheck='"+c.id+"'>"+esc(c.label)+"</button> <span class='small muted'>"+esc(c.hint)+"</span></p>"; }).join("")+
+     "<label class='sr' for='taleEdit'>Your edited telling</label><textarea id='taleEdit' rows='9' style='width:100%'>"+esc(last)+"</textarea>"+
+     "<div class='feedback' id='taleFb'></div>"+
+     "<div class='btnrow'><button type='button' class='btn' id='taleSave'>Save this week's tale</button></div></div>";
+  }
+  b.innerHTML = h;
+  if(TALE.stage==="pick"){
+    document.querySelectorAll("[data-tprompt]").forEach(function(x){ x.addEventListener("click", function(){ TALE.prompt = TALE_PROMPTS[+x.getAttribute("data-tprompt")]; TALE.stage="write"; TALE.pass=0; renderTale(); }); });
+    var bk = document.getElementById("taleBack"); if(bk) bk.addEventListener("click", function(){ openModule("M4"); });
+  }
+  if(TALE.stage==="write"){
+    var deadline = Date.now() + talePassSeconds()*1000, total = talePassSeconds();
+    taleTimer = setInterval(function(){
+      var left = Math.max(0, Math.ceil((deadline - Date.now())/1000));
+      var t = document.getElementById("taleTimer"), bar = document.getElementById("taleBar");
+      if(!t){ clearInterval(taleTimer); taleTimer=null; return; }
+      t.textContent = left; if(bar) bar.style.width = (left/total*100)+"%";
+      if(left<=0){ clearInterval(taleTimer); taleTimer=null; taleAdvance(); }
+    }, 250);
+    document.getElementById("taleNext").addEventListener("click", taleAdvance);
+  }
+  if(TALE.stage==="review"){
+    document.querySelectorAll("[data-tcheck]").forEach(function(x){ x.addEventListener("click", function(){ var id=x.getAttribute("data-tcheck"); TALE.checks[id]=!TALE.checks[id]; x.classList.toggle("sel", !!TALE.checks[id]); }); });
+    document.getElementById("taleSave").addEventListener("click", function(){
+      var missing = TALE_CHECKS.filter(function(c){ return !TALE.checks[c.id]; });
+      var fb = document.getElementById("taleFb");
+      var txt = document.getElementById("taleEdit").value.trim();
+      if(!txt){ fb.className="feedback show bad"; fb.textContent="The tale is empty. A second pass edits a telling; it does not replace it with silence."; return; }
+      if(missing.length){ fb.className="feedback show bad"; fb.textContent="Unchecked lines remain: "+missing.map(function(c){ return c.label; }).join(", ")+". The second pass only counts when every line was truly hunted."; return; }
+      if(!S.tales) S.tales=[];
+      S.tales.push({date:todayStr(), prompt:TALE.prompt.id, promptLabel:TALE.prompt.label, text:txt});
+      S.taleLast = todayStr(); save();
+      TALE = null; openModule("M4");
+    });
+  }
+}
+
 /* ============================== SESSION RUNNER ============================== */
 var R=null, currentMod="M1";
 /* Varied-context rule (2.6.0, evidence-backed — see
